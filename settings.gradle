@@ -1,0 +1,2 @@
+rootProject.name='SaleskenV1'
+include ':app'
