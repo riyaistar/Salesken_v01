@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">SaleskenV1</string>
+    <string name="sales">sales</string>
+    <string name="ken">ken</string>
+    <string name="username">User Name</string>
+    <string name="password">Password</string>
+    <string name="forgotpassword">Forgot Password ?</string>
+    <string name="login">Sign In</string>
+
+    <string name="email">Email</string>
+    <string name="sent">Sent</string>
+    <string name="forgot_text">If you have forgotten your password you can\nreset it here.</string>
+
+
 </resources>

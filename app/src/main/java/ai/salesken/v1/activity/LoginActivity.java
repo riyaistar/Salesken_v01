@@ -2,6 +2,7 @@ package ai.salesken.v1.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -30,12 +31,15 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     }
 
     @OnClick(R.id.login)
-    public void login(){
+    public void login()
+    {
         Log.d(TAG,"login clicked");
     }
 
     @OnClick(R.id.forgot_password)
     public void forgot_pass(){
+        Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+        startActivity(intent);
         Log.d(TAG,"forgot_pass clicked");
     }
 }
