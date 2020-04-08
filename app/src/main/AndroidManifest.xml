@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.EmailSentActivity"></activity>
         <activity android:name=".activity.ForgotPasswordActivity"></activity>
         <activity android:name=".activity.LoginActivity">
             <intent-filter>

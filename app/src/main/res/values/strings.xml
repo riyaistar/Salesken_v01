@@ -11,5 +11,8 @@
     <string name="sent">Sent</string>
     <string name="forgot_text">If you have forgotten your password you can\nreset it here.</string>
 
+    <string name="email_sent">Email sent !</string>
+    <string name="check_email">Check your Email " test@salesken.​ai "\nto reset your password.</string>
+
 
 </resources>
