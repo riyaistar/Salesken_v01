@@ -33,6 +33,8 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     @OnClick(R.id.login)
     public void login()
     {
+        Intent intent = new Intent(LoginActivity.this, IntroductionActivity.class);
+        startActivity(intent);
         Log.d(TAG,"login clicked");
     }
 

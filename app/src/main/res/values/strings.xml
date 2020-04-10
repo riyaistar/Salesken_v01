@@ -13,6 +13,11 @@
 
     <string name="email_sent">Email sent !</string>
     <string name="check_email">Check your Email " test@salesken.​ai "\nto reset your password.</string>
-
+    <string name="cues_support">Real time\nCues Support</string>
+    <string name="introduction_text1">Help your sales team at the exact moment they need it.\nHelp them up their game and win!</string>
+    <string name="tools_support">It works with all\nyour favourite tools</string>
+    <string name="introduction_text2">Get a ring side seat to your customer sales-rep interactions. Know what they are doing right &amp; where they need help.</string>
+    <string name="analytics_support">Get\nanalytical reports</string>
+    <string name="introduction_text3"> lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs</string>
 
 </resources>
