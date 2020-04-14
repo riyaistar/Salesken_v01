@@ -17,4 +17,5 @@
         <item name="colorControlNormal">@color/greyishBrown</item>
         <item name="colorControlActivated">@color/black</item>
     </style>
+
 </resources>

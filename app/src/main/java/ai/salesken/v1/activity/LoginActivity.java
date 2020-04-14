@@ -50,6 +50,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     {
         Intent intent = new Intent(LoginActivity.this, DialerActivity.class);
         startActivity(intent);
+        finish();
         Log.d(TAG,"login clicked");
     }
 
@@ -57,6 +58,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     public void forgot_pass(){
         Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
         startActivity(intent);
+        finish();
         Log.d(TAG,"forgot_pass clicked");
     }
 

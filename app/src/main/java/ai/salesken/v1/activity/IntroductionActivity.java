@@ -44,6 +44,7 @@ public class IntroductionActivity extends SaleskenActivity implements SaleskenAc
         if(viewPager.getCurrentItem()==2){
             Intent intent = new Intent(IntroductionActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
         viewPager.setCurrentItem(viewPager.getCurrentItem()+1, true);
 
@@ -53,5 +54,6 @@ public class IntroductionActivity extends SaleskenActivity implements SaleskenAc
     public void skipPager(){
         Intent intent = new Intent(IntroductionActivity.this, LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 }
