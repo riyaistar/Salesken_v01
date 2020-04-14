@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">SaleskenV1</string>
     <string name="sales">sales</string>
+    <string name="shared_preference_key">SaleskenAppComplexKey</string>
+
     <string name="ken">ken</string>
     <string name="username">User Name</string>
     <string name="password">Password</string>
