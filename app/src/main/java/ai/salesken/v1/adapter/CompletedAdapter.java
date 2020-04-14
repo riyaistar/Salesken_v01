@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import ai.salesken.v1.R;
+import ai.salesken.v1.pojo.ContactPojo;
 import ai.salesken.v1.viewholder.CompletedViewHolder;
 import ai.salesken.v1.viewholder.ContactViewHolder;
 import ai.salesken.v1.viewholder.UpcomingViewHolder;
@@ -33,5 +36,9 @@ public class CompletedAdapter extends  RecyclerView.Adapter<CompletedViewHolder>
     @Override
     public int getItemCount() {
         return 10;
+    }
+
+    public void updateList(List<ContactPojo> list){
+        notifyDataSetChanged();
     }
 }

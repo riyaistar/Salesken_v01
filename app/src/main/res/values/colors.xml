@@ -19,6 +19,7 @@
     <color name="selected_purple">#7e0947</color>
     <color name="cream_white">#f9f9f9</color>
     <color name="transparent">#00000000</color>
+    <color name="line_color">#d8d8d8</color>
 
 
     <color name="bg_green">#57b280</color>
