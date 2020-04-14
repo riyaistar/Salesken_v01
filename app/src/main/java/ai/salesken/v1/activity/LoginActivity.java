@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -30,7 +31,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         super.onCreate(savedInstanceState);
         getView();
         requestAllpermission();
-        new ContactUtil().fetchContacts(LoginActivity.this);
+
     }
 
     @Override
