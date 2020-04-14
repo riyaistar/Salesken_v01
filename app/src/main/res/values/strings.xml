@@ -22,4 +22,13 @@
     <string name="analytics_support">Get\nanalytical reports</string>
     <string name="introduction_text3"> lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs</string>
 
+    <string name="disposition">Disposition</string>
+    <string name="disposition_msg">How did the call go ?</string>
+    <string name="no_response">No Response ?</string>
+    <string name="call_dropped">Call Dropped ?</string>
+    <string name="voice_mail">Voice Mail</string>
+    <string name="wrong_number">Wrong Number</string>
+    <string name="wrong_person">Wrong Person</string>
+    <string name="call_answered">Call Answered </string>
+
 </resources>
