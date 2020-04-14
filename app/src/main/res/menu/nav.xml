@@ -7,7 +7,7 @@
         <item
             android:id="@+id/home"
             android:icon="@mipmap/ic_home"
-            android:title="Home" />
+            android:title="HOME" />
         <item
             android:id="@+id/account"
             android:icon="@mipmap/setting"
@@ -21,7 +21,7 @@
         <item
             android:id="@+id/logout"
             android:icon="@mipmap/sign_out"
-            android:title="Log out" />
+            android:title="LOG OUT" />
     </group>
 
 

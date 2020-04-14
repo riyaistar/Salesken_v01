@@ -76,6 +76,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
         contactPojos=gson.fromJson(stored_leads, type);
         if(contactPojos.size()>0) {
+            result.setText(contactPojos.size()+"");
             searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -88,17 +89,9 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
                     return false;
                 }
             });
-            Collections.sort(contactPojos, new Comparator<ContactPojo>() {
-                @Override
-                public int compare(ContactPojo contactPojo, ContactPojo contactPojo1) {
-                    try{
-                        return String.valueOf(contactPojo.getName()).toUpperCase().compareTo(String.valueOf(contactPojo1.getName()).toUpperCase());
-                    }catch (Exception e){
-                        return String.valueOf(contactPojo.getName()).toUpperCase().compareTo(String.valueOf(contactPojo1.getName()).toUpperCase());
+            contactPojos=sortStringThenNumber(contactPojos);
+            //Collections.sort(contactPojos, String.CASE_INSENSITIVE_ORDER);
 
-                    }
-                }
-            });
             contactAdapter = new ContactAdapter(ContactActivity.this, contactPojos);
 
 
@@ -124,7 +117,55 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         }
 
     }
+    private static List<ContactPojo> sortStringThenNumber(List<ContactPojo> contactPojos) {
 
+        List<ContactPojo> numbers = new ArrayList<ContactPojo>();
+        List<ContactPojo> strings = new ArrayList<ContactPojo>();
+
+        for (ContactPojo contactPojo : contactPojos) {
+            if (contactPojo.getName().substring(0,contactPojo.getName().length()-1).trim().matches(".*\\d") || contactPojo.getName().startsWith("+") ) {
+                numbers.add(contactPojo);
+            } else {
+                strings.add(contactPojo);
+            }
+        }
+        contactPojos = null;
+        Collections.sort(numbers, new Comparator<ContactPojo>() {
+            @Override
+            public int compare(ContactPojo contactPojo, ContactPojo contactPojo1) {
+                try
+                {
+                    int i1 = Integer.parseInt(contactPojo.getName());
+                    int i2 = Integer.parseInt(contactPojo1.getName());
+                    return i1 - i2;
+                }
+                catch (NumberFormatException e)
+                {
+                    return contactPojo.getName().toLowerCase().compareTo(contactPojo1.getName().toLowerCase());
+                }
+
+
+            }
+
+        });
+        Collections.sort(strings, new Comparator<ContactPojo>() {
+            @Override
+            public int compare(ContactPojo contactPojo, ContactPojo contactPojo1) {
+                return contactPojo.getName().toLowerCase().compareTo(contactPojo1.getName().toLowerCase());
+
+
+
+            }
+
+        });
+
+
+        List<ContactPojo> all = new ArrayList<ContactPojo>();
+        all.addAll(strings);
+        all.addAll(numbers);
+
+        return all;
+    }
     private void filterContactList(String newText) {
         if(newText.trim().length()>0) {
             List<ContactPojo> tempContactPojos = new ArrayList();

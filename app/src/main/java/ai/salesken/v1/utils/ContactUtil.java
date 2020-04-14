@@ -68,7 +68,7 @@ public class ContactUtil {
                     output.append("\n First Name:" + name);
                     contactPojo.setName(name);
                     // Query and loop for every phone number of the contact
-                    Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[] { contact_id }, null);
+                    Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[] { contact_id }, "DISPLAY_NAME ASC");
 
                     while (phoneCursor.moveToNext()) {
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
