@@ -121,8 +121,8 @@ public class SaleskenActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.home:
-                       // startActivity(new Intent(Sale.this, DashboardActivity.class));
-                       // finish();
+                        startActivity(new Intent(SaleskenActivity.this, DialerActivity.class));
+                        finish();
                         break;
                     case R.id.account:
                         //startActivity(new Intent(IstarActivity.this, TaskDetailActivity.class));

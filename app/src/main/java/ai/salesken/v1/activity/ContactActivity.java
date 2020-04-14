@@ -55,7 +55,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         super.onCreate(savedInstanceState);
         getView();
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
-        setNavigationView(drawer, navigationView, 3);
+        setNavigationView(drawer, navigationView, 0);
         searchview.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

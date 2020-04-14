@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import ai.salesken.v1.R;
 import ai.salesken.v1.activity.ContactActivity;
 import ai.salesken.v1.activity.DialerActivity;
+import ai.salesken.v1.activity.TaskActivity;
 
 
 public class BottomBarUtil {
@@ -39,7 +40,7 @@ public class BottomBarUtil {
                                 break;
                             case R.id.contact:
                                 if (((Activity) context) instanceof ContactActivity) {
-                                    System.out.println("Dont call Task history in task history... ... .... ");
+                                    System.out.println("Dont call ContactActivity in ContactActivity... ... .... ");
                                 } else {
                                     //removeShiftMode(bottomNavigationView);
                                     Intent i = new Intent(context, ContactActivity.class);
@@ -49,17 +50,17 @@ public class BottomBarUtil {
                                 }
                                 break;
 
-                            /*case R.id.reports:
-                                if (((Activity) context) instanceof ReportsActivity) {
-                                    System.out.println("Dont call Leads in Leads... ... .... ");
+                            case R.id.tasks:
+                                if (((Activity) context) instanceof TaskActivity) {
+                                    System.out.println("Dont call task in tasks... ... .... ");
                                 } else {
                                          //removeShiftMode(bottomNavigationView);
-                                    Intent i = new Intent(context, ReportsActivity.class);
+                                    Intent i = new Intent(context, TaskActivity.class);
                                     context.startActivity(i);
                                     ((Activity) context).overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                                     ((Activity) context).finish();
                                 }
-                                break;*/
+                                break;
 
 
                         }

@@ -7,8 +7,11 @@
     <color name="white">#ffffff</color>
     <color name="black">#040505</color>
     <color name="black2">#222222</color>
+    <color name="black3">#444444</color>
+
     <color name="theme">#e1203e</color>
     <color name="theme_color">#ed4d67</color>
+
 
     <color name="greyishBrown">#999999</color>
     <color name="brownish_grey">#666666</color>
@@ -22,6 +25,9 @@
     <color name="bg_orange">#f48045</color>
     <color name="bg_purple">#8665eb</color>
     <color name="bg_darkgreen">#22bfa9</color>
+    <color name="tabunhighlight">#99ffffff</color>
+
+
 
 
 </resources>
