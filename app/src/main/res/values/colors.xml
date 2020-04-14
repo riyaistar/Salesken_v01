@@ -17,4 +17,11 @@
     <color name="cream_white">#f9f9f9</color>
     <color name="transparent">#00000000</color>
 
+
+    <color name="bg_green">#57b280</color>
+    <color name="bg_orange">#f48045</color>
+    <color name="bg_purple">#8665eb</color>
+    <color name="bg_darkgreen">#22bfa9</color>
+
+
 </resources>

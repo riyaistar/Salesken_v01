@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +29,8 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
+        requestAllpermission();
+        new ContactUtil().fetchContacts(LoginActivity.this);
     }
 
     @Override

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.activity.ContactActivity;
 import ai.salesken.v1.activity.DialerActivity;
 
 
@@ -36,6 +37,18 @@ public class BottomBarUtil {
                                     ((Activity) context).finish();
                                 }
                                 break;
+                            case R.id.contact:
+                                if (((Activity) context) instanceof ContactActivity) {
+                                    System.out.println("Dont call Task history in task history... ... .... ");
+                                } else {
+                                    //removeShiftMode(bottomNavigationView);
+                                    Intent i = new Intent(context, ContactActivity.class);
+                                    context.startActivity(i);
+                                    ((Activity) context).overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+                                    ((Activity) context).finish();
+                                }
+                                break;
+
                             /*case R.id.reports:
                                 if (((Activity) context) instanceof ReportsActivity) {
                                     System.out.println("Dont call Leads in Leads... ... .... ");

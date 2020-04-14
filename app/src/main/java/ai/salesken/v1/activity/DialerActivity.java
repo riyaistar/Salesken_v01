@@ -28,7 +28,6 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
-        ButterKnife.bind(this);
         new BottomBarUtil().setupBottomBar(navigation, DialerActivity.this, R.id.dialer);
         setNavigationView(drawer, navigationView, 1);
 

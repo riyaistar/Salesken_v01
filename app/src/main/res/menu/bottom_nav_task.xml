@@ -4,17 +4,17 @@
 
     <item android:id="@+id/dialer"
         android:icon="@mipmap/keypad_icon"
-        android:title="TASKS"
+        android:title="Dialer"
         app:showAsAction="withText"/>
 
     <item android:id="@+id/tasks"
         android:icon="@mipmap/task"
-        android:title="REPORTS"
+        android:title="Tasks"
         app:showAsAction="withText"/>
 
     <item android:id="@+id/contact"
         android:icon="@mipmap/group_11689"
-        android:title="REPORTS"
+        android:title="Contacts"
         app:showAsAction="withText"/>
 
 </menu>
