@@ -10,15 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.IntroductionActivity"></activity>
+        <activity android:name=".activity.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.DialerActivity" />
+        <activity android:name=".activity.IntroductionActivity" />
         <activity android:name=".activity.EmailSentActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />
         <activity android:name=".activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.SaleskenActivity" />
         <activity android:name=".MainActivity" />

@@ -3,7 +3,9 @@ package ai.salesken.v1.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -15,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class IntroductionActivity extends SaleskenActivity implements SaleskenActivityImplementation {
+    private static final String TAG = "IntroductionActivity";
     @BindView(R.id.viewpager)
     ViewPager viewPager;
     @BindView(R.id.tab)
@@ -38,6 +41,17 @@ public class IntroductionActivity extends SaleskenActivity implements SaleskenAc
 
     @OnClick(R.id.next)
     public void changePager(){
+        if(viewPager.getCurrentItem()==2){
+            Intent intent = new Intent(IntroductionActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
         viewPager.setCurrentItem(viewPager.getCurrentItem()+1, true);
+
+    }
+
+    @OnClick(R.id.skip)
+    public void skipPager(){
+        Intent intent = new Intent(IntroductionActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
