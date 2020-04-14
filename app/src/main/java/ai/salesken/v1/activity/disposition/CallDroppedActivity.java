@@ -11,7 +11,6 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -25,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NoResponseActivity extends SaleskenActivity implements SaleskenActivityImplementation {
+public class CallDroppedActivity extends SaleskenActivity implements SaleskenActivityImplementation {
     @BindView(R.id.datetxt)
     EditText datetxt;
     @BindView(R.id.timetxt)
@@ -47,7 +46,7 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
 
     @Override
     public void getView() {
-        setContentView(R.layout.activity_no_response);
+        setContentView(R.layout.activity_call_dropped);
         ButterKnife.bind(this);
     }
 
@@ -166,13 +165,13 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
     }
 
     private void goBack() {
-        Intent i = new Intent(NoResponseActivity.this,DispositionActivity.class);
+        Intent i = new Intent(CallDroppedActivity.this,DispositionActivity.class);
         startActivity(i);
         finish();
     }
-    @OnClick(R.id.submit_btn)
+    @OnClick(R.id.submit_dropped)
     public void submitClick(){
-        Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
+        Intent i = new Intent(CallDroppedActivity.this, DialerActivity.class);
         startActivity(i);
         finish();
     }

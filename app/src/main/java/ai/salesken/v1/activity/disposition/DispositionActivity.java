@@ -30,4 +30,10 @@ public class DispositionActivity extends SaleskenActivity implements SaleskenAct
         startActivity(i);
         finish();
     }
+    @OnClick(R.id.call_dropped)
+    public void gotoCallDropped(){
+        Intent i = new Intent(DispositionActivity.this, CallDroppedActivity.class);
+        startActivity(i);
+        finish();
+    }
 }
