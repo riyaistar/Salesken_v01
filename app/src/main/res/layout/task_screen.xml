@@ -73,7 +73,6 @@
         app:tabSelectedTextColor="@color/white"
         app:tabIndicatorHeight="3dp"
         app:tabPaddingBottom="8dp"
-        app:tabMode="scrollable"
 
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
