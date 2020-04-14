@@ -24,11 +24,16 @@
 
     <string name="disposition">Disposition</string>
     <string name="disposition_msg">How did the call go ?</string>
-    <string name="no_response">No Response ?</string>
-    <string name="call_dropped">Call Dropped ?</string>
+    <string name="no_response">No Response </string>
+    <string name="call_dropped">Call Dropped </string>
     <string name="voice_mail">Voice Mail</string>
     <string name="wrong_number">Wrong Number</string>
     <string name="wrong_person">Wrong Person</string>
     <string name="call_answered">Call Answered </string>
+
+    <string name="no_resp_msg">Oops Seems like lead is busy !</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="msg">Message</string>
 
 </resources>
