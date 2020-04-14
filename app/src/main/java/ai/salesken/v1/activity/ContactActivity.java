@@ -76,6 +76,18 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
         contactPojos=gson.fromJson(stored_leads, type);
         if(contactPojos.size()>0) {
+            searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    filterContactList(newText);
+                    return false;
+                }
+            });
             Collections.sort(contactPojos, new Comparator<ContactPojo>() {
                 @Override
                 public int compare(ContactPojo contactPojo, ContactPojo contactPojo1) {
@@ -108,6 +120,22 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             contact_list.setIndexbarMargin(14);
         }else{
             contact_list.setIndexBarVisibility(false);
+            searchview.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void filterContactList(String newText) {
+        if(newText.trim().length()>0) {
+            List<ContactPojo> tempContactPojos = new ArrayList();
+            for (ContactPojo contactPojo : contactPojos) {
+                if (contactPojo.getName().trim().toLowerCase().contains(newText.toLowerCase().trim())) {
+                    tempContactPojos.add(contactPojo);
+                }
+            }
+            contactAdapter.updateList(tempContactPojos);
+        }else{
+            contactAdapter.updateList(contactPojos);
 
         }
 

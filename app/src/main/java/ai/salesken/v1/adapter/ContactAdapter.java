@@ -74,4 +74,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> impl
     public int getItemCount() {
         return contactPojos.size();
     }
+
+    public void updateList(List<ContactPojo> list){
+        contactPojos = list;
+        notifyDataSetChanged();
+    }
 }
