@@ -22,6 +22,8 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
      Button login;
     @BindView(R.id.progress)
     ConstraintLayout progress;
+    @BindView(R.id.login_content)
+    ConstraintLayout login_content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
             public void run() {
                 // This method will be executed once the timer is over
                progress.setVisibility(View.GONE);
+               login_content.setVisibility(View.VISIBLE);
             }
         }, 1000);
 

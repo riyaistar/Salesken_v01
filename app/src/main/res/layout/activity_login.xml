@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".activity.LoginActivity">
 
+    <include
+        android:id="@+id/progress"
+        layout="@layout/progress_layout"
+        android:visibility="visible"></include>
 
+    <include
+        android:id="@+id/login_content"
+        layout="@layout/login_content"
+        android:visibility="gone"></include>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
