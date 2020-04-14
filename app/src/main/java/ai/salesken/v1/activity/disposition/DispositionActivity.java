@@ -36,4 +36,27 @@ public class DispositionActivity extends SaleskenActivity implements SaleskenAct
         startActivity(i);
         finish();
     }
+
+    @OnClick(R.id.wrong_person)
+    public void gotoWrongPerson(){
+        Intent i = new Intent(DispositionActivity.this, WrongPersonActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    @OnClick(R.id.wrong_number)
+    public void gotoWrongNumber(){
+        Intent i = new Intent(DispositionActivity.this, WrongNumberActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    @OnClick(R.id.call_answered)
+    public void gotoCallAnswered(){
+        Intent i = new Intent(DispositionActivity.this, CallAnsweredActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+
 }

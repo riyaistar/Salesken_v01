@@ -23,7 +23,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".activity.TaskActivity"></activity>
-
+        <activity android:name=".activity.disposition.CallAnsweredActivity"></activity>
+        <activity android:name=".activity.disposition.WrongPersonActivity" />
+        <activity android:name=".activity.disposition.WrongNumberActivity" />
         <activity android:name=".activity.disposition.CallDroppedActivity"></activity>
         <activity android:name=".activity.ContactActivity"  android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="stateHidden|adjustPan"  android:screenOrientation="portrait"

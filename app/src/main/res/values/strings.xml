@@ -38,4 +38,12 @@
     <string name="submit">Submit</string>
     <string name="skip">Skip</string>
 
+    <string name="lost_lead">Lead Lost</string>
+    <string name="follow_up">Follow Up </string>
+    <string name="schedule">Schedule Activity </string>
+    <string name="lead_won">Lead Won </string>
+    <string name="dnd">DND </string>
+    <string name="edit_lead">Edit Lead Details</string>
+
+
 </resources>
