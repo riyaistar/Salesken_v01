@@ -5,6 +5,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -12,6 +13,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.utils.BottomBarUtil;
+import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +32,13 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
         getView();
         new BottomBarUtil().setupBottomBar(navigation, DialerActivity.this, R.id.dialer);
         setNavigationView(drawer, navigationView, 1);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                new ContactUtil().fetchContacts(DialerActivity.this);
 
+            }
+        });
     }
 
 

@@ -45,5 +45,14 @@
     <string name="dnd">DND </string>
     <string name="edit_lead">Edit Lead Details</string>
 
+    <string name="create_contact">Create Contact </string>
+    <string name="save_contact">Save to contacts </string>
+    <string name="company_name">Company Name </string>
+    <string name="first_name">First name </string>
+    <string name="last_name">Last name </string>
+    <string name="designation">Designation </string>
+    <string name="mobile">Mobile </string>
+
+
 
 </resources>

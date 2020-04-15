@@ -22,42 +22,65 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.TaskActivity"></activity>
-        <activity android:name=".activity.disposition.CallAnsweredActivity"></activity>
-        <activity android:name=".activity.disposition.WrongPersonActivity" />
-        <activity android:name=".activity.disposition.WrongNumberActivity" />
-        <activity android:name=".activity.disposition.CallDroppedActivity"></activity>
-        <activity android:name=".activity.ContactActivity"  android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan"  android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"></activity>
-        <activity android:name=".activity.SplashScreenActivity" android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+        <activity android:name=".activity.AddLeadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DialerActivity" android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-        <activity android:name=".activity.disposition.DispositionActivity" android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" >
+        <activity android:name=".activity.TaskActivity" />
+        <activity android:name=".activity.disposition.CallAnsweredActivity" />
+        <activity android:name=".activity.disposition.WrongPersonActivity" />
+        <activity android:name=".activity.disposition.WrongNumberActivity" />
+        <activity android:name=".activity.disposition.CallDroppedActivity" />
+        <activity
+            android:name=".activity.ContactActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.SplashScreenActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
-        <activity android:name=".activity.disposition.NoResponseActivity" android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-
-        <activity android:name=".activity.IntroductionActivity" android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-        <activity android:name=".activity.EmailSentActivity" android:screenOrientation="portrait"
+        <activity
+            android:name=".activity.DialerActivity"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".activity.ForgotPasswordActivity" android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"
+        <activity
+            android:name=".activity.disposition.DispositionActivity"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"></activity>
-        <activity android:name=".activity.SaleskenActivity" android:screenOrientation="portrait"
+        <activity
+            android:name=".activity.disposition.NoResponseActivity"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".MainActivity" android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".activity.IntroductionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.EmailSentActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.SaleskenActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>
