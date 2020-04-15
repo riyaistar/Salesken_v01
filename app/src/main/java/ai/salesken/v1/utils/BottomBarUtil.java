@@ -1,9 +1,12 @@
 package ai.salesken.v1.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -12,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import ai.salesken.v1.R;
 import ai.salesken.v1.activity.ContactActivity;
 import ai.salesken.v1.activity.DialerActivity;
+import ai.salesken.v1.activity.SaleskenActivity;
 import ai.salesken.v1.activity.TaskActivity;
 
 
@@ -39,15 +43,24 @@ public class BottomBarUtil {
                                 }
                                 break;
                             case R.id.contact:
-                                if (((Activity) context) instanceof ContactActivity) {
-                                    System.out.println("Dont call ContactActivity in ContactActivity... ... .... ");
-                                } else {
-                                    //removeShiftMode(bottomNavigationView);
-                                    Intent i = new Intent(context, ContactActivity.class);
-                                    context.startActivity(i);
-                                    ((Activity) context).overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
-                                    ((Activity) context).finish();
-                                }
+                               if( ((SaleskenActivity) context).checkContactPermission() ) {
+
+                                   if (((Activity) context) instanceof ContactActivity) {
+                                       System.out.println("Dont call ContactActivity in ContactActivity... ... .... ");
+                                   } else {
+                                       //removeShiftMode(bottomNavigationView);
+                                       Intent i = new Intent(context, ContactActivity.class);
+                                       context.startActivity(i);
+                                       ((Activity) context).overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+                                       ((Activity) context).finish();
+                                   }
+                               }else{
+                                   ((SaleskenActivity) context).requestAllpermission();
+                                   Toast.makeText(context,"Please Allow Contact Permission from Setting",Toast.LENGTH_SHORT).show();
+
+
+
+                               }
                                 break;
 
                             case R.id.tasks:
@@ -69,6 +82,8 @@ public class BottomBarUtil {
                 });
 
     }
+
+
 
  /*   private void setBottomNavigationView(BottomNavigationView bottomNavigationView, final Context context) {
         LayoutInflater inflater = Activity.getLayoutInflater();

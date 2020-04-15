@@ -1,9 +1,12 @@
 package ai.salesken.v1.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +34,13 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         super.onCreate(savedInstanceState);
         getView();
         requestAllpermission();
+       /* AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                new ContactUtil().fetchContacts(DialerActivity.this);
 
+            }
+        });*/
     }
 
     @Override
@@ -70,5 +79,27 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     public void onBackPressed() {
         super.onBackPressed();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 200){
+            for(int i=0;i<permissions.length;i++){
+                if(permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)){
+                    if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                new ContactUtil().fetchContacts(LoginActivity.this);
+
+                            }
+                        });
+                    }
+                }
+
+            }
+        }
     }
 }

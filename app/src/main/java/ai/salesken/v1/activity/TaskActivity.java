@@ -1,10 +1,13 @@
 package ai.salesken.v1.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -65,6 +68,23 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
            /* Intent intent = new Intent(TaskDetailActivity.this, DashboardActivity.class);
             startActivity(intent);
             finish();*/
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 200){
+            for(int i=0;i<permissions.length;i++){
+                if(permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)){
+                    if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                        fetchContact();
+                    }
+                }
+
+            }
         }
     }
 }

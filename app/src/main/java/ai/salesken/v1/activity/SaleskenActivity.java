@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.RestApiClient;
 import ai.salesken.v1.utils.RestUrlInterface;
@@ -188,6 +190,24 @@ public class SaleskenActivity extends AppCompatActivity {
 
     public void lockDrawer(DrawerLayout drawer) {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+
+    public boolean checkContactPermission()
+    {
+        String permission = Manifest.permission.READ_CONTACTS;
+        int res = getApplicationContext().checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }
+
+    public void fetchContact(){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                new ContactUtil().fetchContacts(SaleskenActivity.this);
+
+            }
+        });
     }
 
 }
