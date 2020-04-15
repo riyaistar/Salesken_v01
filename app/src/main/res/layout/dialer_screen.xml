@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -54,6 +55,7 @@
         app:layout_constraintGuide_percent="0.2" />
 
     <include
+        android:id="@+id/include"
         layout="@layout/dialer_keypad"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -63,4 +65,28 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
     </include>
+
+    <ai.salesken.v1.utils.KeypadlessKeypad
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@android:color/transparent"
+
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="11"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/include"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_gravity="center_horizontal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
