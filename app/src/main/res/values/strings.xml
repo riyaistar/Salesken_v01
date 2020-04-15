@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SaleskenV1</string>
     <string name="sales">sales</string>
+    <string name="server_ip">sales</string>
     <string name="shared_preference_key">SaleskenAppComplexKey</string>
 
     <string name="ken">ken</string>
@@ -53,6 +54,10 @@
     <string name="designation">Designation </string>
     <string name="mobile">Mobile </string>
 
-
+    <string name="my_account">My accounts </string>
+    <string name="name">Name </string>
+    <string name="contact_number">Contact Number </string>
+    <string name="sip_number">SIP Number </string>
+    <string name="language">Language </string>
 
 </resources>
