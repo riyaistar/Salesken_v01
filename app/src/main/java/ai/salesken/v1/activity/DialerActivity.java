@@ -158,7 +158,7 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
             }
         });
         new BottomBarUtil().setupBottomBar(navigation, DialerActivity.this, R.id.dialer);
-        setNavigationView(drawer, navigationView, 1);
+        setNavigationView(drawer, navigationView, 0);
 
 
 

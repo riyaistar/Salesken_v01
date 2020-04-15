@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SaleskenV1</string>
     <string name="sales">sales</string>
-    <string name="server_ip">sales</string>
+    <string name="server_ip">http://192.168.1.49:8080/istar/rest/</string>
     <string name="shared_preference_key">SaleskenAppComplexKey</string>
 
     <string name="ken">ken</string>
@@ -55,9 +55,15 @@
     <string name="mobile">Mobile </string>
 
     <string name="my_account">My accounts </string>
+    <string name="edit_info">Edit Information</string>
     <string name="name">Name </string>
     <string name="contact_number">Contact Number </string>
     <string name="sip_number">SIP Number </string>
     <string name="language">Language </string>
+
+    <string name="current_password">Current Password </string>
+    <string name="new_password">New Password </string>
+    <string name="confirm_password">Confirm Password </string>
+
 
 </resources>

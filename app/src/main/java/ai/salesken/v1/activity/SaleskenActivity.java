@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.github.abdularis.civ.CircleImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -49,6 +50,8 @@ public class SaleskenActivity extends AppCompatActivity {
     public SharedPreferences sharedpreferences;
     public SharedPreferences.Editor editor;
     private RestUrlInterface restUrlInterface;
+    public RequestManager requestManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,8 @@ public class SaleskenActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(getResources().getString(R.string.shared_preference_key), Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
         restUrlInterface= RestApiClient.getClient(SaleskenActivity.this).create(RestUrlInterface.class);
+        requestManager = Glide.with(this);
+
     }
 
     public boolean requestAllpermission() {
@@ -131,8 +136,8 @@ public class SaleskenActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.account:
-                        //startActivity(new Intent(IstarActivity.this, TaskDetailActivity.class));
-                        //finish();
+                        startActivity(new Intent(SaleskenActivity.this, AccountActivity.class));
+                        finish();
                         break;
                     case R.id.help:
                        // startActivity(new Intent(IstarActivity.this, LeadsActivity.class));
