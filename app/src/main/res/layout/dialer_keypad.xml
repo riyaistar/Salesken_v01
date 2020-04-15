@@ -250,10 +250,11 @@
         android:id="@+id/backslash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:src="@mipmap/backslash_cancel"
         app:layout_constraintBottom_toBottomOf="@+id/callbutton"
         app:layout_constraintEnd_toEndOf="@+id/button13"
-        app:layout_constraintTop_toTopOf="@+id/callbutton"
-        android:src="@mipmap/backslash_cancel"
-        android:background="@color/transparent"/>
+        app:layout_constraintStart_toEndOf="@+id/button12"
+        app:layout_constraintTop_toTopOf="@+id/callbutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

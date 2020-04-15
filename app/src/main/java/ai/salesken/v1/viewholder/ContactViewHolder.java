@@ -34,9 +34,15 @@ public class ContactViewHolder  extends RecyclerView.ViewHolder  {
         ButterKnife.bind(this,itemView);
     }
     public void render(final ContactPojo contactPojo, final int position) {
-        scpname.setText(contactPojo.getName());
+        String name = contactPojo.getName();
 
-        companyAlphabet.setText(scpname.getText().toString().charAt(0) + "");
+
+
+        companyAlphabet.setText(name.charAt(0) + "");
+        if(name.startsWith("#")){
+            name=  name.replaceFirst("#","");
+        }
+        scpname.setText(name);
         drawable = ContextCompat.getDrawable(context, R.drawable.circle_button_solid).mutate();
         if(position%4 ==0){
             drawable.setColorFilter(context.getResources().getColor(R.color.bg_green), PorterDuff.Mode.SRC_ATOP);

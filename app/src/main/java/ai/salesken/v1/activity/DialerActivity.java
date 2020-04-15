@@ -19,6 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.activity.disposition.DispositionActivity;
 import ai.salesken.v1.utils.BottomBarUtil;
 import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.KeypadlessKeypad;
@@ -225,5 +226,11 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
             startActivity(intent);
             finish();*/
         }
+    }
+
+    @OnClick(R.id.callbutton)
+    public void call(){
+        startActivity(new Intent(DialerActivity.this, DispositionActivity.class));
+        finish();
     }
 }

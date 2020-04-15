@@ -135,6 +135,8 @@ public class SaleskenActivity extends AppCompatActivity {
 
                     case R.id.logout:
                         Intent intent = new Intent(SaleskenActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                         //editor.remove(SaleskenSharedPrefKey.SALES_USER);
                        // editor.remove(SaleskenSharedPrefKey.LEADS);
                         //editor.commit();

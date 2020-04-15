@@ -123,8 +123,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         List<ContactPojo> strings = new ArrayList<ContactPojo>();
 
         for (ContactPojo contactPojo : contactPojos) {
-            if (contactPojo.getName().substring(0,contactPojo.getName().length()-1).trim().matches(".*\\d") || contactPojo.getName().startsWith("+") ) {
-                numbers.add(contactPojo);
+            if (contactPojo.getName().trim().matches("^\\d.*")|| contactPojo.getName().startsWith("+")) {                numbers.add(contactPojo);
             } else {
                 strings.add(contactPojo);
             }
@@ -162,6 +161,9 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
 
         List<ContactPojo> all = new ArrayList<ContactPojo>();
         all.addAll(strings);
+        for(ContactPojo contactPojo:numbers){
+            contactPojo.setName("#"+contactPojo.getName());
+        }
         all.addAll(numbers);
 
         return all;
