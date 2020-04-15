@@ -31,6 +31,8 @@ public class AddLeadActivity extends SaleskenActivity implements SaleskenActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
+
+        mobile.setText(getIntent().getStringExtra("contact"));
     }
 
     @Override

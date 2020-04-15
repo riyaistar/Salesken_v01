@@ -13,14 +13,14 @@
         android:background="@drawable/border_bottom"
         android:text="Add to contacts"
         android:textAllCaps="false"
+        android:visibility="gone"
         android:textColor="@color/theme_color"
         android:textSize="@dimen/p3"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -198,7 +198,7 @@
         android:textColor="@color/black3"
 
         android:textSize="@dimen/button_textsize"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
+        app:layout_constraintBottom_toTopOf="@+id/callbutton"
         app:layout_constraintEnd_toStartOf="@+id/button12"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -214,7 +214,7 @@
 
         android:textColor="@color/black3"
         android:textSize="@dimen/button_textsize"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
+        app:layout_constraintBottom_toTopOf="@+id/callbutton"
         app:layout_constraintEnd_toStartOf="@+id/button13"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button11"
@@ -229,14 +229,14 @@
         android:text="#"
         android:textColor="@color/black3"
         android:textSize="@dimen/button_textsize"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
+        app:layout_constraintBottom_toTopOf="@+id/callbutton"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button12"
         app:layout_constraintTop_toBottomOf="@+id/button10" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/callbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -247,12 +247,12 @@
         app:srcCompat="@mipmap/group_11771" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/backslash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+        app:layout_constraintBottom_toBottomOf="@+id/callbutton"
         app:layout_constraintEnd_toEndOf="@+id/button13"
-        app:layout_constraintTop_toTopOf="@+id/imageButton2"
+        app:layout_constraintTop_toTopOf="@+id/callbutton"
         android:src="@mipmap/backslash_cancel"
         android:background="@color/transparent"/>
 
