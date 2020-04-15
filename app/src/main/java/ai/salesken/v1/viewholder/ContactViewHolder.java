@@ -45,13 +45,13 @@ public class ContactViewHolder  extends RecyclerView.ViewHolder  {
         scpname.setText(name);
         drawable = ContextCompat.getDrawable(context, R.drawable.circle_button_solid).mutate();
         if(position%4 ==0){
-            drawable.setColorFilter(context.getResources().getColor(R.color.bg_green), PorterDuff.Mode.SRC_ATOP);
-        }else if(position %3 ==0){
-            drawable.setColorFilter(context.getResources().getColor(R.color.bg_orange), PorterDuff.Mode.SRC_ATOP);
-        }else if(position %2==0){
-            drawable.setColorFilter(context.getResources().getColor(R.color.bg_darkgreen), PorterDuff.Mode.SRC_ATOP);
-        }else{
             drawable.setColorFilter(context.getResources().getColor(R.color.bg_purple), PorterDuff.Mode.SRC_ATOP);
+        }else if(position %3 ==0){
+            drawable.setColorFilter(context.getResources().getColor(R.color.bg_darkgreen), PorterDuff.Mode.SRC_ATOP);
+        }else if(position %2==0){
+            drawable.setColorFilter(context.getResources().getColor(R.color.bg_orange), PorterDuff.Mode.SRC_ATOP);
+        }else{
+            drawable.setColorFilter(context.getResources().getColor(R.color.bg_green), PorterDuff.Mode.SRC_ATOP);
 
         }
         companyAlphabet.setBackgroundDrawable(drawable);

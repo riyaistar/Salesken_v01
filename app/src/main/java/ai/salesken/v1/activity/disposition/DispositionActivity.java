@@ -2,8 +2,11 @@ package ai.salesken.v1.activity.disposition;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.activity.SaleskenActivity;
@@ -56,6 +59,25 @@ public class DispositionActivity extends SaleskenActivity implements SaleskenAct
         Intent i = new Intent(DispositionActivity.this, CallAnsweredActivity.class);
         startActivity(i);
         finish();
+    }
+
+
+    @OnClick(R.id.skipDisposition)
+    public void skipDisposition(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View customLayout = getLayoutInflater().inflate(R.layout.feedback_layout, null);
+        ImageButton close = customLayout.findViewById(R.id.close);
+        builder.setView(customLayout);
+
+        AlertDialog dialog = builder.create();
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 
