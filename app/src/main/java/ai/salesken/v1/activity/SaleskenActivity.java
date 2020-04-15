@@ -36,6 +36,8 @@ import java.util.List;
 import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.utils.MediaSaver;
+import ai.salesken.v1.utils.RestApiClient;
+import ai.salesken.v1.utils.RestUrlInterface;
 
 public class SaleskenActivity extends AppCompatActivity {
     String[] PERMISSIONS = {Manifest.permission.INTERNET,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO,Manifest.permission.FOREGROUND_SERVICE,Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS,Manifest.permission.BLUETOOTH};
@@ -44,12 +46,14 @@ public class SaleskenActivity extends AppCompatActivity {
     private static final String TAG ="SaleskenActivity" ;
     public SharedPreferences sharedpreferences;
     public SharedPreferences.Editor editor;
+    private RestUrlInterface restUrlInterface;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_salesken);
         sharedpreferences = getSharedPreferences(getResources().getString(R.string.shared_preference_key), Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
+        restUrlInterface= RestApiClient.getClient(SaleskenActivity.this).create(RestUrlInterface.class);
     }
 
     public boolean requestAllpermission() {
