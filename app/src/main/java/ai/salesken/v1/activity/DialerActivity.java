@@ -227,7 +227,7 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
 
     @OnClick(R.id.callbutton)
     public void call(){
-        startActivity(new Intent(DialerActivity.this, DispositionActivity.class));
+        startActivity(new Intent(DialerActivity.this, CallConnectedActivity.class));
         finish();
     }
 

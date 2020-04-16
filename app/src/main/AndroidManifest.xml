@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.EditAccountActivity"></activity>
+        <activity android:name=".activity.CallConnectedActivity"></activity>
+        <activity android:name=".activity.EditAccountActivity" />
         <activity android:name=".activity.AccountActivity" />
         <activity android:name=".activity.AddLeadActivity" />
         <activity android:name=".activity.TaskActivity" />

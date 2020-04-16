@@ -65,5 +65,7 @@
     <string name="new_password">New Password </string>
     <string name="confirm_password">Confirm Password </string>
 
+    <string name="cues_1">We are here to help you!</string>
+    <string name="cues_2">Auto generated cues will help you engage the leads better</string>
 
 </resources>
