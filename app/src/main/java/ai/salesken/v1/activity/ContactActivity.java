@@ -73,8 +73,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         getView();
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
         setNavigationView(drawer, navigationView, 0);
-        String[] perms = {Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS};
-        ActivityCompat.requestPermissions(this, perms, 200);
+
         searchview.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -87,12 +86,26 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
                 }
             }
         });
+
+
         if(checkContactPermission()){
             nocontactpermission.setVisibility(View.GONE);
+            progress.setVisibility(View.GONE);
+
             container.setVisibility(View.GONE);
-            new FetchContactAsync(ContactActivity.this).execute();
+            Type type = new TypeToken<List<ContactPojo>>() {
+            }.getType();
+            String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
+            contactPojos=gson.fromJson(stored_leads, type);
+            if(contactPojos!= null && contactPojos.size()>0){
+                showContacts();
+            }else {
+                new FetchContactAsync(ContactActivity.this).execute();
+            }
 
         }else{
+            String[] perms = {Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS};
+            ActivityCompat.requestPermissions(this, perms, 200);
             nocontactpermission.setVisibility(View.VISIBLE);
             container.setVisibility(View.GONE);
 

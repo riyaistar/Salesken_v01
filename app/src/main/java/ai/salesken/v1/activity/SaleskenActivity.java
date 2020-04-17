@@ -64,6 +64,7 @@ public class SaleskenActivity extends AppCompatActivity {
         editor = sharedpreferences.edit();
         restUrlInterface= RestApiClient.getClient(SaleskenActivity.this).create(RestUrlInterface.class);
         requestManager = Glide.with(this);
+        if(checkContactPermission())
         getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, new ContactObserver(SaleskenActivity.this));
 
     }
