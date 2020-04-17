@@ -1,12 +1,20 @@
 package ai.salesken.v1.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.Manifest;
 import android.app.ActionBar;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.SearchView;
@@ -24,6 +32,7 @@ import java.util.List;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.adapter.ContactAdapter;
+import ai.salesken.v1.async.FetchContactAsync;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.ContactPojo;
 import ai.salesken.v1.utils.BottomBarUtil;
@@ -50,12 +59,20 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     public IndexFastScrollRecyclerView contact_list;
     private ContactAdapter contactAdapter;
     private List<ContactPojo> contactPojos = new ArrayList<>();
+    @BindView(R.id.nocontactpermission)
+    ConstraintLayout nocontactpermission;
+    @BindView(R.id.progress)
+    ConstraintLayout progress;
+    @BindView(R.id.container)
+    ConstraintLayout container;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
         setNavigationView(drawer, navigationView, 0);
+        String[] perms = {Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS};
+        ActivityCompat.requestPermissions(this, perms, 200);
         searchview.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -68,8 +85,21 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
                 }
             }
         });
+        if(checkContactPermission()){
+            container.setVisibility(View.GONE);
+            new FetchContactAsync(ContactActivity.this).execute();
+        }else{
+            nocontactpermission.setVisibility(View.VISIBLE);
+            container.setVisibility(View.GONE);
+
+        }
 
 
+
+    }
+
+    public void showContacts(){
+        container.setVisibility(View.VISIBLE);
 
         Type type = new TypeToken<List<ContactPojo>>() {
         }.getType();
@@ -117,6 +147,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         }
 
     }
+
+
     private static List<ContactPojo> sortStringThenNumber(List<ContactPojo> contactPojos) {
 
         List<ContactPojo> numbers = new ArrayList<ContactPojo>();
@@ -206,5 +238,46 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             startActivity(intent);
             finish();*/
         }
+    }
+
+
+    @OnClick(R.id.allowcontact)
+    public void allowContact(){
+        if(checkPermissionDenied(Manifest.permission.READ_CONTACTS)) {
+            String[] perms = {Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS};
+            ActivityCompat.requestPermissions(this, perms, 200);
+        }else{
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 200) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        new FetchContactAsync(ContactActivity.this).execute();
+                    }
+                } else {
+
+                }
+            }
+        }
+    }
+
+    public void showProgressBar() {
+        nocontactpermission.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        progress.setVisibility(View.GONE);
+
     }
 }

@@ -72,19 +72,5 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == 200){
-            for(int i=0;i<permissions.length;i++){
-                if(permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)){
-                    if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
-                        fetchContact();
-                    }
-                }
-
-            }
-        }
-    }
 }

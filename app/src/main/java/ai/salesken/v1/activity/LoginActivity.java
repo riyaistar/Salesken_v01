@@ -95,13 +95,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
             for(int i=0;i<permissions.length;i++){
                 if(permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)){
                     if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                new ContactUtil().fetchContacts(LoginActivity.this);
 
-                            }
-                        });
                     }
                 }else{
                     if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this, Manifest.permission.READ_CONTACTS)) {

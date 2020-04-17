@@ -17,7 +17,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -213,6 +215,16 @@ public class SaleskenActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    Boolean checkPermissionDenied(String permission){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ContextCompat.checkSelfPermission(SaleskenActivity.this, permission) != PackageManager.PERMISSION_GRANTED
+                    && !SaleskenActivity.this.shouldShowRequestPermissionRationale(permission)
+                    && PreferenceManager.getDefaultSharedPreferences(SaleskenActivity.this).getBoolean(permission, false);
+        }else{
+            return true;
+        }
     }
 
 }

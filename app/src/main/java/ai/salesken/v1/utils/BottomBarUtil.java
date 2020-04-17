@@ -43,7 +43,6 @@ public class BottomBarUtil {
                                 }
                                 break;
                             case R.id.contact:
-                               if( ((SaleskenActivity) context).checkContactPermission() ) {
 
                                    if (((Activity) context) instanceof ContactActivity) {
                                        System.out.println("Dont call ContactActivity in ContactActivity... ... .... ");
@@ -54,13 +53,7 @@ public class BottomBarUtil {
                                        ((Activity) context).overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                                        ((Activity) context).finish();
                                    }
-                               }else{
-                                   ((SaleskenActivity) context).requestAllpermission();
-                                   Toast.makeText(context,"Please Allow Contact Permission from Setting",Toast.LENGTH_SHORT).show();
 
-
-
-                               }
                                 break;
 
                             case R.id.tasks:

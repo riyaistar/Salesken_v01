@@ -242,7 +242,7 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
             for(int i=0;i<permissions.length;i++){
                 if(permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)){
                     if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
-                        fetchContact();
+                       // fetchContact();
                     }
                 }
 
