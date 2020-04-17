@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.utils.ContactObserver;
 import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.RestApiClient;
@@ -62,6 +64,7 @@ public class SaleskenActivity extends AppCompatActivity {
         editor = sharedpreferences.edit();
         restUrlInterface= RestApiClient.getClient(SaleskenActivity.this).create(RestUrlInterface.class);
         requestManager = Glide.with(this);
+        getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, new ContactObserver(SaleskenActivity.this));
 
     }
 

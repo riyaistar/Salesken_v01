@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
@@ -36,6 +37,7 @@ import ai.salesken.v1.async.FetchContactAsync;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.ContactPojo;
 import ai.salesken.v1.utils.BottomBarUtil;
+import ai.salesken.v1.utils.ContactObserver;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,8 +88,10 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             }
         });
         if(checkContactPermission()){
+            nocontactpermission.setVisibility(View.GONE);
             container.setVisibility(View.GONE);
             new FetchContactAsync(ContactActivity.this).execute();
+
         }else{
             nocontactpermission.setVisibility(View.VISIBLE);
             container.setVisibility(View.GONE);
@@ -272,7 +276,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     }
 
     public void showProgressBar() {
-        nocontactpermission.setVisibility(View.GONE);
+
         progress.setVisibility(View.VISIBLE);
     }
 
