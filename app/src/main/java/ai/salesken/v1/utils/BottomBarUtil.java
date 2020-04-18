@@ -50,6 +50,7 @@ public class BottomBarUtil {
                                        //removeShiftMode(bottomNavigationView);
                                        Intent i = new Intent(context, ContactActivity.class);
                                        context.startActivity(i);
+
                                        ((Activity) context).overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                                        ((Activity) context).finish();
                                    }

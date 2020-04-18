@@ -40,13 +40,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         super.onCreate(savedInstanceState);
         getView();
         requestAllpermission();
-       /* AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                new ContactUtil().fetchContacts(DialerActivity.this);
 
-            }
-        });*/
     }
 
     @Override

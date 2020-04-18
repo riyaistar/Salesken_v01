@@ -21,9 +21,9 @@ public class ContactViewHolder  extends RecyclerView.ViewHolder  {
     private static final String POSITION = "position";
     private Context context;
     @BindView(R.id.title)
-    TextView scpname;
-    @BindView(R.id.scpname)
     TextView title;
+    @BindView(R.id.scpname)
+    TextView scpname;
     @BindView(R.id.companyalphabet)
     Button companyAlphabet;
     Drawable drawable;
@@ -42,7 +42,8 @@ public class ContactViewHolder  extends RecyclerView.ViewHolder  {
         if(name.startsWith("#")){
             name=  name.replaceFirst("#","");
         }
-        scpname.setText(name);
+        title.setText(name);
+        scpname.setText(contactPojo.getMobile());
         drawable = ContextCompat.getDrawable(context, R.drawable.circle_button_solid).mutate();
         if(position%4 ==0){
             drawable.setColorFilter(context.getResources().getColor(R.color.bg_purple), PorterDuff.Mode.SRC_ATOP);

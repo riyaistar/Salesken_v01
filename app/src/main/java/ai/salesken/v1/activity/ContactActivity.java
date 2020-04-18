@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.SearchView;
@@ -45,6 +46,7 @@ import butterknife.OnClick;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
 public class ContactActivity extends SaleskenActivity implements SaleskenActivityImplementation {
+    private static final String TAG = "ContactActivity";
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
     @BindView(R.id.drawer_layout)
@@ -73,32 +75,16 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         getView();
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
         setNavigationView(drawer, navigationView, 0);
-
-        searchview.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    result.setVisibility(View.GONE);
-                    found.setVisibility(View.GONE);
-                } else {
-                    result.setVisibility(View.VISIBLE);
-                    found.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-
         if(checkContactPermission()){
             nocontactpermission.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
-
             container.setVisibility(View.GONE);
             Type type = new TypeToken<List<ContactPojo>>() {
             }.getType();
             String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
             contactPojos=gson.fromJson(stored_leads, type);
             if(contactPojos!= null && contactPojos.size()>0){
-                showContacts();
+                showContacts(contactPojos);
             }else {
                 new FetchContactAsync(ContactActivity.this).execute();
             }
@@ -115,7 +101,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
 
     }
 
-    public void showContacts(){
+    public void showContacts(List<ContactPojo> contactPojos){
         container.setVisibility(View.VISIBLE);
 
         Type type = new TypeToken<List<ContactPojo>>() {
@@ -158,6 +144,18 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             contact_list.setIndexBarTransparentValue((float) 1);
             contact_list.setIndexbarWidth(70);
             contact_list.setIndexbarMargin(14);
+            searchview.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        result.setVisibility(View.GONE);
+                        found.setVisibility(View.GONE);
+                    } else {
+                        result.setVisibility(View.VISIBLE);
+                        found.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
         }else{
             contact_list.setIndexBarVisibility(false);
             searchview.setVisibility(View.GONE);
@@ -172,7 +170,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         List<ContactPojo> strings = new ArrayList<ContactPojo>();
 
         for (ContactPojo contactPojo : contactPojos) {
-            if (contactPojo.getName().trim().matches("^\\d.*")|| contactPojo.getName().startsWith("+")) {                numbers.add(contactPojo);
+            if (contactPojo.getName().trim().matches("^\\d.*")|| contactPojo.getName().startsWith("+")) {
+                numbers.add(contactPojo);
             } else {
                 strings.add(contactPojo);
             }
@@ -217,6 +216,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
 
         return all;
     }
+
     private void filterContactList(String newText) {
         if(newText.trim().length()>0) {
             List<ContactPojo> tempContactPojos = new ArrayList();
@@ -267,14 +267,16 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts("package", getPackageName(), null);
             intent.setData(uri);
-            startActivity(intent);
+
+            // startActivity(intent);
+            startActivityForResult(intent,200);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+        Log.d(TAG,requestCode+" *******");
         if (requestCode == 200) {
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)) {
@@ -295,6 +297,14 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
 
     public void hideProgressBar() {
         progress.setVisibility(View.GONE);
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "The onResume() event");
 
     }
 }
