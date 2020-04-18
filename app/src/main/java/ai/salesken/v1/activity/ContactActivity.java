@@ -75,6 +75,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         getView();
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
         setNavigationView(drawer, navigationView, 0);
+
+
         if(checkContactPermission()){
             nocontactpermission.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
@@ -96,8 +98,6 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             container.setVisibility(View.GONE);
 
         }
-
-
 
     }
 
@@ -270,6 +270,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
 
             // startActivity(intent);
             startActivityForResult(intent,200);
+            finish();
+
         }
     }
 
@@ -305,6 +307,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "The onResume() event");
+
 
     }
 }

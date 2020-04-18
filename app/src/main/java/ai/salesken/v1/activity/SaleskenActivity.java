@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,7 +56,7 @@ public class SaleskenActivity extends AppCompatActivity {
     public SharedPreferences.Editor editor;
     private RestUrlInterface restUrlInterface;
     public RequestManager requestManager;
-
+    private ContactObserver contactObserver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +65,14 @@ public class SaleskenActivity extends AppCompatActivity {
         editor = sharedpreferences.edit();
         restUrlInterface= RestApiClient.getClient(SaleskenActivity.this).create(RestUrlInterface.class);
         requestManager = Glide.with(this);
-        if(checkContactPermission())
-        getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, new ContactObserver(SaleskenActivity.this));
+        contactObserver =new ContactObserver(SaleskenActivity.this);
+        if(checkContactPermission()){
+            Log.d(TAG,"registering contact listener");
+
+            getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true,contactObserver );
+
+
+        }
 
     }
 
@@ -231,4 +238,9 @@ public class SaleskenActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        getContentResolver().unregisterContentObserver(contactObserver);
+        super.onDestroy();
+    }
 }

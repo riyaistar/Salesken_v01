@@ -1,6 +1,8 @@
 package ai.salesken.v1.constant;
 
 public class SaleskenSharedPrefKey {
+    public static final String FIRST_TIME="FIRST_TIME";
+    public static final String FIRST_LISTEN="FIRST_LISTEN";
     public static final String SALES_USER="SALES_USER";
     public static final String PRODUCTS="PRODUCTS";
     public static final String EMAIL="email";
