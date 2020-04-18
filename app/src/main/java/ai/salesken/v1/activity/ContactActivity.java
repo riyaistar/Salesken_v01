@@ -6,11 +6,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +39,7 @@ import java.util.List;
 import ai.salesken.v1.R;
 import ai.salesken.v1.adapter.ContactAdapter;
 import ai.salesken.v1.async.FetchContactAsync;
+import ai.salesken.v1.constant.SaleskenIntent;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.ContactPojo;
 import ai.salesken.v1.utils.BottomBarUtil;
@@ -69,10 +74,14 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     ConstraintLayout progress;
     @BindView(R.id.container)
     ConstraintLayout container;
+    private ContactBroadcast contactBroadcast = new ContactBroadcast();
+    private boolean isReceiverRegistered = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
+        registerReceiver();
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
         setNavigationView(drawer, navigationView, 0);
 
@@ -304,10 +313,56 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         Log.d(TAG, "The onResume() event");
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "The onDestroy() event");
+
+    unregisterReceiver();
+    }
+
+
+    private void registerReceiver() {
+
+        if(!isReceiverRegistered){
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(SaleskenIntent.CONTACT_BROADCAST);
+
+            LocalBroadcastManager.getInstance(this).registerReceiver(contactBroadcast,intentFilter);
+            isReceiverRegistered = true;
+            //fetchToken();
+        }
+    }
+    private void unregisterReceiver() {
+        if(contactBroadcast != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(contactBroadcast);
+            isReceiverRegistered = false;
+
+        }
+    }
+
+
+    private class ContactBroadcast extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Intent already filtered by the LocalBroadcastManager in onResume()
+            switch (intent.getAction()){
+                case SaleskenIntent.CONTACT_BROADCAST:
+                    Type type = new TypeToken<List<ContactPojo>>() {
+                    }.getType();
+                    String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
+                    contactPojos=gson.fromJson(stored_leads, type);
+                        showContacts(contactPojos);
+                    break;
+
+            }
+        }
     }
 }
