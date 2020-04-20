@@ -39,6 +39,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,9 @@ public class SaleskenActivity extends AppCompatActivity {
     public RestUrlInterface restUrlInterface;
     public RequestManager requestManager;
     private ContactObserver contactObserver;
+    public SimpleDateFormat ampmformat = new SimpleDateFormat("HH:mm a");
+    public SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

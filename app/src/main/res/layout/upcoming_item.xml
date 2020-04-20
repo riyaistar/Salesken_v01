@@ -47,8 +47,8 @@
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:textColor="@color/greyishBrown"
+        android:text="N/A"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/company_name"
         app:layout_constraintTop_toBottomOf="@+id/company_name" />

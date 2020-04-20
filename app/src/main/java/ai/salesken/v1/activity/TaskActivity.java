@@ -71,19 +71,7 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
                 }
             }
         });
-        Call<SaleskenResponse> login_call = restUrlInterface.upcoming(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,null));
-        login_call.enqueue(new Callback<SaleskenResponse>() {
-            @Override
-            public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
-                Log.d(TAG,response.body()+"");
-            }
 
-            @Override
-            public void onFailure(Call<SaleskenResponse> call, Throwable t) {
-               t.printStackTrace();
-
-            }
-        });
     }
 
     @Override
