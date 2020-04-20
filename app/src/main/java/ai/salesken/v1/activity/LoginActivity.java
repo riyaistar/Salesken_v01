@@ -117,41 +117,45 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         editor.apply();
         user.setEmail(username.getText().toString());
         user.setPassword(password.getText().toString());
-        Call<SaleskenResponse> login_call = restUrlInterface.autenticate(user);
-        login_call.enqueue(new Callback<SaleskenResponse>() {
-            @Override
-            public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
-                User serveruser=new User();
-                switch (response.code()) {
-                    case 200:
-                        SaleskenResponse saleskenResponse = response.body();
-                        if(saleskenResponse.getResponseCode()==200){
-                            try {
-                                Log.d(TAG,gson.toJson(saleskenResponse.getResponse()));
-                                serveruser   = gson.fromJson(gson.toJson(saleskenResponse.getResponse()), User.class);
-                            }catch (JsonSyntaxException jse){
-                                showToast("Couldn't Process the Response recieved from Server");
-                                jse.printStackTrace();
-                            }catch (Exception e){
-                                showToast("Couldn't Process the Response recieved from Server");
+        if(isInternetAvailable()) {
+            Call<SaleskenResponse> login_call = restUrlInterface.autenticate(user);
+            login_call.enqueue(new Callback<SaleskenResponse>() {
+                @Override
+                public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
+                    User serveruser = new User();
+                    switch (response.code()) {
+                        case 200:
+                            SaleskenResponse saleskenResponse = response.body();
+                            if (saleskenResponse.getResponseCode() == 200) {
+                                try {
+                                    Log.d(TAG, gson.toJson(saleskenResponse.getResponse()));
+                                    serveruser = gson.fromJson(gson.toJson(saleskenResponse.getResponse()), User.class);
+                                } catch (JsonSyntaxException jse) {
+                                    showToast("Couldn't Process the Response recieved from Server");
+                                    jse.printStackTrace();
+                                } catch (Exception e) {
+                                    showToast("Couldn't Process the Response recieved from Server");
+                                }
+                                Log.d(TAG, "User " + serveruser.getMobile());
+                            } else {
+                                showToast(saleskenResponse.getResponseMessage());
                             }
-                            Log.d(TAG,"User "+serveruser.getMobile());
-                        }else{
-                            showToast(saleskenResponse.getResponseMessage());
-                        }
-                        break;
-                    default:
-                        showToast("Bad request recieved from server.");
+                            break;
+                        default:
+                            showToast("Bad request recieved from server.");
 
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<SaleskenResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<SaleskenResponse> call, Throwable t) {
                     showToast("Connection Refuse.");
-            }
-        });
+                }
+            });
+        }else{
+            showToast("Please Check your Internet Connection.");
 
+        }
         Log.d(TAG,"login clicked");
     }
 
@@ -163,11 +167,11 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         Log.d(TAG,"forgot_pass clicked");
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -16,6 +16,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -235,6 +237,19 @@ public class SaleskenActivity extends AppCompatActivity {
                     && PreferenceManager.getDefaultSharedPreferences(SaleskenActivity.this).getBoolean(permission, false);
         }else{
             return true;
+        }
+    }
+
+    public boolean isInternetAvailable() {
+        try {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        } catch (Exception e) {
+
+            Log.e("isInternetAvailable:",e.toString());
+            return false;
         }
     }
 
