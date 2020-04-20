@@ -26,7 +26,9 @@ import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.pojo.User;
+import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
+import ai.salesken.v1.utils.SaveMediaAsync;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,7 +62,10 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                 return false;
             }
         });
-
+        MediaSaver localmediaSaver =new MediaSaver(LoginActivity.this).setParentDirectoryName("asset_presentation").
+                setFileName("abc.png")
+                .setExternal(MediaSaver.isExternalStorageReadable());
+        new SaveMediaAsync(localmediaSaver).execute("https://i.stack.imgur.com/5hgQb.png");
         if(sharedpreferences.getString(SaleskenSharedPrefKey.EMAIL,null) != null){
             username.setText(sharedpreferences.getString(SaleskenSharedPrefKey.EMAIL,null));
         }

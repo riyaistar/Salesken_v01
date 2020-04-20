@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.utils.CustomSpinnerAdapter;
 import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.PictureUploadUtil;
@@ -35,11 +37,16 @@ import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditAccountActivity extends SaleskenActivity implements SaleskenActivityImplementation {
+    private static final String TAG = "EditAccountActivity";
     @BindView(R.id.spinner)
     Spinner language;
     @BindView(R.id.profile_picture)
@@ -106,7 +113,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
             try {
                 bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 profile_image.setImageBitmap(bm);
-                //saveImage(bm);
+                saveImage(bm);
             } catch (Exception e) {
 
             }
@@ -136,11 +143,53 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
                             setFileNameKeepOriginalExtension("profile_pic.jpg").
                             setExternal(MediaSaver.isExternalStorageReadable());
                     local_profile.save(new FileInputStream(temp_profile_pic.pathFile()));
-                    //uploadToServer();
+                    uploadToServer();
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+    private void saveImage(Bitmap bitmap) {
+
+        try {
+            MediaSaver local_profile = new MediaSaver(this).setParentDirectoryName("profile_pic").
+                    setFileName("profile_pic.jpg").
+                    setExternal(MediaSaver.isExternalStorageReadable());
+            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(local_profile.pathFile()));
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
+            os.flush();
+            os.close();
+
+            uploadToServer();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void uploadToServer() {
+        MediaSaver local_profile = new MediaSaver(this).setParentDirectoryName("profile_pic").
+                setFileName("profile_pic.jpg").
+                setExternal(MediaSaver.isExternalStorageReadable());
+        RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), local_profile.pathFile());
+        MultipartBody.Part part = MultipartBody.Part.createFormData("file", local_profile.pathFile().getName(), fileReqBody);
+        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
+        Call<SaleskenResponse> call = restUrlInterface.uploadImage(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,""),part, description);
+        call.enqueue(new Callback<SaleskenResponse>() {
+            @Override
+            public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
+                SaleskenResponse saleskenResponse = response.body();
+                Log.d(TAG,gson.toJson(saleskenResponse));
+            }
+
+            @Override
+            public void onFailure(Call<SaleskenResponse> call, Throwable t) {
+
             }
         });
     }
