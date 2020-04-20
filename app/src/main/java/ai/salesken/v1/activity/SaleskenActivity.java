@@ -28,6 +28,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,8 @@ import java.util.List;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.pojo.User;
+import ai.salesken.v1.pojo.UserRole;
 import ai.salesken.v1.utils.ContactObserver;
 import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.MediaSaver;
@@ -133,11 +136,30 @@ public class SaleskenActivity extends AppCompatActivity {
         lockDrawer(drawer);
         drawer.setScrimColor(Color.TRANSPARENT);
         View headerLayout = navigationView.getHeaderView(0); // 0-index header
-       // User user = getCurrentUser();
-       // CircleImageView circleImageView = headerLayout.findViewById(R.id.profile_image);
-       // Glide.with(this).load(user.getProfileImage()).into(circleImageView);
+        User user = getCurrentUser();
+        CircleImageView profile_image = headerLayout.findViewById(R.id.profile_image);
+        Glide.with(this).load(user.getProfileImage()).into(profile_image);
+        TextView name = headerLayout.findViewById(R.id.first_name);
 
-       // TextView first_name = headerLayout.findViewById(R.id.first_name);
+        if(user.getName() != null){
+            try {
+                name.setText(user.getName().split(" ")[0]);
+            }catch (Exception e){
+                name.setText(user.getName());
+            }
+        }
+
+       TextView role = headerLayout.findViewById(R.id.role);
+
+        String roles ="";
+       if(user.getRoles() != null) {
+           for (UserRole userRole : user.getRoles()) {
+               roles += userRole.getName() + "\n";
+           }
+           role.setText(roles.replaceAll("_", " "));
+       }else{
+           role.setText("No Role");
+       }
       //  first_name.setText(user.getName());
         if (itemno >= 0) {
             navigationView.getMenu().getItem(itemno).setChecked(true);
@@ -160,6 +182,9 @@ public class SaleskenActivity extends AppCompatActivity {
                         break;
 
                     case R.id.logout:
+                        editor.remove(SaleskenSharedPrefKey.USER);
+                        editor.commit();
+                        editor.apply();
                         Intent intent = new Intent(SaleskenActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
@@ -253,9 +278,35 @@ public class SaleskenActivity extends AppCompatActivity {
         }
     }
 
+
+    public User getCurrentUser(){
+        if(sharedpreferences.getString(SaleskenSharedPrefKey.USER,null) != null ){
+            String saved_user = sharedpreferences.getString(SaleskenSharedPrefKey.USER,null);
+            User user = gson.fromJson(saved_user,User.class);
+            return user;
+        }else{
+            return new User();
+        }
+
+    }
+
     @Override
     public void onDestroy() {
         getContentResolver().unregisterContentObserver(contactObserver);
         super.onDestroy();
+    }
+    private String getCapsSentences(String tagName) {
+        String[] splits = tagName.toLowerCase().split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < splits.length; i++) {
+            String eachWord = splits[i];
+            if (i > 0 && eachWord.length() > 0) {
+                sb.append(" ");
+            }
+            String cap = eachWord.substring(0, 1).toUpperCase()
+                    + eachWord.substring(1);
+            sb.append(cap);
+        }
+        return sb.toString();
     }
 }

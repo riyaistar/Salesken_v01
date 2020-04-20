@@ -67,6 +67,10 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         if(sharedpreferences.getString(SaleskenSharedPrefKey.PASSWORD,null) != null){
             password.setText(sharedpreferences.getString(SaleskenSharedPrefKey.PASSWORD,null));
         }
+        if(sharedpreferences.getString(SaleskenSharedPrefKey.USER,null) !=null){
+            startActivity(new Intent(LoginActivity.this,DialerActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -137,6 +141,11 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                                     showToast("Couldn't Process the Response recieved from Server");
                                 }
                                 Log.d(TAG, "User " + serveruser.getMobile());
+                                editor.putString(SaleskenSharedPrefKey.USER,gson.toJson(saleskenResponse.getResponse()));
+                                editor.commit();
+                                editor.apply();
+                                startActivity(new Intent(LoginActivity.this,DialerActivity.class));
+                                finish();
                             } else {
                                 showToast(saleskenResponse.getResponseMessage());
                             }
