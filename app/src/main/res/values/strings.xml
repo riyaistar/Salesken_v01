@@ -15,7 +15,7 @@
     <string name="forgot_text">If you have forgotten your password you can\nreset it here.</string>
 
     <string name="email_sent">Email sent !</string>
-    <string name="check_email">Check your Email " test@salesken.​ai "\nto reset your password.</string>
+    <string name="check_email">Check your Email " test@salesken.​ai "\nto and enter the verification code below.</string>
     <string name="cues_support">Real time\nCues Support</string>
     <string name="introduction_text1">Help your sales team at the exact moment they need it.\nHelp them up their game and win!</string>
     <string name="tools_support">It works with all\nyour favourite tools</string>

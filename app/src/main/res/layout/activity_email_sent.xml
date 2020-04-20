@@ -22,7 +22,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@mipmap/app_icon" />
+        app:srcCompat="@mipmap/app_icon"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/sales"
@@ -54,41 +55,79 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline7"
         app:srcCompat="@drawable/mask_group_30" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/email_sent"
-        android:textColor="@color/white"
-        android:textSize="@dimen/p1"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.518"
-        app:layout_constraintStart_toStartOf="@+id/imageView2" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="200dp"
+        android:gravity="center_horizontal"
         android:text="@string/check_email"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="@dimen/p3"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/email_sent"
+        android:textColor="@color/white"
+        android:textSize="@dimen/p1"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
+    <ai.salesken.v1.utils.PinEntryEditText
+        android:id="@+id/pinEntryEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:inputType="number"
+        android:maxLength="6"
+        android:textColor="@color/white"
+        android:textIsSelectable="false"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <Button
+        android:id="@+id/verify"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Verify"
+        android:background="@color/theme_color"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/pinEntryEditText"
+        app:layout_constraintStart_toStartOf="@+id/pinEntryEditText"
+        app:layout_constraintTop_toBottomOf="@+id/pinEntryEditText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

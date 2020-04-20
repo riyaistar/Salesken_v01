@@ -57,11 +57,12 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
         String[] tabTitles = new String[]{"UPCOMING", "RECENT", "COMPLETED"};
         taskAdapter= new TaskAdapter(this,getSupportFragmentManager(), tabTitles);
         viewPager.setAdapter(taskAdapter);
+        viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                for(int i=0;i<taskAdapter.getCount();i++) {
+               for(int i=0;i<taskAdapter.getCount();i++) {
                     switch (i) {
                         case 0:
                             ((UpcomingTask) taskAdapter.getRegisteredFragment(i)).fetchData();
