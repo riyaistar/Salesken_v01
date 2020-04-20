@@ -56,6 +56,14 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout) {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+                }
+            }
+        });
     }
 
     @Override
@@ -83,6 +91,12 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
         }
     }
 
+
+    public void toggleRefreshing(boolean enabled) {
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setEnabled(enabled);
+        }
+    }
 
 
 }
