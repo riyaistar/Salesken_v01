@@ -12,12 +12,19 @@ import java.util.List;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.pojo.ContactPojo;
+import ai.salesken.v1.pojo.Task;
 import ai.salesken.v1.viewholder.CompletedViewHolder;
 import ai.salesken.v1.viewholder.ContactViewHolder;
 import ai.salesken.v1.viewholder.UpcomingViewHolder;
 
 public class CompletedAdapter extends  RecyclerView.Adapter<CompletedViewHolder> {
     private Context context;
+    private List<Task> tasks;
+
+    public CompletedAdapter(Context context, List<Task> tasks) {
+        this.context = context;
+        this.tasks = tasks;
+    }
 
     @NonNull
     @Override
@@ -30,15 +37,18 @@ public class CompletedAdapter extends  RecyclerView.Adapter<CompletedViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull CompletedViewHolder holder, int position) {
+        holder.bind(tasks.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return tasks.size();
     }
 
-    public void updateList(List<ContactPojo> list){
+    public void updateList(List<Task> list){
+        tasks = list;
+
         notifyDataSetChanged();
     }
 }

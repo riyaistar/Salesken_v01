@@ -8,12 +8,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import ai.salesken.v1.R;
+import ai.salesken.v1.pojo.Task;
 import ai.salesken.v1.viewholder.CompletedViewHolder;
 import ai.salesken.v1.viewholder.RecentViewHolder;
 
 public class RecentAdapter extends  RecyclerView.Adapter<RecentViewHolder> {
     private Context context;
+    private List<Task> tasks;
+
+    public RecentAdapter(Context context, List<Task> tasks) {
+        this.context = context;
+        this.tasks = tasks;
+    }
 
     @NonNull
     @Override
@@ -26,11 +35,11 @@ public class RecentAdapter extends  RecyclerView.Adapter<RecentViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecentViewHolder holder, int position) {
-
+        holder.bind(tasks.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return tasks.size();
     }
 }

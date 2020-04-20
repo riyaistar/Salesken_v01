@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -40,6 +41,11 @@ public class UpcomingTask extends Fragment {
     SaleskenActivity saleskenActivity;
     @BindView(R.id.upcoming_progress)
     ConstraintLayout progress;
+    @BindView(R.id.no_data)
+    ConstraintLayout no_data;
+    @BindView(R.id.error_subtitle)
+    TextView error_subtitle;
+
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         this.container = container;
@@ -52,6 +58,7 @@ public class UpcomingTask extends Fragment {
         view = inflater.inflate(
                 R.layout.task_recycler_view, container, false);
         ButterKnife.bind(this, view);
+        error_subtitle.setText("No Upcoming Task Found.");
         fetchData();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -76,12 +83,18 @@ public class UpcomingTask extends Fragment {
                                 Type type = new TypeToken<List<Task>>() {
                                 }.getType();
                                 List<Task> tasks = saleskenActivity.gson.fromJson(saleskenActivity.gson.toJson(saleskenResponse.getResponse()), type);
-                                upcomingAdapter = new UpcomingAdapter(saleskenActivity, tasks);
-                                recyclerView.setAdapter(upcomingAdapter);
+                                if(tasks !=null && tasks.size() >0) {
+                                    upcomingAdapter = new UpcomingAdapter(saleskenActivity, tasks);
+                                    recyclerView.setAdapter(upcomingAdapter);
+                                }else {
+                                    showNodata();
+                                }
                             }catch (JsonSyntaxException jse){
                                 ((SaleskenActivity)getActivity()).showToast("Bad response recieved from server.");
+                                showNodata();
                             }catch (Exception e){
                                 ((SaleskenActivity)getActivity()).showToast("Bad response recieved from server.");
+                                showNodata();
                             }
                         }else{
                             ((SaleskenActivity)getActivity()).showToast(saleskenResponse.getResponseMessage());
@@ -91,13 +104,15 @@ public class UpcomingTask extends Fragment {
                     default:
                         ((SaleskenActivity)getActivity()).showToast("Bad request recieved from server.");
                         hideProgress();
+                        showNodata();
                 }
             }
 
             @Override
             public void onFailure(Call<SaleskenResponse> call, Throwable t) {
-                ((SaleskenActivity)getActivity()).showToast("Connection Refuse.");
+                ((SaleskenActivity)getActivity()).showToast("Server Unreachable.");
                 hideProgress();
+                showNodata();
             }
         });
     }
@@ -111,5 +126,11 @@ public class UpcomingTask extends Fragment {
     private void hideProgress(){
         progress.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void showNodata(){
+        recyclerView.setVisibility(View.GONE);
+        no_data.setVisibility(View.VISIBLE);
+
     }
 }

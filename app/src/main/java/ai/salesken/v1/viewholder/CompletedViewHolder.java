@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.pojo.Task;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,5 +26,11 @@ public class CompletedViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.context = context;
         ButterKnife.bind(this,itemView);
+    }
+
+    public void bind(Task task){
+        time.setText(task.getUpdatedAt());
+        company_name.setText(task.getContactName());
+        duration.setText(task.getCallDuration());
     }
 }

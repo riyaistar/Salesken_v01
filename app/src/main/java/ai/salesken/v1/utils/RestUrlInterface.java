@@ -26,7 +26,11 @@ public interface RestUrlInterface {
     @GET("v1/task/upcoming")
     Call<SaleskenResponse> upcoming(@Header("Authorization")String token);
 
+    @GET("v1/task/recent")
+    Call<SaleskenResponse> recent(@Header("Authorization")String token);
 
+    @GET("v1/task/completed")
+    Call<SaleskenResponse> completed(@Header("Authorization")String token);
 
     @GET("v1/task/create_task")
     Call<Integer> create_task(@Query("user") String user, @Query("toNumber") String toNumber);

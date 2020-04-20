@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import ai.salesken.v1.R;
 import ai.salesken.v1.adapter.TaskAdapter;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.fragment.RecentTask;
 import ai.salesken.v1.fragment.UpcomingTask;
 import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.utils.BottomBarUtil;
@@ -65,9 +66,17 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
                for(int i=0;i<taskAdapter.getCount();i++) {
                     switch (i) {
                         case 0:
-                            ((UpcomingTask) taskAdapter.getRegisteredFragment(i)).fetchData();
+                            try {
+                                ((UpcomingTask) taskAdapter.getRegisteredFragment(i)).fetchData();
+                            }catch (Exception e){
+
+                            }
                             break;
                         case 1:
+                            try {
+                                ((RecentTask) taskAdapter.getRegisteredFragment(i)).fetchData();
+                            }catch (Exception e){
+                            }
                             break;
                         case 2:
                             break;
