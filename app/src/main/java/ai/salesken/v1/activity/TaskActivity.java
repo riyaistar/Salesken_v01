@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import ai.salesken.v1.R;
 import ai.salesken.v1.adapter.TaskAdapter;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.fragment.UpcomingTask;
 import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.utils.BottomBarUtil;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
@@ -60,14 +61,29 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                for(int i=0;i<taskAdapter.getCount();i++) {
+                    switch (i) {
+                        case 0:
+                            ((UpcomingTask) taskAdapter.getRegisteredFragment(i)).fetchData();
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                    }
+                }
                 swipeRefreshLayout.setRefreshing(false);
+
             }
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout) {
             @Override
             public void onPageScrollStateChanged(int state) {
                 if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
-                    swipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+
+                        swipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+
+
                 }
             }
         });

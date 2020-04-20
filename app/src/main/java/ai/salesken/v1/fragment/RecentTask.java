@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 public class RecentTask extends Fragment {
     private ViewGroup container;
     private LayoutInflater inflater;
-    @BindView(R.id.recycler_view)
+    @BindView(R.id.recent_recycler_view)
     RecyclerView recyclerView;
 
     RecentAdapter recentAdapter;
@@ -31,7 +31,7 @@ public class RecentTask extends Fragment {
 
         final View view;
         view = inflater.inflate(
-                R.layout.task_recycler_view, container, false);
+                R.layout.recent_fragment, container, false);
         ButterKnife.bind(this, view);
 
         recentAdapter = new RecentAdapter();

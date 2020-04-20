@@ -7,10 +7,8 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/upcoming_progress"
+        android:id="@+id/recent_progress"
         layout="@layout/progress_layout"
-
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +16,7 @@
         tools:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/upcomig_recycler_view"
+        android:id="@+id/recent_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:overScrollMode="never"
