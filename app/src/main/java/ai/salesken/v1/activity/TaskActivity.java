@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
@@ -34,16 +35,27 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
     @BindView(R.id.tabs)
     TabLayout tabLayout;
     private TaskAdapter taskAdapter;
+
+    @BindView(R.id.swipeToRefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+
         new BottomBarUtil().setupBottomBar(navigation, TaskActivity.this, R.id.tasks);
         setNavigationView(drawer, navigationView, 0);
         String[] tabTitles = new String[]{"UPCOMING", "RECENT", "COMPLETED"};
         taskAdapter= new TaskAdapter(this,getSupportFragmentManager(), tabTitles);
         viewPager.setAdapter(taskAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
