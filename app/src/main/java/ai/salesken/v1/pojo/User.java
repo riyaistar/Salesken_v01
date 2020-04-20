@@ -22,6 +22,7 @@ public class User {
     private Integer organizationId;
     private ArrayList<UserRole> roles = new ArrayList<UserRole>();
     private ArrayList<String> licenseKeys = new ArrayList<String>();
+    private String authToken;
 
     private Integer sipId;
     private String sipUserName;
@@ -165,6 +166,14 @@ public class User {
 
     public ArrayList<UserRole> getRoles() {
         return roles;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public void setRoles(ArrayList<UserRole> roles) {

@@ -35,5 +35,10 @@ public interface RestUrlInterface {
     @GET("v1/task/create_task")
     Call<Integer> create_task(@Query("user") String user, @Query("toNumber") String toNumber);
 
+    @POST("v1/password/forgot")
+    Call<SaleskenResponse> forgot_password(@Body User user);
+
+    @POST("v1/password/reset")
+    Call<SaleskenResponse> reset_password(@Body User user);
 
 }
