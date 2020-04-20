@@ -141,6 +141,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                                     showToast("Couldn't Process the Response recieved from Server");
                                 }
                                 Log.d(TAG, "User " + serveruser.getMobile());
+                                editor.putString(SaleskenSharedPrefKey.TOKEN,response.headers().get("authorization").replace("Bearer ",""));
                                 editor.putString(SaleskenSharedPrefKey.USER,gson.toJson(saleskenResponse.getResponse()));
                                 editor.commit();
                                 editor.apply();

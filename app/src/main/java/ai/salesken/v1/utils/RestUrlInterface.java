@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -23,7 +24,7 @@ public interface RestUrlInterface {
     Call<SaleskenResponse> autenticate(@Body User user);
 
     @GET("v1/leads/get_task_history_incomplete")
-    Call<ArrayList<HashMap<String, String>>> getIncompleteTask(@Query("userID") String userID);
+    Call<ArrayList<HashMap<String, String>>> getIncompleteTask(@Header("Authorization")String token,@Query("userID") String userID);
 
 
 

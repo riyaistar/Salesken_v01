@@ -4,6 +4,8 @@ public class SaleskenSharedPrefKey {
     public static final String FIRST_TIME="FIRST_TIME";
     public static final String FIRST_LISTEN="FIRST_LISTEN";
     public static final String USER="USER";
+    public static final String TOKEN="TOKEN";
+
     public static final String PRODUCTS="PRODUCTS";
     public static final String EMAIL="email";
     public static final String PASSWORD="pwd";
@@ -13,7 +15,6 @@ public class SaleskenSharedPrefKey {
     public static final String INCOMPLETE_TASK="incomplete_task";
     public static final String PROFILE="user_profile";
     public static final String LAST_TAB="last_tab";
-    public static final String TOKEN="token";
     public static final String CHRONOMETER_START_TIME="CHRONOMETER_START_TIME";
     public static final String CALL_START_TIME="CALL_START_TIME";
 
