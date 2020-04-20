@@ -23,8 +23,8 @@ public interface RestUrlInterface {
     @POST("authenticate")
     Call<SaleskenResponse> autenticate(@Body User user);
 
-    @GET("v1/leads/get_task_history_incomplete")
-    Call<ArrayList<HashMap<String, String>>> getIncompleteTask(@Header("Authorization")String token,@Query("userID") String userID);
+    @GET("v1/task/upcoming")
+    Call<SaleskenResponse> upcoming(@Header("Authorization")String token);
 
 
 

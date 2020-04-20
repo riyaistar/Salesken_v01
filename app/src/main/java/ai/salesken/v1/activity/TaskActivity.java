@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -17,13 +18,19 @@ import com.google.android.material.tabs.TabLayout;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.adapter.TaskAdapter;
+import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.utils.BottomBarUtil;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TaskActivity extends SaleskenActivity implements SaleskenActivityImplementation {
+    private static final String TAG = "TaskActivity";
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
     @BindView(R.id.drawer_layout)
@@ -62,6 +69,19 @@ public class TaskActivity extends SaleskenActivity implements SaleskenActivityIm
                 if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
                     swipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
                 }
+            }
+        });
+        Call<SaleskenResponse> login_call = restUrlInterface.upcoming(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,null));
+        login_call.enqueue(new Callback<SaleskenResponse>() {
+            @Override
+            public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
+                Log.d(TAG,response.body()+"");
+            }
+
+            @Override
+            public void onFailure(Call<SaleskenResponse> call, Throwable t) {
+               t.printStackTrace();
+
             }
         });
     }
