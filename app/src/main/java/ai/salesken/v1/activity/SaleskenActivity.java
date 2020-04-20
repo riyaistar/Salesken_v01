@@ -54,7 +54,7 @@ public class SaleskenActivity extends AppCompatActivity {
     private static final String TAG ="SaleskenActivity" ;
     public SharedPreferences sharedpreferences;
     public SharedPreferences.Editor editor;
-    private RestUrlInterface restUrlInterface;
+    public RestUrlInterface restUrlInterface;
     public RequestManager requestManager;
     private ContactObserver contactObserver;
     @Override
