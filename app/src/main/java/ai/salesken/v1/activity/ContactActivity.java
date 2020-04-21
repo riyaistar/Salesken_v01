@@ -209,12 +209,14 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         if(newText.trim().length()>0) {
             List<ContactPojo> tempContactPojos = new ArrayList();
             for (ContactPojo contactPojo : contactPojos) {
-                if (contactPojo.getName().trim().toLowerCase().contains(newText.toLowerCase().trim())) {
+                if (contactPojo.getName().trim().toLowerCase().contains(newText.toLowerCase().trim()) || contactPojo.getMobile().trim().toLowerCase().contains(newText.toLowerCase().trim())) {
                     tempContactPojos.add(contactPojo);
                 }
             }
+            contactAdapter.query=newText;
             contactAdapter.updateList(tempContactPojos);
         }else{
+            contactAdapter.query=null;
             contactAdapter.updateList(contactPojos);
 
         }

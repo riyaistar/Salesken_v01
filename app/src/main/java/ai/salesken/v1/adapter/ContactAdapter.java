@@ -1,10 +1,14 @@
 package ai.salesken.v1.adapter;
 
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SectionIndexer;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +24,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> impl
     private List<ContactPojo> contactPojos;
     private ArrayList<Integer> mSectionPositions;
     private Context context;
+    public String query;
 
     public ContactAdapter(Context context, List<ContactPojo> contactPojos) {
         this.context = context;
@@ -66,7 +71,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> impl
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder contactViewHolder, int position) {
-        contactViewHolder.render(contactPojos.get(position),position);
+        contactViewHolder.render(contactPojos.get(position),position,query);
 
     }
 
@@ -79,4 +84,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder> impl
         contactPojos = list;
         notifyDataSetChanged();
     }
+
+
 }

@@ -3,6 +3,9 @@ package ai.salesken.v1.viewholder;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,7 +36,7 @@ public class ContactViewHolder  extends RecyclerView.ViewHolder  {
         this.context = context;
         ButterKnife.bind(this,itemView);
     }
-    public void render(final ContactPojo contactPojo, final int position) {
+    public void render(final ContactPojo contactPojo, final int position, String query) {
         String name = contactPojo.getName();
 
 
@@ -56,5 +59,22 @@ public class ContactViewHolder  extends RecyclerView.ViewHolder  {
 
         }
         companyAlphabet.setBackgroundDrawable(drawable);
+
+        if (query != null && query.length() > 0) {
+            searchInWords(query, title.getText().toString(), context, title);
+            searchInWords(query, scpname.getText().toString(), context, scpname);
+
+        }
+    }
+    public void searchInWords(String search, String words, Context context, TextView textView) {
+        Spannable wordtoSpan = new SpannableString(words);
+
+        int index = words.toLowerCase().indexOf(search);
+        if (index >= 0) {
+            wordtoSpan.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.theme_color)), index, index + search.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(wordtoSpan);
+        } else {
+            textView.setText(words);
+        }
     }
     }
