@@ -3,6 +3,7 @@ package ai.salesken.v1.utils;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
@@ -34,7 +35,7 @@ public class ContactObserver  extends ContentObserver {
     public void onChange(boolean selfChange, Uri uri) {
         //On Contact add/delete this method is fired
         Log.e(TAG, "Contact add/delete" + selfChange);
-        new ContactAsync(context).execute();
+        new ContactAsync(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 
     }
 

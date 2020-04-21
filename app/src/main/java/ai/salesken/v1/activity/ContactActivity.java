@@ -76,6 +76,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     ConstraintLayout progress;
     @BindView(R.id.container)
     ConstraintLayout container;
+    @BindView(R.id.no_result)
+    ConstraintLayout no_result;
     private ContactBroadcast contactBroadcast = new ContactBroadcast();
     private boolean isReceiverRegistered = false;
     private AppDatabase db;
@@ -214,8 +216,17 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
                 }
             }
             contactAdapter.query=newText;
+            if(tempContactPojos.size() >0){
+                no_result.setVisibility(View.GONE);
+                contact_list.setIndexBarVisibility(true);
+            }else{
+                no_result.setVisibility(View.VISIBLE);
+                contact_list.setIndexBarVisibility(false);
+            }
             contactAdapter.updateList(tempContactPojos);
         }else{
+            no_result.setVisibility(View.GONE);
+            contact_list.setIndexBarVisibility(true);
             contactAdapter.query=null;
             contactAdapter.updateList(contactPojos);
 
@@ -336,14 +347,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             // Intent already filtered by the LocalBroadcastManager in onResume()
             switch (intent.getAction()){
                 case SaleskenIntent.CONTACT_BROADCAST:
-
-                    Executors.newSingleThreadExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            contactPojos=db.contactDao().getAll();
-                            showContacts();
-                        }
-                    });
+                    new FetchContactAsync(ContactActivity.this,db).execute();
                     break;
 
             }
