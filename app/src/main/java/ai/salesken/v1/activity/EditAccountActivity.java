@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.SaleskenResponse;
+import ai.salesken.v1.pojo.User;
 import ai.salesken.v1.utils.CustomSpinnerAdapter;
 import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.PictureUploadUtil;
@@ -54,6 +57,14 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
     private PictureUploadUtil pictureUploadUtil;
     private static final int SELECT_FILE = 101;
     private static final int REQUEST_CAMERA = 100;
+    private User user;
+
+    @BindView(R.id.name)
+    EditText name;
+    @BindView(R.id.number)
+    EditText number;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +73,18 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
             profile_image.setClipToOutline(true);
         }
         pictureUploadUtil = new PictureUploadUtil(this);
-
+        user=getCurrentUser();
+        name.setText(user.getName());
+        number.setText(user.getMobile());
         ArrayList<String> languages = new ArrayList<>();
         languages.add("English - US");
         languages.add("English - IN");
         languages.add("Hindi");
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.skipMemoryCache(true);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                .load(user.getProfileImage()).into(profile_image);
 
         CustomSpinnerAdapter dataAdapter = new CustomSpinnerAdapter(this, R.layout.customspinner, languages);
         language.setAdapter(dataAdapter);
@@ -185,6 +203,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
             public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
                 SaleskenResponse saleskenResponse = response.body();
                 Log.d(TAG,gson.toJson(saleskenResponse));
+                updateUser((String) saleskenResponse.getResponse());
             }
 
             @Override
@@ -208,5 +227,14 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
     private void goBack() {
         startActivity(new Intent(EditAccountActivity.this, AccountActivity.class));
         finish();
+    }
+
+
+    private void updateUser(String profileImage){
+        Log.d(TAG,"update image url "+profileImage);
+        user.setProfileImage(profileImage);
+        editor.putString(SaleskenSharedPrefKey.USER,gson.toJson(user));
+        editor.commit();
+        editor.apply();
     }
 }

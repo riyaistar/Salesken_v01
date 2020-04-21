@@ -11,12 +11,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.pojo.User;
 import ai.salesken.v1.utils.CustomSpinnerAdapter;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
@@ -32,6 +36,15 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+
+    @BindView(R.id.name)
+    TextView name;
+    @BindView(R.id.email)
+    TextView email;
+    @BindView(R.id.phone)
+    TextView phone;
+
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +53,15 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
             profile_image.setClipToOutline(true);
         }
         setNavigationView(drawer, navigationView, 1);
-
+        user=getCurrentUser();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.skipMemoryCache(true);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                .load(user.getProfileImage()).into(profile_image);
+        name.setText(user.getName());
+        email.setText(user.getEmail());
+        phone.setText(user.getMobile());
     }
 
     @Override
