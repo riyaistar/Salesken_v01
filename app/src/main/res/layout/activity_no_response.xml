@@ -6,8 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".activity.disposition.NoResponseActivity">
 
-
-
+<include layout="@layout/progress_layout"
+    android:id="@+id/progress"
+    android:visibility="gone"></include>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -52,6 +57,9 @@
                 app:srcCompat="@mipmap/baseline_arrow_back_white_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
+
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
@@ -233,4 +241,5 @@
         app:layout_constraintBottom_toTopOf="@+id/submit_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

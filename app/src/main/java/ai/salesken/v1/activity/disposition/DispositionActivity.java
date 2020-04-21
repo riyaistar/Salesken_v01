@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.activity.DialerActivity;
 import ai.salesken.v1.activity.SaleskenActivity;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.ButterKnife;
@@ -64,21 +65,13 @@ public class DispositionActivity extends SaleskenActivity implements SaleskenAct
 
     @OnClick(R.id.skipDisposition)
     public void skipDisposition(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final View customLayout = getLayoutInflater().inflate(R.layout.feedback_layout, null);
-        ImageButton close = customLayout.findViewById(R.id.close);
-        builder.setView(customLayout);
-
-        AlertDialog dialog = builder.create();
-
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        Intent i = new Intent(DispositionActivity.this, DialerActivity.class);
+        startActivity(i);
+        finish();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 }
