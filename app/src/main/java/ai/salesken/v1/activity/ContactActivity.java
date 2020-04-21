@@ -68,8 +68,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     TextView found;
     @BindView(R.id.contact_list)
     public IndexFastScrollRecyclerView contact_list;
-    private ContactAdapter contactAdapter;
-    private List<ContactPojo> contactPojos = new ArrayList<>();
+    public ContactAdapter contactAdapter;
+    public List<ContactPojo> contactPojos = new ArrayList<>();
     @BindView(R.id.nocontactpermission)
     ConstraintLayout nocontactpermission;
     @BindView(R.id.progress)
@@ -85,42 +85,22 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
         db = AppDatabase.getInstance(ContactActivity.this);
         getView();
         registerReceiver();
+        contact_list.setIndexBarVisibility(false);
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
         setNavigationView(drawer, navigationView, 0);
-
-
         if(checkContactPermission()){
             nocontactpermission.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
-            container.setVisibility(View.GONE);
-            Executors.newSingleThreadExecutor().execute(new Runnable() {
-                @Override
-                public void run() {
-                    contactPojos=db.contactDao().getAll();
-                    if(contactPojos!= null && contactPojos.size()>0){
-                        showContacts(contactPojos);
-                    }else {
-                        new FetchContactAsync(ContactActivity.this).execute();
-                    }
-                }
-            });
-
-
+            new FetchContactAsync(ContactActivity.this,db).execute();
         }else{
             String[] perms = {Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS};
             ActivityCompat.requestPermissions(this, perms, 200);
             nocontactpermission.setVisibility(View.VISIBLE);
             container.setVisibility(View.GONE);
-
         }
-
     }
 
-    public void showContacts(List<ContactPojo> contactPojos){
-        container.setVisibility(View.VISIBLE);
-
-
-        contactPojos=db.contactDao().getAll();
+    public void showContacts(){
         if(contactPojos.size()>0) {
             result.setText(contactPojos.size()+"");
             searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -136,11 +116,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
                 }
             });
             contactPojos=sortStringThenNumber(contactPojos);
-            //Collections.sort(contactPojos, String.CASE_INSENSITIVE_ORDER);
-
             contactAdapter = new ContactAdapter(ContactActivity.this, contactPojos);
-
-
             contact_list.setAdapter(contactAdapter);
             contact_list.setLayoutManager(new LinearLayoutManager(ContactActivity.this));
             // contact_list.addItemDecoration(sectionItemDecoration);
@@ -151,7 +127,6 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             contact_list.setIndexbarHighLightTextColor(R.color.white);
             contact_list.setIndexBarVisibility(true);
             contact_list.setIndexBarStrokeColor("#00000000");
-
             //contact_list.setPreviewVisibility(false);
             // contact_list.setIndexBarHighLateTextVisibility(true);
             contact_list.setIndexBarTransparentValue((float) 1);
@@ -296,7 +271,7 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)) {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        new FetchContactAsync(ContactActivity.this).execute();
+                        new FetchContactAsync(ContactActivity.this,db).execute();
                     }
                 } else {
 
@@ -360,8 +335,13 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             switch (intent.getAction()){
                 case SaleskenIntent.CONTACT_BROADCAST:
 
-                    contactPojos=db.contactDao().getAll();
-                        showContacts(contactPojos);
+                    Executors.newSingleThreadExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            contactPojos=db.contactDao().getAll();
+                            showContacts();
+                        }
+                    });
                     break;
 
             }

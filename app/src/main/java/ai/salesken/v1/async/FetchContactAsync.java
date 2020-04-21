@@ -12,14 +12,17 @@ import ai.salesken.v1.activity.ContactActivity;
 import ai.salesken.v1.activity.SaleskenActivity;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.ContactPojo;
+import ai.salesken.v1.utils.AppDatabase;
 import ai.salesken.v1.utils.ContactUtil;
 
-public class FetchContactAsync  extends AsyncTask<String, Void, String> {
+public class FetchContactAsync  extends AsyncTask<String, Void, List<ContactPojo>> {
     private Context context;
+    private AppDatabase db;
     private static final String TAG = "FetchContactAsync";
 
-    public FetchContactAsync(Context context) {
+    public FetchContactAsync(Context context, AppDatabase db) {
         this.context = context;
+        this.db = db;
     }
 
     @Override
@@ -28,21 +31,13 @@ public class FetchContactAsync  extends AsyncTask<String, Void, String> {
 
     }
     @Override
-    protected String doInBackground(String... strings) {
-        return new ContactUtil().fetchContacts(context);
+    protected List<ContactPojo> doInBackground(String... strings) {
+        return db.contactDao().getAll();
     }
     @Override
-    protected void onPostExecute(String result) {
-        if(result.equalsIgnoreCase("success")){
-            /*Type type = new TypeToken<List<ContactPojo>>() {
-            }.getType();
-            String stored_leads =  ((SaleskenActivity) context).sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
-            List<ContactPojo> contactPojos =((SaleskenActivity) context).gson.fromJson(stored_leads, type);
-            ((ContactActivity) context).showContacts(contactPojos);*/
-        }else{
-            ((SaleskenActivity) context).showToast("Error While fetching contact");
-
-        }
+    protected void onPostExecute(List<ContactPojo> result) {
+        ((ContactActivity) context).contactPojos=result;
+        ((ContactActivity) context).showContacts();
         ((ContactActivity) context).hideProgressBar();
 
     }

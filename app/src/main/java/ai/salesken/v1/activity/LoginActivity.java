@@ -22,6 +22,11 @@ import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.SaleskenResponse;
@@ -154,7 +159,16 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                             }
                             break;
                         default:
-                            showToast("Bad request recieved from server.");
+                            try {
+                                SaleskenResponse saleskenResponse1 = gson.fromJson(response.errorBody().string(),SaleskenResponse.class);
+                                showToast(saleskenResponse1.getResponseMessage());
+
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
 
                     }
                 }
