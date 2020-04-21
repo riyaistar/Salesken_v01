@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.disposition.CallDroppedActivity">
-
+    <include layout="@layout/progress_layout"
+        android:id="@+id/progress"
+        android:visibility="gone"></include>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
 
     <androidx.appcompat.widget.Toolbar
@@ -37,7 +43,7 @@
                 app:layout_constraintStart_toEndOf="@+id/back"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:text="@string/no_response" />
+              />
 
             <ImageButton
                 android:id="@+id/back"
@@ -233,4 +239,5 @@
         app:layout_constraintBottom_toTopOf="@+id/submit_dropped"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

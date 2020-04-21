@@ -53,6 +53,8 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
     ConstraintLayout progress;
     @BindView(R.id.content)
     ConstraintLayout content;
+    AlertDialog dialog;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
     String date, time;
     SaleskenActivity saleskenActivity;
@@ -239,11 +241,12 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
 
                                     builder.setView(customLayout);
 
-                                    AlertDialog dialog = builder.create();
+                                    dialog = builder.create();
                                     hideProgress();
                                     save.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+                                            dialog.dismiss();
                                             Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
                                             startActivity(i);
                                             finish();
@@ -252,6 +255,7 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
                                     skip.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+                                            dialog.dismiss();
                                             Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
                                             startActivity(i);
                                             finish();
@@ -301,5 +305,13 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
     public void hideProgress(){
         progress.setVisibility(View.GONE);
         content.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(dialog != null){
+            dialog.dismiss();
+        }
     }
 }
