@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.adapter.ContactAdapter;
@@ -42,6 +43,7 @@ import ai.salesken.v1.async.FetchContactAsync;
 import ai.salesken.v1.constant.SaleskenIntent;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.ContactPojo;
+import ai.salesken.v1.utils.AppDatabase;
 import ai.salesken.v1.utils.BottomBarUtil;
 import ai.salesken.v1.utils.ContactObserver;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
@@ -76,10 +78,11 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     ConstraintLayout container;
     private ContactBroadcast contactBroadcast = new ContactBroadcast();
     private boolean isReceiverRegistered = false;
-
+    private AppDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = AppDatabase.getInstance(ContactActivity.this);
         getView();
         registerReceiver();
         new BottomBarUtil().setupBottomBar(navigation, ContactActivity.this, R.id.contact);
@@ -90,15 +93,18 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             nocontactpermission.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
             container.setVisibility(View.GONE);
-            Type type = new TypeToken<List<ContactPojo>>() {
-            }.getType();
-            String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
-            contactPojos=gson.fromJson(stored_leads, type);
-            if(contactPojos!= null && contactPojos.size()>0){
-                showContacts(contactPojos);
-            }else {
-                new FetchContactAsync(ContactActivity.this).execute();
-            }
+            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    contactPojos=db.contactDao().getAll();
+                    if(contactPojos!= null && contactPojos.size()>0){
+                        showContacts(contactPojos);
+                    }else {
+                        new FetchContactAsync(ContactActivity.this).execute();
+                    }
+                }
+            });
+
 
         }else{
             String[] perms = {Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS};
@@ -113,10 +119,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
     public void showContacts(List<ContactPojo> contactPojos){
         container.setVisibility(View.VISIBLE);
 
-        Type type = new TypeToken<List<ContactPojo>>() {
-        }.getType();
-        String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
-        contactPojos=gson.fromJson(stored_leads, type);
+
+        contactPojos=db.contactDao().getAll();
         if(contactPojos.size()>0) {
             result.setText(contactPojos.size()+"");
             searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -355,10 +359,8 @@ public class ContactActivity extends SaleskenActivity implements SaleskenActivit
             // Intent already filtered by the LocalBroadcastManager in onResume()
             switch (intent.getAction()){
                 case SaleskenIntent.CONTACT_BROADCAST:
-                    Type type = new TypeToken<List<ContactPojo>>() {
-                    }.getType();
-                    String stored_leads = sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
-                    contactPojos=gson.fromJson(stored_leads, type);
+
+                    contactPojos=db.contactDao().getAll();
                         showContacts(contactPojos);
                     break;
 

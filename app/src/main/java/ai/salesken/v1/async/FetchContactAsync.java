@@ -34,11 +34,11 @@ public class FetchContactAsync  extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         if(result.equalsIgnoreCase("success")){
-            Type type = new TypeToken<List<ContactPojo>>() {
+            /*Type type = new TypeToken<List<ContactPojo>>() {
             }.getType();
             String stored_leads =  ((SaleskenActivity) context).sharedpreferences.getString(SaleskenSharedPrefKey.LEADS, null);
             List<ContactPojo> contactPojos =((SaleskenActivity) context).gson.fromJson(stored_leads, type);
-            ((ContactActivity) context).showContacts(contactPojos);
+            ((ContactActivity) context).showContacts(contactPojos);*/
         }else{
             ((SaleskenActivity) context).showToast("Error While fetching contact");
 

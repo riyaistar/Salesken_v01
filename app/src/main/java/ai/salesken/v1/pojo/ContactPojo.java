@@ -1,9 +1,25 @@
 package ai.salesken.v1.pojo;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "contactpojo",indices={
+        @Index(value="uid"),
+        @Index(value="mobile", unique = true)
+})
 public class ContactPojo {
+    @PrimaryKey(autoGenerate = true)
+    public int uid;
+    @ColumnInfo(name = "name")
     String name;
+    @ColumnInfo(name = "status")
     String status;
+    @ColumnInfo(name = "mobile")
     String mobile;
+    @ColumnInfo(name = "email")
     String email;
 
     public ContactPojo() {
@@ -51,5 +67,13 @@ public class ContactPojo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

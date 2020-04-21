@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.room.Room;
 
 import android.Manifest;
 import android.app.Activity;
@@ -47,6 +48,7 @@ import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.User;
 import ai.salesken.v1.pojo.UserRole;
+import ai.salesken.v1.utils.AppDatabase;
 import ai.salesken.v1.utils.ContactObserver;
 import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.MediaSaver;
@@ -65,7 +67,6 @@ public class SaleskenActivity extends AppCompatActivity {
     private ContactObserver contactObserver;
     public SimpleDateFormat ampmformat = new SimpleDateFormat("HH:mm a");
     public SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,7 @@ public class SaleskenActivity extends AppCompatActivity {
 
 
         }
+
 
     }
 

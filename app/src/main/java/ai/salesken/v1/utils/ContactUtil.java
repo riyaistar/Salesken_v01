@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import androidx.room.Room;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,17 +30,17 @@ import ai.salesken.v1.pojo.ContactPojo;
 
 public class ContactUtil {
     private static final String TAG_ANDROID_CONTACTS = "FetchAllContactsUtil";
-    public Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    private List<ContactPojo> contactPojos = new ArrayList<>();
-    public SharedPreferences sharedpreferences;
-    public SharedPreferences.Editor editor;
-    public String fetchContacts(Context context) {
 
+    public AppDatabase db;
+    List<ContactPojo> contactPojos;
+    public String fetchContacts(Context context) {
+        db=AppDatabase.getInstance(context);
         try {
+            contactPojos = new ArrayList<>();
+            db.contactDao().deleteAll();
             String phoneNumber = null;
             String email = null;
-            sharedpreferences = context.getSharedPreferences(context.getResources().getString(R.string.shared_preference_key), Context.MODE_PRIVATE);
-            editor = sharedpreferences.edit();
+
             Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
             String _ID = ContactsContract.Contacts._ID;
             String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
@@ -81,7 +83,6 @@ public class ContactUtil {
                             output.append("\n Phone number:" + phoneNumber);
                             contactPojo.setMobile(phoneNumber);
 
-                            contactPojos.add(contactPojo);
 
                         }
 
@@ -93,21 +94,25 @@ public class ContactUtil {
                         while (emailCursor.moveToNext()) {
 
                             email = emailCursor.getString(emailCursor.getColumnIndex(DATA));
-
+                            contactPojo.setEmail(email);
                             output.append("\nEmail:" + email);
 
                         }
 
                         emailCursor.close();
-                    }
 
+                    }
+                    if(contactPojo.getName() != null && contactPojo.getMobile() != null){
+                        contactPojos.add(contactPojo);
+
+                    }
                     output.append("\n");
                 }
 
+                db.contactDao().insertAll(contactPojos);
+
                 cursor.close();
-                editor.putString(SaleskenSharedPrefKey.LEADS, gson.toJson(removeDuplicates(contactPojos)));
-                editor.commit();
-                editor.apply();
+
                 Log.d(TAG_ANDROID_CONTACTS, "***** " + output);
 
             }
@@ -120,93 +125,6 @@ public class ContactUtil {
         return "success";
     }
 
-    public void
-    saveLeadWithContact(Context context, List<ContactPojo> contactPojos ){
-        sharedpreferences = context.getSharedPreferences(context.getResources().getString(R.string.shared_preference_key), Context.MODE_PRIVATE);
-        editor = sharedpreferences.edit();
-        if(contactPojos == null){
-            contactPojos = new ArrayList<>();
-        }
-
-
-        String phoneNumber = null;
-        String email = null;
-        sharedpreferences = context.getSharedPreferences(context.getResources().getString(R.string.shared_preference_key), Context.MODE_PRIVATE);
-        editor = sharedpreferences.edit();
-        Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
-        String _ID = ContactsContract.Contacts._ID;
-        String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
-        String HAS_PHONE_NUMBER = ContactsContract.Contacts.HAS_PHONE_NUMBER;
-
-        Uri PhoneCONTENT_URI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        String Phone_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID;
-        String NUMBER = ContactsContract.CommonDataKinds.Phone.NUMBER;
-
-        Uri EmailCONTENT_URI =  ContactsContract.CommonDataKinds.Email.CONTENT_URI;
-        String EmailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
-        String DATA = ContactsContract.CommonDataKinds.Email.DATA;
-
-        StringBuffer output = new StringBuffer();
-
-        ContentResolver contentResolver = context.getContentResolver();
-
-        Cursor cursor = contentResolver.query(CONTENT_URI, null,null, null, null);
-
-        // Loop for every contact in the phone
-        if (cursor.getCount() > 0) {
-
-            while (cursor.moveToNext()) {
-
-                String contact_id = cursor.getString(cursor.getColumnIndex( _ID ));
-                String name = cursor.getString(cursor.getColumnIndex( DISPLAY_NAME ));
-                ContactPojo contactPojo = new ContactPojo();
-                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex( HAS_PHONE_NUMBER )));
-
-                if (hasPhoneNumber > 0) {
-                    output.append("\n First Name:" + name);
-                    contactPojo.setName(name);
-                    // Query and loop for every phone number of the contact
-                    Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[] { contact_id }, null);
-
-                    while (phoneCursor.moveToNext()) {
-                        phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
-
-                        output.append("\n Phone number:" + phoneNumber);
-                        contactPojo.setMobile(phoneNumber);
-
-                        contactPojos.add(contactPojo);
-
-                    }
-
-                    phoneCursor.close();
-
-                    // Query and loop for every email of the contact
-                    Cursor emailCursor = contentResolver.query(EmailCONTENT_URI,    null, EmailCONTACT_ID+ " = ?", new String[] { contact_id }, null);
-
-                    while (emailCursor.moveToNext()) {
-
-                        email = emailCursor.getString(emailCursor.getColumnIndex(DATA));
-
-                        output.append("\nEmail:" + email);
-
-                    }
-
-                    emailCursor.close();
-                }
-
-                output.append("\n");
-            }
-
-
-
-
-            editor.putString(SaleskenSharedPrefKey.LEADS,gson.toJson(removeDuplicates(contactPojos)));
-            editor.commit();
-            editor.apply();
-            Log.d(TAG_ANDROID_CONTACTS,"***** "+output);
-
-        }
-    }
 
 
 

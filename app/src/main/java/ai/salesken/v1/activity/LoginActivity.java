@@ -62,10 +62,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                 return false;
             }
         });
-        MediaSaver localmediaSaver =new MediaSaver(LoginActivity.this).setParentDirectoryName("asset_presentation").
-                setFileName("abc.png")
-                .setExternal(MediaSaver.isExternalStorageReadable());
-        new SaveMediaAsync(localmediaSaver).execute("https://i.stack.imgur.com/5hgQb.png");
+
         if(sharedpreferences.getString(SaleskenSharedPrefKey.EMAIL,null) != null){
             username.setText(sharedpreferences.getString(SaleskenSharedPrefKey.EMAIL,null));
         }
