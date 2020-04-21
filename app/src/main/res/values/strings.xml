@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SaleskenV1</string>
     <string name="sales">sales</string>
-    <string name="server_ip">http://192.168.31.100:8080/salesken-backend/api/</string>
+    <string name="server_ip">http://192.168.31.172:8080/salesken-backend/api/</string>
     <string name="shared_preference_key">SaleskenAppComplexKey</string>
 
     <string name="ken">ken</string>
