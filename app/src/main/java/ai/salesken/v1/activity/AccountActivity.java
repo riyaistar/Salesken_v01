@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import ai.salesken.v1.R;
 import ai.salesken.v1.pojo.User;
 import ai.salesken.v1.utils.CustomSpinnerAdapter;
+import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,8 +58,11 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.skipMemoryCache(true);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        MediaSaver local_profile = new MediaSaver(AccountActivity.this).setParentDirectoryName("profile_pic").
+                setFileNameKeepOriginalExtension("profile_pic.jpg").
+                setExternal(MediaSaver.isExternalStorageReadable());
         requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
-                .load(user.getProfileImage()).into(profile_image);
+                .load(local_profile.pathFile()).into(profile_image);
         name.setText(user.getName());
         email.setText(user.getEmail());
         phone.setText(user.getMobile());

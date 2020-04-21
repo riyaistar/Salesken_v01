@@ -80,14 +80,18 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         languages.add("English - US");
         languages.add("English - IN");
         languages.add("Hindi");
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.skipMemoryCache(true);
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
-                .load(user.getProfileImage()).into(profile_image);
 
         CustomSpinnerAdapter dataAdapter = new CustomSpinnerAdapter(this, R.layout.customspinner, languages);
         language.setAdapter(dataAdapter);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.skipMemoryCache(true);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        MediaSaver local_profile = new MediaSaver(EditAccountActivity.this).setParentDirectoryName("profile_pic").
+                setFileNameKeepOriginalExtension("profile_pic.jpg").
+                setExternal(MediaSaver.isExternalStorageReadable());
+        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                .load(local_profile.pathFile()).into(profile_image);
     }
 
     @Override
@@ -133,7 +137,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
                 profile_image.setImageBitmap(bm);
                 saveImage(bm);
             } catch (Exception e) {
-
+                    e.printStackTrace();
             }
         }
     }
@@ -173,10 +177,9 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
 
         try {
             MediaSaver local_profile = new MediaSaver(this).setParentDirectoryName("profile_pic").
-                    setFileName("profile_pic.jpg").
+                    setFileNameKeepOriginalExtension("profile_pic.jpg").
                     setExternal(MediaSaver.isExternalStorageReadable());
             BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(local_profile.pathFile()));
-
             bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
             os.flush();
             os.close();
@@ -231,7 +234,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
 
 
     private void updateUser(String profileImage){
-        Log.d(TAG,"update image url "+profileImage);
+        Log.d(TAG,"update image url ");
         user.setProfileImage(profileImage);
         editor.putString(SaleskenSharedPrefKey.USER,gson.toJson(user));
         editor.commit();

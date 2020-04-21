@@ -23,10 +23,13 @@ import com.google.android.material.navigation.NavigationView;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.activity.disposition.DispositionActivity;
+import ai.salesken.v1.pojo.User;
 import ai.salesken.v1.utils.BottomBarUtil;
 import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.KeypadlessKeypad;
+import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
+import ai.salesken.v1.utils.SaveMediaAsync;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -74,13 +77,14 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
     @BindView(R.id.keypad)
     KeypadlessKeypad keypad;
 
-
+    private User user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
+        user=getCurrentUser();
         keypad.setCursorVisible(false);
         keypad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +164,14 @@ public class DialerActivity extends SaleskenActivity implements SaleskenActivity
         new BottomBarUtil().setupBottomBar(navigation, DialerActivity.this, R.id.dialer);
         setNavigationView(drawer, navigationView, 0);
 
-
+        if(checkStoragePermission()){
+            MediaSaver local_profile = new MediaSaver(DialerActivity.this).setParentDirectoryName("profile_pic").
+                    setFileNameKeepOriginalExtension("profile_pic.jpg").
+                    setExternal(MediaSaver.isExternalStorageReadable());
+            if(!local_profile.pathFile().exists()){
+                new SaveMediaAsync(local_profile).execute(user.getProfileImage());
+            }
+        }
 
     }
     @OnClick(R.id.backslash)

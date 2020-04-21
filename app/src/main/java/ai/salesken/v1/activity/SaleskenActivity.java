@@ -35,6 +35,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.abdularis.civ.CircleImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -144,7 +146,18 @@ public class SaleskenActivity extends AppCompatActivity {
         View headerLayout = navigationView.getHeaderView(0); // 0-index header
         User user = getCurrentUser();
         CircleImageView profile_image = headerLayout.findViewById(R.id.profile_image);
-        Glide.with(this).load(user.getProfileImage()).into(profile_image);
+        MediaSaver local_profile = new MediaSaver(SaleskenActivity.this).setParentDirectoryName("profile_pic").
+                setFileNameKeepOriginalExtension("profile_pic.jpg").
+                setExternal(MediaSaver.isExternalStorageReadable());
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.skipMemoryCache(true);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        if(local_profile.pathFile().exists())
+        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                .load(local_profile.pathFile()).into(profile_image);
+        else
+            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                    .load(user.getProfileImage()).into(profile_image);
         TextView name = headerLayout.findViewById(R.id.first_name);
 
         if(user.getName() != null){
@@ -191,6 +204,10 @@ public class SaleskenActivity extends AppCompatActivity {
                         editor.remove(SaleskenSharedPrefKey.USER);
                         editor.commit();
                         editor.apply();
+                        MediaSaver local_profile = new MediaSaver(SaleskenActivity.this).setParentDirectoryName("profile_pic").
+                                setFileNameKeepOriginalExtension("profile_pic.jpg").
+                                setExternal(MediaSaver.isExternalStorageReadable());
+                        local_profile.pathFile().delete();
                         Intent intent = new Intent(SaleskenActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
@@ -247,6 +264,12 @@ public class SaleskenActivity extends AppCompatActivity {
     public boolean checkContactPermission()
     {
         String permission = Manifest.permission.READ_CONTACTS;
+        int res = getApplicationContext().checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }
+    public boolean checkStoragePermission()
+    {
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         int res = getApplicationContext().checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }

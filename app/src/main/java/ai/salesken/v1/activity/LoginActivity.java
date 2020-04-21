@@ -26,6 +26,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
@@ -147,7 +150,6 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                                 } catch (Exception e) {
                                     showToast("Couldn't Process the Response recieved from Server");
                                 }
-
                                 editor.putString(SaleskenSharedPrefKey.TOKEN,response.headers().get("authorization"));
                                 editor.putString(SaleskenSharedPrefKey.USER,gson.toJson(saleskenResponse.getResponse()));
                                 editor.commit();
