@@ -59,6 +59,8 @@ public class PictureUploadUtil {
                 setParentDirectoryName("profile_pic").
                 setFileNameKeepOriginalExtension("temp_profile_pic.jpg").
                 setExternal(MediaSaver.isExternalStorageReadable());
+        temp_profile_pic.pathFile().delete();
+        temp_profile_pic.createFile();
         String filename ="profile_temp";
         Uri photoUri;
 

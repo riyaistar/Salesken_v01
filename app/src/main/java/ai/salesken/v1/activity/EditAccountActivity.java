@@ -224,7 +224,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
 
     public void uploadToServer() {
         MediaSaver local_profile = new MediaSaver(this).setParentDirectoryName("profile_pic").
-                setFileName("profile_pic.jpg").
+                setFileNameKeepOriginalExtension("profile_pic.jpg").
                 setExternal(MediaSaver.isExternalStorageReadable());
         RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), local_profile.pathFile());
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", local_profile.pathFile().getName(), fileReqBody);
