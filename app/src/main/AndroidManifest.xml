@@ -22,11 +22,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ResetPasswordActivity"
-            android:windowSoftInputMode="adjustResize"
+        <activity android:name=".activity.disposition.FollowUpActivity"></activity>
+        <activity
+            android:name=".activity.ResetPasswordActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            ></activity>
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".activity.CallConnectedActivity" />
         <activity android:name=".activity.EditAccountActivity" />
         <activity android:name=".activity.AccountActivity" />
@@ -70,13 +71,13 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activity.EmailSentActivity"
-            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activity.ForgotPasswordActivity"
-            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activity.LoginActivity"
