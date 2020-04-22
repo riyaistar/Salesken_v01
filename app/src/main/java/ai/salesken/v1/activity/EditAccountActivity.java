@@ -333,7 +333,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         languages.add("English - US");
         languages.add("English - IN");
         languages.add("Hindi");
-        LanguageAdapter languageAdapter =new LanguageAdapter(languages,user.getLanguage(),language_map);
+        LanguageAdapter languageAdapter =new LanguageAdapter(languages,language.getText().toString());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(EditAccountActivity.this);
         language_recycler.setLayoutManager(mLayoutManager);
         language_recycler.setAdapter(languageAdapter);

@@ -17,11 +17,9 @@ import ai.salesken.v1.viewholder.RecentViewHolder;
 public class LanguageAdapter extends  RecyclerView.Adapter<LanguageViewHolder> {
     private List<String> languages;
     String language;
-    HashMap<String, String> language_map;
-    public LanguageAdapter(List<String> languages, String language, HashMap<String, String> language_map) {
+    public LanguageAdapter(List<String> languages, String language) {
         this.languages = languages;
         this.language=language;
-        this.language_map=language_map;
     }
 
     @NonNull
@@ -35,7 +33,7 @@ public class LanguageAdapter extends  RecyclerView.Adapter<LanguageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull LanguageViewHolder holder, int position) {
-        holder.bind(languages.get(position),language,language_map);
+        holder.bind(languages.get(position),language);
     }
 
     @Override

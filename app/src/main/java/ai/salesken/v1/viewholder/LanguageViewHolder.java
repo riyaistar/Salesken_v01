@@ -24,15 +24,14 @@ public class LanguageViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bind(String language, String selected_language, HashMap<String, String> language_map){
+    public void bind(String language, String selected_language){
         lang.setText(language);
 
         for(String lang:selected_language.split(",")){
-            if(language_map.get(lang)!=null){
-               if( language_map.get(lang).equalsIgnoreCase(language)){
+               if( lang.equalsIgnoreCase(language)){
                    checkBox.setChecked(true);
                }
-            }
+
 
         }
     }
