@@ -23,7 +23,6 @@ public class User {
     private ArrayList<UserRole> roles = new ArrayList<UserRole>();
     private ArrayList<String> licenseKeys = new ArrayList<String>();
     private String authToken;
-
     private Integer sipId;
     private String sipUserName;
     private String sipPassword;
@@ -168,14 +167,6 @@ public class User {
         return roles;
     }
 
-    public String getAuthToken() {
-        return authToken;
-    }
-
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
-    }
-
     public void setRoles(ArrayList<UserRole> roles) {
         this.roles = roles;
     }
@@ -231,13 +222,22 @@ public class User {
         this.sipProvider = sipProvider;
     }
 
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
     @Override
     public String toString() {
         return "User [id=" + id + ", email=" + email + ", mobile=" + mobile + ", name=" + name + ", profileImage="
                 + profileImage + ", password=" + password + ", newPassword=" + newPassword + ", location=" + location
                 + ", owner=" + owner + ", designation=" + designation + ", designationId=" + designationId + ", status="
                 + status + ", organizationId=" + organizationId + ", roles=" + roles + ", licenseKeys=" + licenseKeys
-               + "]";
+                + "]";
     }
 
     public enum UserRoleTypes {

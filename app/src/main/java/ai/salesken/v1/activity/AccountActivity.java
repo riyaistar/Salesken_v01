@@ -1,12 +1,17 @@
 package ai.salesken.v1.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,10 +21,14 @@ import android.widget.TextView;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.JsonSyntaxException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.constant.SaleskenSharedPrefKey;
+import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.pojo.User;
 import ai.salesken.v1.utils.CustomSpinnerAdapter;
 import ai.salesken.v1.utils.MediaSaver;
@@ -27,8 +36,11 @@ import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class AccountActivity extends SaleskenActivity implements SaleskenActivityImplementation {
+public class AccountActivity extends SaleskenActivity implements SaleskenActivityImplementation,EditText.OnEditorActionListener {
     @BindView(R.id.edit)
     ImageButton edit;
     @BindView(R.id.profile_picture)
@@ -50,6 +62,12 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
     EditText new_password;
     @BindView(R.id.confirm_password)
     EditText confirm_password;
+
+    @BindView(R.id.container)
+    ConstraintLayout container;
+
+    @BindView(R.id.progress)
+    ConstraintLayout progress;
 
     private User user;
     @Override
@@ -78,7 +96,15 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         name.setText(user.getName());
         email.setText(user.getEmail());
         phone.setText(user.getMobile());
+        onKeyBoardSubmit(current_password,new_password,confirm_password);
     }
+
+    public void onKeyBoardSubmit(EditText ... editTexts){
+        for(EditText editText:editTexts){
+            editText.setOnEditorActionListener(this);
+        }
+    }
+
 
     @Override
     public void getView() {
@@ -107,8 +133,65 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
             showToast("Please enter your confirm password");
             return;
         }
+        if(new_password.getText().length()<6){
+            showToast("New password is too short. It should be atleast 6 character length.");
+            return;
+        }
         Object objStr = confirm_password.getText().toString();
         if(objStr.equals(new_password.getText().toString())){
+            user.setPassword(current_password.getText().toString());
+            user.setNewPassword(new_password.getText().toString());
+            Call<SaleskenResponse> change_password_call = restUrlInterface.change_password(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,""),user);
+            showProgressBar();
+            change_password_call.enqueue(new Callback<SaleskenResponse>() {
+                @Override
+                public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
+                    switch (response.code()) {
+                        case 200:
+                            SaleskenResponse saleskenResponse = response.body();
+                            if (saleskenResponse.getResponseCode() == 200) {
+                                try{
+                                    if((Boolean) saleskenResponse.getResponse()){
+                                        editor.putString(SaleskenSharedPrefKey.PASSWORD,new_password.getText().toString());
+                                        editor.commit();
+                                        editor.apply();
+                                        showToast("Password Changed sucessfully.");
+                                        new_password.setText("");
+                                        confirm_password.setText("");
+                                        current_password.setText("");
+                                    }
+                                }catch (Exception e){
+
+                                }
+
+
+                            } else {
+                                showToast(saleskenResponse.getResponseMessage());
+                            }
+                            hideProgressBar();
+
+                            break;
+                        default:
+                            try {
+                                SaleskenResponse saleskenResponse1 = gson.fromJson(response.errorBody().string(),SaleskenResponse.class);
+                                showToast(saleskenResponse1.getResponseMessage());
+
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            hideProgressBar();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SaleskenResponse> call, Throwable t) {
+                    hideProgressBar();
+                    showToast("Server Unreachable.");
+
+                }
+            });
 
         }else{
             showToast("New Password and Confirm Password do not match.");
@@ -134,5 +217,31 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
             startActivity(intent);
             finish();
         }
+    }
+
+
+    private void showProgressBar(){
+        progress.setVisibility(View.VISIBLE);
+        container.setVisibility(View.GONE);
+    }
+    private void hideProgressBar(){
+        progress.setVisibility(View.GONE);
+        container.setVisibility(View.VISIBLE);
+
+
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if(v.getId() == current_password.getId()){
+                new_password.requestFocus();
+            }else if(v.getId() == new_password.getId()){
+                confirm_password.requestFocus();
+            }else if(v.getId() == confirm_password.getId()){
+                changePassword();
+            }
+        }
+        return false;
     }
 }

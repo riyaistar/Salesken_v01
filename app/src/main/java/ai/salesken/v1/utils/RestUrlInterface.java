@@ -46,6 +46,9 @@ public interface RestUrlInterface {
     @POST("v1/password/reset")
     Call<SaleskenResponse> reset_password(@Body User user);
 
+    @POST("v1/password/change")
+    Call<SaleskenResponse> change_password(@Header("Authorization")String token,@Body User user);
+
     @Multipart
     @POST("v1/user/image/upload")
     Call<SaleskenResponse> uploadImage(@Header("Authorization")String token, @Part MultipartBody.Part file, @Part("file") RequestBody requestBody);
