@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ai.salesken.v1.R;
@@ -15,9 +16,12 @@ import ai.salesken.v1.viewholder.RecentViewHolder;
 
 public class LanguageAdapter extends  RecyclerView.Adapter<LanguageViewHolder> {
     private List<String> languages;
-
-    public LanguageAdapter(List<String> languages) {
+    String language;
+    HashMap<String, String> language_map;
+    public LanguageAdapter(List<String> languages, String language, HashMap<String, String> language_map) {
         this.languages = languages;
+        this.language=language;
+        this.language_map=language_map;
     }
 
     @NonNull
@@ -31,7 +35,7 @@ public class LanguageAdapter extends  RecyclerView.Adapter<LanguageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull LanguageViewHolder holder, int position) {
-        holder.bind(languages.get(position));
+        holder.bind(languages.get(position),language,language_map);
     }
 
     @Override

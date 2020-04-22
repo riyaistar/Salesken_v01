@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.activity.disposition.NoResponseActivity;
@@ -51,6 +53,7 @@ import ai.salesken.v1.utils.CustomSpinnerAdapter;
 import ai.salesken.v1.utils.MediaSaver;
 import ai.salesken.v1.utils.PictureUploadUtil;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
+import ai.salesken.v1.viewholder.LanguageViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -76,6 +79,15 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
     EditText name;
     @BindView(R.id.number)
     EditText number;
+    @BindView(R.id.sip_username)
+    EditText sip_username;
+    @BindView(R.id.sippassword)
+    EditText sip_password;
+    @BindView(R.id.sipdomain)
+    EditText sip_domain;
+    @BindView(R.id.sipprovider)
+    EditText sip_provider;
+
     @BindView(R.id.progress)
     ConstraintLayout progress;
     @BindView(R.id.container)
@@ -84,10 +96,14 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
     @BindView(R.id.language)
     EditText language;
     AlertDialog dialog;
+    private HashMap<String,String> language_map=new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
+        language_map.put("en-IN","English - IN");
+        language_map.put("en-US","English - US");
+        language_map.put("hi-IN","Hindi");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             profile_image.setClipToOutline(true);
         }
@@ -95,6 +111,30 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         user=getCurrentUser();
         name.setText(user.getName());
         number.setText(user.getMobile());
+
+        if(user.getSipUserName() != null){
+            sip_username.setText(user.getSipUserName());
+        }
+        if(user.getSipPassword() != null){
+            sip_password.setText(user.getSipPassword());
+        }
+        if(user.getSipURL() != null){
+            sip_domain.setText(user.getSipURL());
+        }
+        if(user.getSipProvider() != null){
+            sip_provider.setText(user.getSipProvider());
+        }
+        if(user.getLanguage() !=null){
+            String display_text="";
+            for(String lang:user.getLanguage().split(",")){
+                if(language_map.get(lang)!=null){
+                    display_text+=language_map.get(lang)+",";
+                }
+
+            }
+            language.setText(display_text.substring(0,display_text.length()-1));
+
+        }
 
 
 
@@ -293,7 +333,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         languages.add("English - US");
         languages.add("English - IN");
         languages.add("Hindi");
-        LanguageAdapter languageAdapter =new LanguageAdapter(languages);
+        LanguageAdapter languageAdapter =new LanguageAdapter(languages,user.getLanguage(),language_map);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(EditAccountActivity.this);
         language_recycler.setLayoutManager(mLayoutManager);
         language_recycler.setAdapter(languageAdapter);
@@ -307,6 +347,18 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         submit_language.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String display_language="";
+                for (int x = language_recycler.getChildCount(), i = 0; i < x; ++i) {
+                    LanguageViewHolder holder = (LanguageViewHolder) language_recycler.getChildViewHolder(language_recycler.getChildAt(i));
+                    TextView lang_text = holder.itemView.findViewById(R.id.lang_text);
+                    CheckBox checkBox = holder.itemView.findViewById(R.id.checkBox);
+                    if(checkBox.isChecked()){
+                        display_language+=lang_text.getText()+",";
+                    }
+                    Log.d(TAG,"Text "+lang_text.getText()+" check "+checkBox.isChecked());
+                }
+                language.setText(display_language.substring(0,display_language.length()-1));
+
                 dialog.dismiss();
 
             }

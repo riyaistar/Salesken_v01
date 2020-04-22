@@ -152,7 +152,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/input_layout_number">
 
                     <EditText
-                        android:id="@+id/sip_number"
+                        android:id="@+id/sip_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Sip Username"
