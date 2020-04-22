@@ -119,10 +119,10 @@ public class SaleskenActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(SaleskenActivity.this, message, Toast.LENGTH_SHORT);
         View view = toast.getView();
 
-        view.getBackground().setColorFilter(getResources().getColor(R.color.theme_color), PorterDuff.Mode.SRC_IN);
-        TextView text = view.findViewById(android.R.id.message);
-        text.setTextColor(getResources().getColor(R.color.white));
-        toast.setGravity(Gravity.BOTTOM, 0, 150);
+        //view.getBackground().setColorFilter(getResources().getColor(R.color.theme_color), PorterDuff.Mode.SRC_IN);
+        //TextView text = view.findViewById(android.R.id.message);
+        //text.setTextColor(getResources().getColor(R.color.white));
+        //toast.setGravity(Gravity.BOTTOM, 0, 150);
         toast.show();
     }
 

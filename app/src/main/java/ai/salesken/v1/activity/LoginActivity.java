@@ -132,6 +132,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         user.setEmail(username.getText().toString());
         user.setPassword(password.getText().toString());
         if(isInternetAvailable()) {
+            showProgressbar();
             Call<SaleskenResponse> login_call = restUrlInterface.autenticate(user);
             login_call.enqueue(new Callback<SaleskenResponse>() {
                 @Override
@@ -158,6 +159,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                                 finish();
                             } else {
                                 showToast(saleskenResponse.getResponseMessage());
+                                hideProgressbar();
                             }
                             break;
                         default:
@@ -170,6 +172,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                            hideProgressbar();
 
 
                     }
@@ -178,6 +181,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                 @Override
                 public void onFailure(Call<SaleskenResponse> call, Throwable t) {
                     showToast("Connection Refuse.");
+                    hideProgressbar();
                 }
             });
         }else{
@@ -231,5 +235,14 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
 
             }
         }
+    }
+
+    private void showProgressbar(){
+        progress.setVisibility(View.VISIBLE);
+        login_content.setVisibility(View.GONE);
+    }
+    private void hideProgressbar(){
+        progress.setVisibility(View.GONE);
+        login_content.setVisibility(View.VISIBLE);
     }
 }

@@ -44,6 +44,12 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
     TextView email;
     @BindView(R.id.phone)
     TextView phone;
+    @BindView(R.id.current_password)
+    EditText current_password;
+    @BindView(R.id.new_password)
+    EditText new_password;
+    @BindView(R.id.confirm_password)
+    EditText confirm_password;
 
     private User user;
     @Override
@@ -86,6 +92,32 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         startActivity(i);
         finish();
     }
+
+    @OnClick(R.id.submit)
+    public void changePassword(){
+        if(current_password.getText() == null || current_password.getText().toString().equalsIgnoreCase("")){
+            showToast("Please enter your current password");
+            return;
+        }
+        if(new_password.getText() == null || new_password.getText().toString().equalsIgnoreCase("")){
+            showToast("Please enter your new password");
+            return;
+        }
+        if(confirm_password.getText() == null || confirm_password.getText().toString().equalsIgnoreCase("")){
+            showToast("Please enter your confirm password");
+            return;
+        }
+        Object objStr = confirm_password.getText().toString();
+        if(objStr.equals(new_password.getText().toString())){
+
+        }else{
+            showToast("New Password and Confirm Password do not match.");
+
+        }
+
+
+    }
+
 
     @OnClick(R.id.openDrawer)
     public void openDrawer() {

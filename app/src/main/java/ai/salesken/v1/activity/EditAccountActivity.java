@@ -3,7 +3,9 @@ package ai.salesken.v1.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -109,10 +112,25 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
 
     @OnClick(R.id.upload_img)
     public void uploadProfilePic() {
-        if (requestAllpermission()) {
+        if (checkStoragePermission()) {
             pictureUploadUtil.selectImage();
         } else {
-            showToast("Microphone,Camera permissions needed for running this app. Please allow in your application settings.");
+            if(checkPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+                ActivityCompat.requestPermissions(this, perms, 200);
+            }else {
+                showToast("Storage Permission needed to upload Profile Image. Please allow Storage permission in your application settings.");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivityForResult(intent, 200);
+                    }
+                }, 3000);
+            }
+
 
         }
     }
@@ -171,6 +189,8 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
                     MediaSaver local_profile = new MediaSaver(EditAccountActivity.this).setParentDirectoryName("profile_pic").
                             setFileNameKeepOriginalExtension("profile_pic.jpg").
                             setExternal(MediaSaver.isExternalStorageReadable());
+                    local_profile.pathFile().delete();
+                    local_profile.createFile();
                     local_profile.save(new FileInputStream(temp_profile_pic.pathFile()));
                     uploadToServer();
 
@@ -186,6 +206,8 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
             MediaSaver local_profile = new MediaSaver(this).setParentDirectoryName("profile_pic").
                     setFileNameKeepOriginalExtension("profile_pic.jpg").
                     setExternal(MediaSaver.isExternalStorageReadable());
+            local_profile.pathFile().delete();
+            local_profile.createFile();
             BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(local_profile.pathFile()));
             bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
             os.flush();
