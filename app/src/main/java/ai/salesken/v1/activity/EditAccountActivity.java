@@ -87,11 +87,18 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.skipMemoryCache(true);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        MediaSaver local_profile = new MediaSaver(EditAccountActivity.this).setParentDirectoryName("profile_pic").
-                setFileNameKeepOriginalExtension("profile_pic.jpg").
-                setExternal(MediaSaver.isExternalStorageReadable());
-        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
-                .load(local_profile.pathFile()).into(profile_image);
+
+        if(checkStoragePermission()) {
+            MediaSaver local_profile = new MediaSaver(EditAccountActivity.this).setParentDirectoryName("profile_pic").
+                    setFileNameKeepOriginalExtension("profile_pic.jpg").
+                    setExternal(MediaSaver.isExternalStorageReadable());
+            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                    .load(local_profile.pathFile()).into(profile_image);
+        }else{
+            requestAllpermission();
+            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                    .load(user.getProfileImage()).into(profile_image);
+        }
     }
 
     @Override
@@ -105,7 +112,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         if (requestAllpermission()) {
             pictureUploadUtil.selectImage();
         } else {
-            showToast("Microphone,Camera,Location permissions needed for running this app. Please allow in your application settings.");
+            showToast("Microphone,Camera permissions needed for running this app. Please allow in your application settings.");
 
         }
     }

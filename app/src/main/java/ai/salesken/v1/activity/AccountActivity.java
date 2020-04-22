@@ -58,11 +58,17 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.skipMemoryCache(true);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        MediaSaver local_profile = new MediaSaver(AccountActivity.this).setParentDirectoryName("profile_pic").
-                setFileNameKeepOriginalExtension("profile_pic.jpg").
-                setExternal(MediaSaver.isExternalStorageReadable());
-        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
-                .load(local_profile.pathFile()).into(profile_image);
+        if(checkStoragePermission()) {
+            MediaSaver local_profile = new MediaSaver(AccountActivity.this).setParentDirectoryName("profile_pic").
+                    setFileNameKeepOriginalExtension("profile_pic.jpg").
+                    setExternal(MediaSaver.isExternalStorageReadable());
+            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                    .load(local_profile.pathFile()).into(profile_image);
+        }else{
+            requestAllpermission();
+            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                    .load(user.getProfileImage()).into(profile_image);
+        }
         name.setText(user.getName());
         email.setText(user.getEmail());
         phone.setText(user.getMobile());

@@ -146,18 +146,23 @@ public class SaleskenActivity extends AppCompatActivity {
         View headerLayout = navigationView.getHeaderView(0); // 0-index header
         User user = getCurrentUser();
         CircleImageView profile_image = headerLayout.findViewById(R.id.profile_image);
-        MediaSaver local_profile = new MediaSaver(SaleskenActivity.this).setParentDirectoryName("profile_pic").
-                setFileNameKeepOriginalExtension("profile_pic.jpg").
-                setExternal(MediaSaver.isExternalStorageReadable());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.skipMemoryCache(true);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        if(local_profile.pathFile().exists())
-        requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
-                .load(local_profile.pathFile()).into(profile_image);
-        else
+        if(checkStoragePermission()) {
+            MediaSaver local_profile = new MediaSaver(SaleskenActivity.this).setParentDirectoryName("profile_pic").
+                    setFileNameKeepOriginalExtension("profile_pic.jpg").
+                    setExternal(MediaSaver.isExternalStorageReadable());
+            if (local_profile.pathFile().exists())
+                requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                        .load(local_profile.pathFile()).into(profile_image);
+            else
+                requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+                        .load(user.getProfileImage()).into(profile_image);
+        }else{
             requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
                     .load(user.getProfileImage()).into(profile_image);
+        }
         TextView name = headerLayout.findViewById(R.id.first_name);
 
         if(user.getName() != null){
@@ -204,10 +209,12 @@ public class SaleskenActivity extends AppCompatActivity {
                         editor.remove(SaleskenSharedPrefKey.USER);
                         editor.commit();
                         editor.apply();
-                        MediaSaver local_profile = new MediaSaver(SaleskenActivity.this).setParentDirectoryName("profile_pic").
-                                setFileNameKeepOriginalExtension("profile_pic.jpg").
-                                setExternal(MediaSaver.isExternalStorageReadable());
-                        local_profile.pathFile().delete();
+                        if(checkStoragePermission()) {
+                            MediaSaver local_profile = new MediaSaver(SaleskenActivity.this).setParentDirectoryName("profile_pic").
+                                    setFileNameKeepOriginalExtension("profile_pic.jpg").
+                                    setExternal(MediaSaver.isExternalStorageReadable());
+                            local_profile.pathFile().delete();
+                        }
                         Intent intent = new Intent(SaleskenActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
