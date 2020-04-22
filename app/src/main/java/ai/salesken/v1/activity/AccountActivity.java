@@ -86,11 +86,11 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
             MediaSaver local_profile = new MediaSaver(AccountActivity.this).setParentDirectoryName("profile_pic").
                     setFileNameKeepOriginalExtension("profile_pic.jpg").
                     setExternal(MediaSaver.isExternalStorageReadable());
-            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+            requestManager.setDefaultRequestOptions(requestOptions.centerCrop())
                     .load(local_profile.pathFile()).into(profile_image);
         }else{
             requestAllpermission();
-            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+            requestManager.setDefaultRequestOptions(requestOptions.centerCrop())
                     .load(user.getProfileImage()).into(profile_image);
         }
         name.setText(user.getName());

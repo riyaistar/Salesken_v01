@@ -3,11 +3,15 @@ package ai.salesken.v1.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -17,7 +21,12 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,6 +42,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.activity.disposition.NoResponseActivity;
+import ai.salesken.v1.adapter.LanguageAdapter;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.pojo.User;
@@ -51,10 +62,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditAccountActivity extends SaleskenActivity implements SaleskenActivityImplementation {
+public class EditAccountActivity extends SaleskenActivity implements SaleskenActivityImplementation,EditText.OnEditorActionListener {
     private static final String TAG = "EditAccountActivity";
-    @BindView(R.id.spinner)
-    Spinner language;
+
     @BindView(R.id.profile_picture)
     ImageView profile_image;
     private PictureUploadUtil pictureUploadUtil;
@@ -66,8 +76,14 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
     EditText name;
     @BindView(R.id.number)
     EditText number;
+    @BindView(R.id.progress)
+    ConstraintLayout progress;
+    @BindView(R.id.container)
+    ConstraintLayout container;
 
-
+    @BindView(R.id.language)
+    EditText language;
+    AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,13 +95,9 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         user=getCurrentUser();
         name.setText(user.getName());
         number.setText(user.getMobile());
-        ArrayList<String> languages = new ArrayList<>();
-        languages.add("English - US");
-        languages.add("English - IN");
-        languages.add("Hindi");
 
-        CustomSpinnerAdapter dataAdapter = new CustomSpinnerAdapter(this, R.layout.customspinner, languages);
-        language.setAdapter(dataAdapter);
+
+
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.skipMemoryCache(true);
@@ -95,11 +107,11 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
             MediaSaver local_profile = new MediaSaver(EditAccountActivity.this).setParentDirectoryName("profile_pic").
                     setFileNameKeepOriginalExtension("profile_pic.jpg").
                     setExternal(MediaSaver.isExternalStorageReadable());
-            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+            requestManager.setDefaultRequestOptions(requestOptions.centerCrop())
                     .load(local_profile.pathFile()).into(profile_image);
         }else{
             requestAllpermission();
-            requestManager.setDefaultRequestOptions(requestOptions.circleCrop())
+            requestManager.setDefaultRequestOptions(requestOptions.centerCrop())
                     .load(user.getProfileImage()).into(profile_image);
         }
     }
@@ -268,5 +280,69 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         editor.putString(SaleskenSharedPrefKey.USER,gson.toJson(user));
         editor.commit();
         editor.apply();
+    }
+
+    @OnClick(R.id.language)
+    public void openLanguage(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditAccountActivity.this);
+        final View customLayout = getLayoutInflater().inflate(R.layout.language_layout, null);
+        ImageButton close = customLayout.findViewById(R.id.close);
+        Button submit_language = customLayout.findViewById(R.id.submit_language);
+        RecyclerView language_recycler= customLayout.findViewById(R.id.language_recycler);
+        ArrayList<String> languages = new ArrayList<>();
+        languages.add("English - US");
+        languages.add("English - IN");
+        languages.add("Hindi");
+        LanguageAdapter languageAdapter =new LanguageAdapter(languages);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(EditAccountActivity.this);
+        language_recycler.setLayoutManager(mLayoutManager);
+        language_recycler.setAdapter(languageAdapter);
+        builder.setView(customLayout);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        submit_language.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+      dialog= builder.create();
+       dialog.show();
+    }
+    private void showProgressBar(){
+        progress.setVisibility(View.VISIBLE);
+        container.setVisibility(View.GONE);
+    }
+    private void hideProgressBar(){
+        progress.setVisibility(View.GONE);
+        container.setVisibility(View.VISIBLE);
+
+
+    }
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+           /* if(v.getId() == current_password.getId()){
+                new_password.requestFocus();
+            }else if(v.getId() == new_password.getId()){
+                confirm_password.requestFocus();
+            }else if(v.getId() == confirm_password.getId()){
+                changePassword();
+            }*/
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(dialog!=null){
+            dialog.dismiss();
+        }
     }
 }
