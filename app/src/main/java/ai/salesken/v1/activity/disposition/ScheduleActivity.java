@@ -23,9 +23,13 @@ import android.widget.TimePicker;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -81,6 +85,14 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
     String date, time;
     ArrayList<PipelineStage> stages = new ArrayList<>();
     ArrayList<Integer> stageids = new ArrayList<>();
+    DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
+
+    private SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat sdf1 =new SimpleDateFormat("yyyy-MM-dd");
+
+    DateFormat amPmFormat = new SimpleDateFormat("hh:mm a");
+    DateFormat hour_24_Format = new SimpleDateFormat("hh:mm");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,32 +174,7 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
 
             }
         });
-    }
-
-    @Override
-    public void getView() {
-        setContentView(R.layout.activity_schedule);
-        ButterKnife.bind(this);
-    }
-
-    @OnClick(R.id.datetxt)
-    public void dateClick(){
-        selectDate();
-    }
-
-    @OnClick(R.id.date_picker)
-    public void datePickerClick(){
-        selectDate();
-    }
-
-    public void selectDate(){
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+        datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -205,28 +192,8 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
                         date = year+ "-" + month + "-" + day ;
                     }
                 }, mYear, mMonth, mDay);
-        datePickerDialog.show();
-    }
 
-
-    @OnClick(R.id.timetxt)
-    public void timeClick(){
-        selectTime();
-    }
-
-    @OnClick(R.id.time_picker)
-    public void timePickerClick(){
-        selectTime();
-    }
-
-    private void selectTime() {
-// Get Current Time
-        final Calendar c = Calendar.getInstance();
-        mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
-
-        // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+        timePickerDialog = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
@@ -264,6 +231,58 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
                         time = dataHour + ":" + minutes;
                     }
                 }, mHour, mMinute, false);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        Calendar calendar = Calendar.getInstance();
+        datetxt.setText(sdf.format(calendar.getTime()));
+        date = sdf1.format(calendar.getTime());
+        calendar.add(Calendar.HOUR_OF_DAY, 1);
+        timetxt.setText(amPmFormat.format(calendar.getTime()).toUpperCase());
+        time=hour_24_Format.format(calendar.getTime());
+    }
+
+    @Override
+    public void getView() {
+        setContentView(R.layout.activity_schedule);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.datetxt)
+    public void dateClick(){
+        selectDate();
+    }
+
+    @OnClick(R.id.date_picker)
+    public void datePickerClick(){
+        selectDate();
+    }
+
+    public void selectDate(){
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        datePickerDialog.show();
+    }
+
+
+    @OnClick(R.id.timetxt)
+    public void timeClick(){
+        selectTime();
+    }
+
+    @OnClick(R.id.time_picker)
+    public void timePickerClick(){
+        selectTime();
+    }
+
+    private void selectTime() {
+// Get Current Time
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
         timePickerDialog.show();
     }
 
@@ -296,9 +315,7 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
         if(!msg.getText().toString().equalsIgnoreCase("")){
             taskSubmission.setCallNotes(msg.getText().toString());
         }
-        if(date != null && !date.equalsIgnoreCase("")) {
             taskSubmission.setScheduleDate(date);
-            if (time != null && !time.equalsIgnoreCase("")) {
                 taskSubmission.setScheduletime(time);
                 showProgress();
                 Call<SaleskenResponse> disposition_call = restUrlInterface.disposition(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,null),taskSubmission);
@@ -309,40 +326,7 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
                             case 200:
                                 SaleskenResponse saleskenResponse = response.body();
                                 if (saleskenResponse.getResponseCode() == 200) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleActivity.this);
-                                    final View customLayout = getLayoutInflater().inflate(R.layout.feedback_layout, null);
-                                    ImageButton close = customLayout.findViewById(R.id.close);
-                                    Button skip = customLayout.findViewById(R.id.skip);
-                                    Button save = customLayout.findViewById(R.id.save_contact);
-
-                                    builder.setView(customLayout);
-
-                                    dialog = builder.create();
-                                    hideProgress();
-                                    save.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                            Intent i = new Intent(ScheduleActivity.this, DialerActivity.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    });
-                                    skip.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                            Intent i = new Intent(ScheduleActivity.this, DialerActivity.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    });
-                                    close.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                    createAlertDialog();
                                     dialog.show();
                                 } else {
                                     showToast(saleskenResponse.getResponseMessage());
@@ -351,8 +335,19 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
                                 }
                                 break;
                             default:
-                                showToast("Bad Request");
+                                try {
+                                    SaleskenResponse saleskenResponse1 = gson.fromJson(response.errorBody().string(),SaleskenResponse.class);
+                                    showToast(saleskenResponse1.getResponseMessage());
+
+                                } catch (JsonSyntaxException e) {
+                                    showToast("Bad request from the server");
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    showToast("Bad request from the server");
+                                    e.printStackTrace();
+                                }
                                 hideProgress();
+
                                 break;
 
 
@@ -365,12 +360,7 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
                         hideProgress();
                     }
                     });
-                }else{
-                showToast("Please pick a time");
-            }
-        }else{
-            showToast("Please pick a date");
-        }
+
 
     }
 
@@ -415,5 +405,42 @@ public class ScheduleActivity extends SaleskenActivity implements SaleskenActivi
     public void onBackPressed() {
         super.onBackPressed();
         goBack();
+    }
+
+    public void createAlertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleActivity.this);
+        final View customLayout = getLayoutInflater().inflate(R.layout.feedback_layout, null);
+        ImageButton close = customLayout.findViewById(R.id.close);
+        Button skip = customLayout.findViewById(R.id.skip);
+        Button save = customLayout.findViewById(R.id.save_contact);
+
+        builder.setView(customLayout);
+
+        dialog = builder.create();
+        hideProgress();
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent i = new Intent(ScheduleActivity.this, DialerActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent i = new Intent(ScheduleActivity.this, DialerActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }

@@ -176,18 +176,6 @@
         app:layout_constraintStart_toStartOf="@+id/input_layout_time"
         app:layout_constraintTop_toBottomOf="@+id/input_layout_time" />
 
-    <ImageButton
-        android:id="@+id/writeSMS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:padding="5dp"
-        android:background="@color/transparent"
-        app:layout_constraintBottom_toBottomOf="@+id/sendSMS"
-        app:layout_constraintStart_toEndOf="@+id/sendSMS"
-        app:layout_constraintTop_toTopOf="@+id/sendSMS"
-        android:src="@mipmap/edit" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_msg"

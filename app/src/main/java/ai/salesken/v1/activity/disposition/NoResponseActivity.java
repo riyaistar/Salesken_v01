@@ -6,10 +6,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -64,19 +66,28 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
     String date, time;
     SaleskenActivity saleskenActivity;
     DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
+
     private SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat sdf1 =new SimpleDateFormat("yyyy-MM-dd");
+
     DateFormat amPmFormat = new SimpleDateFormat("hh:mm a");
+    DateFormat hour_24_Format = new SimpleDateFormat("hh:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
+        createAlertDialog();
+
         sendSMS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
               @Override
               public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                     if(isChecked){
                         input_layout_msg.setVisibility(View.VISIBLE);
                         msg.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(msg, InputMethodManager.SHOW_IMPLICIT);
                     }else{
                         input_layout_msg.setVisibility(View.GONE);
                     }
@@ -102,11 +113,52 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
                     }
                 }, mYear, mMonth, mDay);
 
+        timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        String dataHour = hourOfDay+"";
+                        String hour = hourOfDay+"", minutes = minute+"";
+                        if(hourOfDay >= 12){
+                            hourOfDay = hourOfDay -12;
+                            if(hourOfDay!=12) {
+                                hour = hourOfDay+ "";
+                            }
+                            if(hourOfDay<10){
+                                hour = "0"+hourOfDay;
+                            }
+                            if(minute<10){
+                                minutes = "0"+minute;
+                            }
+                            if(hourOfDay == 0){
+                                hour = "12";
+                            }
+                            timetxt.setText(hour + ":" + minutes + " PM");
+                        }else {
+                            if(hourOfDay == 0){
+                                hour = "12";
+                            }
+                            if(hourOfDay<10 && hourOfDay != 0){
+                                hour = "0"+hourOfDay;
+                            }
+                            if(minute<10){
+                                minutes = "0"+minute;
+                            }
+                            timetxt.setText(hour + ":" + minutes + " AM");
+                        }
+                        time = dataHour + ":" + minutes;
+                    }
+                }, mHour, mMinute, false);
+
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         Calendar calendar = Calendar.getInstance();
         datetxt.setText(sdf.format(calendar.getTime()));
+        date = sdf1.format(calendar.getTime());
         calendar.add(Calendar.HOUR_OF_DAY, 1);
         timetxt.setText(amPmFormat.format(calendar.getTime()).toUpperCase());
+        time=hour_24_Format.format(calendar.getTime());
     }
 
     @Override
@@ -153,58 +205,8 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                new TimePickerDialog.OnTimeSetListener() {
 
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay,
-                                          int minute) {
-                        String dataHour = hourOfDay+"";
-                        String hour = hourOfDay+"", minutes = minute+"";
-                        if(hourOfDay >= 12){
-                            hourOfDay = hourOfDay -12;
-                            if(hourOfDay!=12) {
-                                hour = hourOfDay+ "";
-                            }
-                            if(hourOfDay<10){
-                                hour = "0"+hourOfDay;
-                            }
-                            if(minute<10){
-                                minutes = "0"+minute;
-                            }
-                            if(hourOfDay == 0){
-                                hour = "12";
-                            }
-                            timetxt.setText(hour + ":" + minutes + " PM");
-                        }else {
-                            if(hourOfDay == 0){
-                                hour = "12";
-                            }
-                            if(hourOfDay<10 && hourOfDay != 0){
-                                hour = "0"+hourOfDay;
-                            }
-                            if(minute<10){
-                                minutes = "0"+minute;
-                            }
-                            timetxt.setText(hour + ":" + minutes + " AM");
-                        }
-                        time = dataHour + ":" + minutes;
-                    }
-                }, mHour, mMinute, false);
         timePickerDialog.show();
-    }
-
-    @OnClick(R.id.writeSMS)
-    public void writeSMS(){
-        if(sendSMS.isChecked()){
-            input_layout_msg.setVisibility(View.GONE);
-            sendSMS.setChecked(false);
-        }else{
-            input_layout_msg.setVisibility(View.VISIBLE);
-            sendSMS.setChecked(true);
-            msg.requestFocus();
-        }
     }
 
     @Override
@@ -234,9 +236,7 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
         if(sendSMS.isChecked()){
             taskSubmission.setSmsContent(msg.getText().toString());
         }
-        if(date != null && !date.equalsIgnoreCase("")){
             taskSubmission.setFollowupDate(date);
-            if(time != null && !time.equalsIgnoreCase("")){
                 taskSubmission.setFollowupTime(time);
                 Log.d(TAG,gson.toJson(taskSubmission));
                 showProgress();
@@ -248,40 +248,6 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
                             case 200:
                                 SaleskenResponse saleskenResponse = response.body();
                                 if(saleskenResponse.getResponseCode() == 200){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(NoResponseActivity.this);
-                                    final View customLayout = getLayoutInflater().inflate(R.layout.feedback_layout, null);
-                                    ImageButton close = customLayout.findViewById(R.id.close);
-                                    Button skip = customLayout.findViewById(R.id.skip);
-                                    Button save = customLayout.findViewById(R.id.save_contact);
-
-                                    builder.setView(customLayout);
-
-                                    dialog = builder.create();
-                                    hideProgress();
-                                    save.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                            Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    });
-                                    skip.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                            Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    });
-                                    close.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                        }
-                                    });
                                     dialog.show();
                                 } else {
                                     showToast(saleskenResponse.getResponseMessage());
@@ -314,12 +280,7 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
 
                     }
                 });
-            }else{
-                showToast("Please pick a time");
-            }
-        }else{
-            showToast("Please pick a date");
-        }
+
     }
 
 
@@ -338,5 +299,49 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
         if(dialog != null){
             dialog.dismiss();
         }
+    }
+
+    public void createAlertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(NoResponseActivity.this);
+        final View customLayout = getLayoutInflater().inflate(R.layout.feedback_layout, null);
+        ImageButton close = customLayout.findViewById(R.id.close);
+        Button skip = customLayout.findViewById(R.id.skip);
+        Button save = customLayout.findViewById(R.id.save_contact);
+
+        builder.setView(customLayout);
+
+        dialog = builder.create();
+        hideProgress();
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    @OnClick(R.id.skip)
+    public void skip(){
+        Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
+        startActivity(i);
+        finish();
     }
 }
