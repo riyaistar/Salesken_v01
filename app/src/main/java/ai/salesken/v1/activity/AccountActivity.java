@@ -394,9 +394,24 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         call.enqueue(new Callback<SaleskenResponse>() {
             @Override
             public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
-                SaleskenResponse saleskenResponse = response.body();
-                Log.d(TAG,gson.toJson(saleskenResponse));
-                new UpdateUserAsync(AccountActivity.this).execute((String) saleskenResponse.getResponse());
+                switch (response.code()) {
+                    case 200:
+                        SaleskenResponse saleskenResponse = response.body();
+                        Log.d(TAG, gson.toJson(saleskenResponse));
+                        new UpdateUserAsync(AccountActivity.this).execute((String) saleskenResponse.getResponse());
+                        break;
+                    default:
+                        try {
+                            SaleskenResponse saleskenResponse1 = gson.fromJson(response.errorBody().string(),SaleskenResponse.class);
+                            showToast(saleskenResponse1.getResponseMessage());
+
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        hideProgressBar();
+                }
             }
 
             @Override
