@@ -49,19 +49,82 @@ public class WrongPersonActivity extends SaleskenActivity implements SaleskenAct
 
     @OnClick(R.id.dnd_text_click)
     public void dnd_text_click(){
-        gotoDashboard();
+        TaskSubmission taskSubmission = new TaskSubmission();
+        taskSubmission.setIsDnd(true);
+        Log.d(TAG,gson.toJson(taskSubmission));
+        dispositionCall(taskSubmission);
+
     }
 
     @OnClick(R.id.lost_lead_click)
     public void lost_lead_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
+        taskSubmission.setIsLeadLost(true);
+        Log.d(TAG,gson.toJson(taskSubmission));
+        dispositionCall(taskSubmission);
+
+    }
+
+    @OnClick(R.id.edit_lead_click)
+    public void edit_lead_click(){
+        Intent i = new Intent(WrongPersonActivity.this, AddLeadActivity.class);
+        i.putExtra(SaleskenIntent.IS_MOBILE_ENABLED, false);
+        i.putExtra(SaleskenIntent.MOBILE,"918145906972");
+        startActivity(i);
+        finish();
+    }
+
+    @OnClick(R.id.skipDisposition)
+    public void skipDisposition(){
+        gotoDashboard();
+    }
+
+    public void gotoDashboard(){
+        Intent i = new Intent(WrongPersonActivity.this, DialerActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBack();
+    }
+
+    @OnClick(R.id.back)
+    public void backClick(){
+        goBack();
+    }
+
+    private void goBack() {
+        Intent i = new Intent(WrongPersonActivity.this,DispositionActivity.class);
+        startActivity(i);
+        finish();
+    }
+    public void showProgress(){
+        progress.setVisibility(View.VISIBLE);
+        content.setVisibility(View.GONE);
+    }
+    public void hideProgress(){
+        progress.setVisibility(View.GONE);
+        content.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(dialog != null){
+            dialog.dismiss();
+        }
+    }
+
+    public void dispositionCall(TaskSubmission taskSubmission){
         taskSubmission.setDisposition("WrongPerson");
         taskSubmission.setId(18433872);
         taskSubmission.setIsFollowup(false);
         taskSubmission.setFollowupActor(getCurrentUser().getId());
-        taskSubmission.setIsLeadLost(true);
-        Log.d(TAG,gson.toJson(taskSubmission));
         showProgress();
+
         Call<SaleskenResponse> disposition_call = restUrlInterface.disposition(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,null),taskSubmission);
         disposition_call.enqueue(new Callback<SaleskenResponse>() {
 
@@ -123,58 +186,5 @@ public class WrongPersonActivity extends SaleskenActivity implements SaleskenAct
                 hideProgress();
             }
         });
-    }
-
-    @OnClick(R.id.edit_lead_click)
-    public void edit_lead_click(){
-        Intent i = new Intent(WrongPersonActivity.this, AddLeadActivity.class);
-        i.putExtra(SaleskenIntent.IS_MOBILE_ENABLED, false);
-        i.putExtra(SaleskenIntent.MOBILE,"918145906972");
-        startActivity(i);
-        finish();
-    }
-
-    @OnClick(R.id.skipDisposition)
-    public void skipDisposition(){
-        gotoDashboard();
-    }
-
-    public void gotoDashboard(){
-        Intent i = new Intent(WrongPersonActivity.this, DialerActivity.class);
-        startActivity(i);
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        goBack();
-    }
-
-    @OnClick(R.id.back)
-    public void backClick(){
-        goBack();
-    }
-
-    private void goBack() {
-        Intent i = new Intent(WrongPersonActivity.this,DispositionActivity.class);
-        startActivity(i);
-        finish();
-    }
-    public void showProgress(){
-        progress.setVisibility(View.VISIBLE);
-        content.setVisibility(View.GONE);
-    }
-    public void hideProgress(){
-        progress.setVisibility(View.GONE);
-        content.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(dialog != null){
-            dialog.dismiss();
-        }
     }
 }

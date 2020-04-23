@@ -63,7 +63,10 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
 
     @OnClick(R.id.dnd_text_click)
     public void dnd_text_click(){
-        gotoDashboard();
+        TaskSubmission taskSubmission = new TaskSubmission();
+        taskSubmission.setIsDnd(true);
+        Log.d(TAG,gson.toJson(taskSubmission));
+        disposeTask(taskSubmission);
     }
 
     @OnClick(R.id.lost_lead_click)

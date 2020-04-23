@@ -16,6 +16,7 @@ import ai.salesken.v1.activity.DialerActivity;
 import ai.salesken.v1.activity.SaleskenActivity;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.SaleskenResponse;
+import ai.salesken.v1.pojo.Task;
 import ai.salesken.v1.pojo.TaskSubmission;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
@@ -46,18 +47,70 @@ public class WrongNumberActivity extends SaleskenActivity implements SaleskenAct
 
     @OnClick(R.id.dnd_text_click)
     public void dnd_text_click(){
-        gotoDashboard();
+        TaskSubmission taskSubmission = new TaskSubmission();
+        taskSubmission.setIsDnd(true);
+        Log.d(TAG,gson.toJson(taskSubmission));
+        dispositionCall(taskSubmission);
     }
 
     @OnClick(R.id.lost_lead_click)
     public void lost_lead_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
+        taskSubmission.setIsLeadLost(true);
+        Log.d(TAG,gson.toJson(taskSubmission));
+        dispositionCall(taskSubmission);
+        //gotoDashboard();
+    }
+
+    @OnClick(R.id.skipDisposition)
+    public void skipDisposition(){
+        gotoDashboard();
+    }
+
+    public void gotoDashboard(){
+        Intent i = new Intent(WrongNumberActivity.this, DialerActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBack();
+    }
+
+    @OnClick(R.id.back)
+    public void backClick(){
+        goBack();
+    }
+
+    private void goBack() {
+        Intent i = new Intent(WrongNumberActivity.this,DispositionActivity.class);
+        startActivity(i);
+        finish();
+    }
+    public void showProgress(){
+        progress.setVisibility(View.VISIBLE);
+        content.setVisibility(View.GONE);
+    }
+    public void hideProgress(){
+        progress.setVisibility(View.GONE);
+        content.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(dialog != null){
+            dialog.dismiss();
+        }
+    }
+
+    public void dispositionCall(TaskSubmission taskSubmission){
         taskSubmission.setDisposition("WrongNumber");
         taskSubmission.setId(18433872);
         taskSubmission.setIsFollowup(false);
         taskSubmission.setFollowupActor(getCurrentUser().getId());
-        taskSubmission.setIsLeadLost(true);
-        Log.d(TAG,gson.toJson(taskSubmission));
         showProgress();
         Call<SaleskenResponse> disposition_call = restUrlInterface.disposition(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,null),taskSubmission);
         disposition_call.enqueue(new Callback<SaleskenResponse>() {
@@ -120,50 +173,5 @@ public class WrongNumberActivity extends SaleskenActivity implements SaleskenAct
                 hideProgress();
             }
         });
-        //gotoDashboard();
-    }
-
-    @OnClick(R.id.skipDisposition)
-    public void skipDisposition(){
-        gotoDashboard();
-    }
-
-    public void gotoDashboard(){
-        Intent i = new Intent(WrongNumberActivity.this, DialerActivity.class);
-        startActivity(i);
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        goBack();
-    }
-
-    @OnClick(R.id.back)
-    public void backClick(){
-        goBack();
-    }
-
-    private void goBack() {
-        Intent i = new Intent(WrongNumberActivity.this,DispositionActivity.class);
-        startActivity(i);
-        finish();
-    }
-    public void showProgress(){
-        progress.setVisibility(View.VISIBLE);
-        content.setVisibility(View.GONE);
-    }
-    public void hideProgress(){
-        progress.setVisibility(View.GONE);
-        content.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(dialog != null){
-            dialog.dismiss();
-        }
     }
 }
