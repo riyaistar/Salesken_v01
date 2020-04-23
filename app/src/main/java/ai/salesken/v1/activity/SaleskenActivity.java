@@ -116,7 +116,7 @@ public class SaleskenActivity extends AppCompatActivity {
     }
 
     public void showToast(String message) {
-        Toast toast = Toast.makeText(SaleskenActivity.this, message, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(SaleskenActivity.this, message, Toast.LENGTH_LONG);
         View view = toast.getView();
 
         //view.getBackground().setColorFilter(getResources().getColor(R.color.theme_color), PorterDuff.Mode.SRC_IN);
@@ -201,8 +201,8 @@ public class SaleskenActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.help:
-                       // startActivity(new Intent(IstarActivity.this, LeadsActivity.class));
-                       // finish();
+                        startActivity(new Intent(SaleskenActivity.this, HelpActivity.class));
+                       finish();
                         break;
 
                     case R.id.logout:
