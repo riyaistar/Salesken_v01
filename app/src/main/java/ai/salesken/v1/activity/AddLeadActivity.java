@@ -81,6 +81,7 @@ public class AddLeadActivity extends SaleskenActivity implements SaleskenActivit
         taskSubmission.setDisposition("WrongPerson");
         taskSubmission.setId(18433872);
         taskSubmission.setFollowupActor(getCurrentUser().getId());
+        taskSubmission.setIsEditLead(true);
         if(company_name.getText().toString()!=null && !company_name.getText().toString().equalsIgnoreCase("")){
             taskSubmission.setCompanyName(company_name.getText().toString());
         }else{
