@@ -333,7 +333,7 @@ public class CallDroppedActivity extends SaleskenActivity implements SaleskenAct
             }
         });
     }
-    @OnClick(R.id.skip)
+    @OnClick(R.id.skip_dropped)
     public void skip(){
         Intent i = new Intent(CallDroppedActivity.this, DialerActivity.class);
         startActivity(i);

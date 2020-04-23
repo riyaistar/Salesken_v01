@@ -338,7 +338,7 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
         });
     }
 
-    @OnClick(R.id.skip)
+    @OnClick(R.id.skip_btn)
     public void skip(){
         Intent i = new Intent(NoResponseActivity.this, DialerActivity.class);
         startActivity(i);
