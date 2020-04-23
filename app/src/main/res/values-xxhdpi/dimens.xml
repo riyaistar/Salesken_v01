@@ -17,7 +17,7 @@
     <dimen name="p7">10sp</dimen>
     <dimen name="p8">9sp</dimen>
 
-    <dimen name="account_image">80dp</dimen>
+    <dimen name="account_image">65dp</dimen>
     <dimen name="nav_header">200dp</dimen>
 
     <!-- Dialer Screen -->

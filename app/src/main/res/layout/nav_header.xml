@@ -27,23 +27,21 @@
         app:strokeWidth="2px" />
 
 
-
     <TextView
         android:id="@+id/first_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Anshuman"
-        android:maxLines="1"
         android:ellipsize="end"
-        android:textColor="@color/black2"
-        android:textSize="20dp"
+        android:maxLines="1"
+        android:text="Anshuman"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/black3"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
         app:layout_constraintTop_toTopOf="@+id/profile_image" />
 
@@ -55,13 +53,13 @@
         android:maxLines="2"
         android:text="Manager"
         android:textColor="@color/greyishBrown"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="@+id/first_name"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
         app:layout_constraintStart_toStartOf="@+id/first_name"
         app:layout_constraintTop_toBottomOf="@+id/first_name" />
 
     <View
+        android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="16dp"
@@ -73,5 +71,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/transparent"
+        android:tint="@color/greyishBrown"
+        app:layout_constraintBottom_toBottomOf="@+id/role"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/first_name"
+        app:layout_constraintVertical_bias="0.26"
+        app:srcCompat="@mipmap/outline_keyboard_arrow_right_black_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

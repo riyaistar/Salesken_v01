@@ -18,7 +18,7 @@
     <dimen name="p6">11sp</dimen>
     <dimen name="p7">10sp</dimen>
     <dimen name="p8">9sp</dimen>
-    <dimen name="account_image">70dp</dimen>
+    <dimen name="account_image">65dp</dimen>
     <dimen name="nav_header">200dp</dimen>
 
 
