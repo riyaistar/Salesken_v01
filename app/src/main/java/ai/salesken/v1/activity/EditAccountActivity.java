@@ -69,11 +69,8 @@ import retrofit2.Response;
 public class EditAccountActivity extends SaleskenActivity implements SaleskenActivityImplementation,EditText.OnEditorActionListener {
     private static final String TAG = "EditAccountActivity";
 
-    @BindView(R.id.profile_picture)
-    ImageView profile_image;
-    private PictureUploadUtil pictureUploadUtil;
-    private static final int SELECT_FILE = 101;
-    private static final int REQUEST_CAMERA = 100;
+
+
     private User user;
 
     @BindView(R.id.name)
@@ -105,10 +102,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         language_map.put("en-IN","English - IN");
         language_map.put("en-US","English - US");
         language_map.put("hi-IN","Hindi");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            profile_image.setClipToOutline(true);
-        }
-        pictureUploadUtil = new PictureUploadUtil(this);
+
         user=getCurrentUser();
         name.setText(user.getName());
         number.setText(user.getMobile());
@@ -140,21 +134,7 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
 
 
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.skipMemoryCache(true);
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
 
-        if(checkStoragePermission()) {
-            MediaSaver local_profile = new MediaSaver(EditAccountActivity.this).setParentDirectoryName("profile_pic").
-                    setFileNameKeepOriginalExtension("profile_pic.jpg").
-                    setExternal(MediaSaver.isExternalStorageReadable());
-            requestManager.setDefaultRequestOptions(requestOptions.centerCrop())
-                    .load(local_profile.pathFile()).into(profile_image);
-        }else{
-            requestAllpermission();
-            requestManager.setDefaultRequestOptions(requestOptions.centerCrop())
-                    .load(user.getProfileImage()).into(profile_image);
-        }
     }
 
     @Override
@@ -163,140 +143,6 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.upload_img)
-    public void uploadProfilePic() {
-        if (checkStoragePermission()) {
-            pictureUploadUtil.selectImage();
-        } else {
-            if(checkPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-                ActivityCompat.requestPermissions(this, perms, 200);
-            }else {
-                showToast("Storage Permission needed to upload Profile Image. Please allow Storage permission in your application settings.");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                        intent.setData(uri);
-                        startActivityForResult(intent, 200);
-                    }
-                }, 3000);
-            }
-
-
-        }
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-            if (resultCode == Activity.RESULT_OK) {
-                //showToast("Press save button to update your profile picture");
-                if (requestCode == SELECT_FILE)
-                    onSelectFromGalleryResult(data);
-
-                else if (requestCode == REQUEST_CAMERA)
-                   // onSelectFromGalleryResult(data);
-
-                 onCaptureImageResult(data);
-
-            }
-        } catch (OutOfMemoryError oxy) {
-            oxy.printStackTrace();
-        }
-    }
-
-    private void onSelectFromGalleryResult(Intent data) {
-        Bitmap bm = null;
-        if (data != null) {
-            try {
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
-                profile_image.setImageBitmap(bm);
-                saveImage(bm);
-            } catch (Exception e) {
-                    e.printStackTrace();
-            }
-        }
-    }
-
-
-    private void onCaptureImageResult(Intent data) {
-        final MediaSaver temp_profile_pic = new MediaSaver(this).
-                setParentDirectoryName("profile_pic").
-                setFileNameKeepOriginalExtension("temp_profile_pic.jpg").
-                setExternal(MediaSaver.isExternalStorageReadable());
-        RequestOptions requestOptions = new RequestOptions();
-        //requestOptions.placeholder(R.drawable.no_image_found);
-        //requestOptions.error(R.drawable.no_image_found);
-        requestOptions.skipMemoryCache(true);
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestManager.setDefaultRequestOptions(requestOptions.centerCrop())
-                .load(temp_profile_pic.pathFile()).into(profile_image);
-        Handler handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-
-                try {
-                    MediaSaver local_profile = new MediaSaver(EditAccountActivity.this).setParentDirectoryName("profile_pic").
-                            setFileNameKeepOriginalExtension("profile_pic.jpg").
-                            setExternal(MediaSaver.isExternalStorageReadable());
-                    local_profile.pathFile().delete();
-                    local_profile.createFile();
-                    local_profile.save(new FileInputStream(temp_profile_pic.pathFile()));
-                    uploadToServer();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-    private void saveImage(Bitmap bitmap) {
-
-        try {
-            MediaSaver local_profile = new MediaSaver(this).setParentDirectoryName("profile_pic").
-                    setFileNameKeepOriginalExtension("profile_pic.jpg").
-                    setExternal(MediaSaver.isExternalStorageReadable());
-            local_profile.pathFile().delete();
-            local_profile.createFile();
-            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(local_profile.pathFile()));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
-            os.flush();
-            os.close();
-
-            uploadToServer();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void uploadToServer() {
-        MediaSaver local_profile = new MediaSaver(this).setParentDirectoryName("profile_pic").
-                setFileNameKeepOriginalExtension("profile_pic.jpg").
-                setExternal(MediaSaver.isExternalStorageReadable());
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), local_profile.pathFile());
-        MultipartBody.Part part = MultipartBody.Part.createFormData("file", local_profile.pathFile().getName(), fileReqBody);
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
-        Call<SaleskenResponse> call = restUrlInterface.uploadImage(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN,""),part, description);
-        call.enqueue(new Callback<SaleskenResponse>() {
-            @Override
-            public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
-                SaleskenResponse saleskenResponse = response.body();
-                Log.d(TAG,gson.toJson(saleskenResponse));
-                updateUser((String) saleskenResponse.getResponse());
-            }
-
-            @Override
-            public void onFailure(Call<SaleskenResponse> call, Throwable t) {
-
-            }
-        });
-    }
 
     @OnClick(R.id.back)
     public void backClick(){
