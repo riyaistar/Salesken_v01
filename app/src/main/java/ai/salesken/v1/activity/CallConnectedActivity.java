@@ -59,4 +59,17 @@ public class CallConnectedActivity extends SaleskenActivity implements SaleskenA
     public void holdCall(){
 
     }
+
+
+    @OnClick(R.id.back)
+    public void back(){
+        startActivity(new Intent(CallConnectedActivity.this,DialerActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        back();
+    }
 }

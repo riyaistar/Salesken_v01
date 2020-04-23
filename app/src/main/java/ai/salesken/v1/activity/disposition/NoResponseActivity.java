@@ -20,8 +20,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.JsonSyntaxException;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.activity.DialerActivity;
@@ -58,6 +63,9 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
     private int mYear, mMonth, mDay, mHour, mMinute;
     String date, time;
     SaleskenActivity saleskenActivity;
+    DatePickerDialog datePickerDialog;
+    private SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+    DateFormat amPmFormat = new SimpleDateFormat("hh:mm a");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +83,30 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
               }
           }
         );
+        datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        String day= dayOfMonth+"", month= (monthOfYear+1)+"";
+                        if (dayOfMonth<10){
+                            day = "0"+dayOfMonth;
+                        }
+                        if(monthOfYear<10){
+                            month = "0"+ (monthOfYear + 1);
+                        }
+                        datetxt.setText(day + "-" + month + "-" + year);
+                        date = year+ "-" + month + "-" + day ;
+                    }
+                }, mYear, mMonth, mDay);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        Calendar calendar = Calendar.getInstance();
+        datetxt.setText(sdf.format(calendar.getTime()));
+        calendar.add(Calendar.HOUR_OF_DAY, 1);
+        timetxt.setText(amPmFormat.format(calendar.getTime()).toUpperCase());
     }
 
     @Override
@@ -100,24 +132,7 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-
-                        String day= dayOfMonth+"", month= (monthOfYear+1)+"";
-                        if (dayOfMonth<10){
-                            day = "0"+dayOfMonth;
-                        }
-                        if(monthOfYear<10){
-                            month = "0"+ (monthOfYear + 1);
-                        }
-                        datetxt.setText(day + "-" + month + "-" + year);
-                        date = year+ "-" + month + "-" + day ;
-                    }
-                }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
@@ -275,7 +290,17 @@ public class NoResponseActivity extends SaleskenActivity implements SaleskenActi
                                 }
                                 break;
                             default:
-                                showToast("Bad Request");
+                                try {
+                                    SaleskenResponse saleskenResponse1 = gson.fromJson(response.errorBody().string(),SaleskenResponse.class);
+                                    showToast(saleskenResponse1.getResponseMessage());
+
+                                } catch (JsonSyntaxException e) {
+                                    showToast("Bad request from the server");
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    showToast("Bad request from the server");
+                                    e.printStackTrace();
+                                }
                                 hideProgress();
 
                                 break;

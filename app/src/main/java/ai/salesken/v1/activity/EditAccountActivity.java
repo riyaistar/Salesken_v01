@@ -231,8 +231,10 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
                                 showToast(saleskenResponse1.getResponseMessage());
 
                             } catch (JsonSyntaxException e) {
+                                showToast("Server Couldn't Process the request. Please try again later.");
                                 e.printStackTrace();
                             } catch (IOException e) {
+                                showToast("Server Couldn't Process the request. Please try again later.");
                                 e.printStackTrace();
                             }
                     }

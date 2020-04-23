@@ -48,7 +48,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/baseline_arrow_back_white_24" />
+                android:src="@mipmap/baseline_arrow_back_white_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -84,7 +84,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/mask_group_85" />
+            android:src="@mipmap/mask_group_85" />
 
         <ImageButton
             android:id="@+id/mute"
@@ -95,7 +95,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/hold"
             app:layout_constraintStart_toEndOf="@+id/hold"
             app:layout_constraintTop_toTopOf="@+id/hold"
-            app:srcCompat="@mipmap/mask_group_86" />
+            android:src="@mipmap/mask_group_86" />
 
         <ImageButton
             android:id="@+id/loudspeaker"
@@ -106,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/mute"
             app:layout_constraintStart_toEndOf="@+id/mute"
             app:layout_constraintTop_toTopOf="@+id/mute"
-            app:srcCompat="@mipmap/mask_group_87" />
+            android:src="@mipmap/mask_group_87" />
 
         <ImageButton
             android:id="@+id/dialpad"
@@ -117,7 +117,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/loudspeaker"
             app:layout_constraintStart_toEndOf="@+id/loudspeaker"
             app:layout_constraintTop_toTopOf="@+id/loudspeaker"
-            app:srcCompat="@mipmap/mask_group_88" />
+            android:src="@mipmap/mask_group_88" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -141,7 +141,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@mipmap/group_9427" />
+            android:src="@mipmap/group_9427" />
 
         <TextView
             android:id="@+id/textView10"

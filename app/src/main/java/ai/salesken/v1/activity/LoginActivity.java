@@ -176,8 +176,10 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
                                 showToast(saleskenResponse1.getResponseMessage());
 
                             } catch (JsonSyntaxException e) {
+                                showToast("Bad request from the server");
                                 e.printStackTrace();
                             } catch (IOException e) {
+                                showToast("Bad request from the server");
                                 e.printStackTrace();
                             }
                             hideProgressbar();

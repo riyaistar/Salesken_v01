@@ -6,12 +6,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import ai.salesken.v1.R;
 import ai.salesken.v1.activity.disposition.WrongPersonActivity;
@@ -19,6 +22,7 @@ import ai.salesken.v1.constant.SaleskenIntent;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.pojo.TaskSubmission;
+import ai.salesken.v1.utils.ContactUtil;
 import ai.salesken.v1.utils.SaleskenActivityImplementation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,19 +51,26 @@ public class AddLeadActivity extends SaleskenActivity implements SaleskenActivit
     ConstraintLayout container;
     AlertDialog dialog;
 
-
+    private ContactUtil contactUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
-
+        contactUtil = new ContactUtil();
         mobile.setText(getIntent().getStringExtra("contact"));
         if(getIntent().getStringExtra(SaleskenIntent.MOBILE)!=null){
             mobile.setText(getIntent().getStringExtra(SaleskenIntent.MOBILE));
         }
-        if(!getIntent().getBooleanExtra(SaleskenIntent.IS_MOBILE_ENABLED,true)){
+        if(getIntent().getBooleanExtra(SaleskenIntent.IS_MOBILE_ENABLED,false)){
             mobile.setEnabled(false);
         }
+        email.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                save_contact();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -72,6 +83,34 @@ public class AddLeadActivity extends SaleskenActivity implements SaleskenActivit
     public void save_contact(){
         if(getIntent().getStringExtra(SaleskenIntent.MOBILE)!=null){
             editlead();
+        }else{
+            if(first_name.getText() == null || first_name.getText().toString().equalsIgnoreCase("")){
+                showToast("First Name is required.");
+                return;
+            }
+            if(company_name.getText() == null || company_name.getText().toString().equalsIgnoreCase("")){
+                showToast("Company Name is required.");
+                return;
+            }
+            if(email.getText() == null || email.getText().toString().equalsIgnoreCase("")){
+                showToast("Email is required.");
+                return;
+            }
+           Boolean isContactInserted= contactUtil.insertContact(AddLeadActivity.this,first_name.getText().toString(),last_name.getText().toString(),mobile.getText().toString(),email.getText().toString(),company_name.getText().toString(),designation.getText().toString());
+            if(isContactInserted){
+                showToast("Contact Inserted Successfully");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(AddLeadActivity.this,DialerActivity.class));
+                        finish();
+                    }
+                },2000);
+            }else{
+                showToast("Error occurred while inserting the contact ");
+
+            }
+
         }
     }
 
