@@ -43,10 +43,12 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
                 android:text="Help"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/openDrawer"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -143,7 +145,8 @@
         android:background="@color/theme_color"
         android:text="@string/submit"
         android:textColor="@color/white"
-        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="@dimen/p1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
