@@ -39,9 +39,11 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
         super.onCreate(savedInstanceState);
         getView();
         if(getIntent()!=null){
-            task_id = getIntent().getIntExtra(SaleskenIntent.TASK_ID, -1);
-        }else{
-            task_id = 18433872;
+            if(getIntent().getIntExtra(SaleskenIntent.TASK_ID, -1)!=-1){
+                task_id = getIntent().getIntExtra(SaleskenIntent.TASK_ID, -1);
+            }else{
+                task_id = 18433872;
+            }
         }
     }
 
@@ -49,6 +51,14 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
     public void getView() {
         setContentView(R.layout.activity_call_answered);
         ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.schedule_activity_click)
+    public void schedule_activity_click(){
+        Intent i = new Intent(CallAnsweredActivity.this, ScheduleActivity.class);
+        i.putExtra(SaleskenIntent.TASK_ID, task_id);
+        startActivity(i);
+        finish();
     }
 
     @OnClick(R.id.dnd_text_click)

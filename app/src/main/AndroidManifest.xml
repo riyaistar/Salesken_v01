@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.disposition.FollowUpActivity"></activity>
+        <activity android:name=".activity.disposition.ScheduleActivity"></activity>
+        <activity android:name=".activity.disposition.FollowUpActivity" />
         <activity
             android:name=".activity.ResetPasswordActivity"
             android:screenOrientation="portrait"

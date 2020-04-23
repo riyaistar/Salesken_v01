@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import ai.salesken.v1.R;
+import ai.salesken.v1.activity.AddLeadActivity;
 import ai.salesken.v1.activity.DialerActivity;
 import ai.salesken.v1.activity.SaleskenActivity;
+import ai.salesken.v1.constant.SaleskenIntent;
 import ai.salesken.v1.constant.SaleskenSharedPrefKey;
 import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.pojo.TaskSubmission;
@@ -125,7 +127,11 @@ public class WrongPersonActivity extends SaleskenActivity implements SaleskenAct
 
     @OnClick(R.id.edit_lead_click)
     public void edit_lead_click(){
-        gotoDashboard();
+        Intent i = new Intent(WrongPersonActivity.this, AddLeadActivity.class);
+        i.putExtra(SaleskenIntent.IS_MOBILE_ENABLED, false);
+        i.putExtra(SaleskenIntent.MOBILE,"918145906972");
+        startActivity(i);
+        finish();
     }
 
     @OnClick(R.id.skipDisposition)
