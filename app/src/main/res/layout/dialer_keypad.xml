@@ -10,17 +10,26 @@
         android:id="@+id/add_contacts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_bottom"
         android:text="Add to contacts"
         android:textAllCaps="false"
-        android:visibility="gone"
         android:textColor="@color/theme_color"
         android:textSize="@dimen/p3"
+        android:visibility="visible"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/line_color"
+        app:layout_constraintEnd_toEndOf="@+id/add_contacts"
+        app:layout_constraintStart_toStartOf="@+id/add_contacts"
+        app:layout_constraintTop_toBottomOf="@+id/add_contacts" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -52,14 +61,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.10" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <Button
         android:id="@+id/button3"
