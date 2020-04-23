@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
@@ -312,7 +313,106 @@ public class EditAccountActivity extends SaleskenActivity implements SaleskenAct
         startActivity(new Intent(EditAccountActivity.this, AccountActivity.class));
         finish();
     }
+    @OnClick(R.id.submit)
+    public void submitProfile(){
+        if(isInternetAvailable()) {
+            hideKeyboard();
 
+
+            if (name.getText() == null || name.getText().toString().equalsIgnoreCase("")) {
+                showToast("Name cannot be empty");
+                return;
+            }
+        /*if(number.getText() == null || number.getText().toString().equalsIgnoreCase("")){
+            showToast("Number cannot be empty");
+            return;
+        }*/
+            if (sip_username.getText() == null || sip_username.getText().toString().equalsIgnoreCase("")) {
+                showToast("Sip Username cannot be empty");
+                return;
+            }
+            if (sip_password.getText() == null || sip_password.getText().toString().equalsIgnoreCase("")) {
+                showToast("Sip Password cannot be empty");
+                return;
+            }
+            if (sip_domain.getText() == null || sip_domain.getText().toString().equalsIgnoreCase("")) {
+                showToast("Sip Domain cannot be empty");
+                return;
+            }
+            if (sip_provider.getText() == null || sip_provider.getText().toString().equalsIgnoreCase("")) {
+                showToast("Sip Provider cannot be empty");
+                return;
+            }
+            if (language.getText() == null || language.getText().toString().equalsIgnoreCase("")) {
+                showToast("Language cannot be empty");
+                return;
+            }
+
+            user.setName(name.getText().toString());
+            user.setSipUserName(sip_username.getText().toString());
+            user.setSipProvider(sip_provider.getText().toString());
+            user.setSipPassword(sip_password.getText().toString());
+            String set_language = "";
+            showProgressBar();
+            for (String selected_lang : language.getText().toString().split(",")) {
+                for (String key : language_map.keySet()) {
+                    if (language_map.get(key).equalsIgnoreCase(selected_lang)) {
+                        set_language += key + ",";
+                    }
+                }
+            }
+            user.setLanguage(set_language.substring(0, set_language.length() - 1));
+            Call<SaleskenResponse> update_user = restUrlInterface.updateUser(sharedpreferences.getString(SaleskenSharedPrefKey.TOKEN, ""), user);
+            update_user.enqueue(new Callback<SaleskenResponse>() {
+                @Override
+                public void onResponse(Call<SaleskenResponse> call, Response<SaleskenResponse> response) {
+                    switch (response.code()) {
+                        case 200:
+                            SaleskenResponse saleskenResponse = response.body();
+                            if (saleskenResponse.getResponseCode() == 200) {
+                                if((Boolean)saleskenResponse.getResponse()){
+                                    updateUser(user);
+                                    showToast("Profile Successfully changed.");
+
+                                }else{
+                                    showToast("Profile can't updated from server");
+                                }
+                            }
+                            break;
+                        default:
+                            try {
+                                SaleskenResponse saleskenResponse1 = gson.fromJson(response.errorBody().string(),SaleskenResponse.class);
+                                showToast(saleskenResponse1.getResponseMessage());
+
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                    hideProgressBar();
+                }
+
+                @Override
+                public void onFailure(Call<SaleskenResponse> call, Throwable t) {
+                    hideProgressBar();
+                    showToast("Connection Refuse.");
+
+                }
+            });
+        }else{
+            showToast("Please Check your Internet Connection.");
+        }
+
+    }
+
+
+    private void updateUser(User user1){
+        Log.d(TAG,"update user url ");
+        editor.putString(SaleskenSharedPrefKey.USER,gson.toJson(user1));
+        editor.commit();
+        editor.apply();
+    }
 
     private void updateUser(String profileImage){
         Log.d(TAG,"update image url ");

@@ -236,8 +236,8 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="Language"
-                    android:textColor="@color/black2"
-                    android:textSize="16sp"
+                    android:textColor="@color/brownish_grey"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/sipproviderlayout" />
@@ -249,11 +249,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginEnd="16dp"
-                    android:focusable="false"
-                    android:cursorVisible="false"
-                    android:clickable="true"
-
                     android:layout_marginRight="16dp"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+
+                    android:focusable="false"
+                    android:textColor="@color/black2"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/language_text" />
