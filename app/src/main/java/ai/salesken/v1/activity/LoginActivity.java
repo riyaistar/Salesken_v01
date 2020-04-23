@@ -265,7 +265,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         } else {
             show_password.setTag(true);
             password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            show_password.setColorFilter(ContextCompat.getColor(LoginActivity.this, R.color.brownish_grey));
+            show_password.setColorFilter(ContextCompat.getColor(LoginActivity.this, R.color.greyishBrown));
             password.setSelection(password.getText().length());
 
         }

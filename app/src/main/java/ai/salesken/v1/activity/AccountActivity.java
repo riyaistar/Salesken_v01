@@ -484,7 +484,7 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         } else {
             show_current.setTag(true);
             current_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            show_current.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.brownish_grey));
+            show_current.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.greyishBrown));
             current_password.setSelection(current_password.getText().length());
 
         }
@@ -500,7 +500,7 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         } else {
             show_new.setTag(true);
             new_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            show_new.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.brownish_grey));
+            show_new.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.greyishBrown));
             new_password.setSelection(new_password.getText().length());
 
         }
@@ -516,7 +516,7 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         } else {
             show_confirm.setTag(true);
             confirm_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            show_confirm.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.brownish_grey));
+            show_confirm.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.greyishBrown));
             confirm_password.setSelection(confirm_password.getText().length());
 
         }
