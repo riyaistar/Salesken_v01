@@ -3,6 +3,7 @@ package ai.salesken.v1.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.room.Update;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -88,6 +91,14 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
 
     @BindView(R.id.progress)
     ConstraintLayout progress;
+    @BindView(R.id.show_current)
+    ImageButton show_current;
+    @BindView(R.id.show_new)
+    ImageButton show_new;
+    @BindView(R.id.show_confirm)
+    ImageButton show_confirm;
+
+
     private PictureUploadUtil pictureUploadUtil;
     private static final int SELECT_FILE = 101;
     private static final int REQUEST_CAMERA = 100;
@@ -99,6 +110,9 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             profile_image.setClipToOutline(true);
         }
+        show_current.setTag(true);
+        show_new.setTag(true);
+        show_confirm.setTag(true);
         pictureUploadUtil = new PictureUploadUtil(this);
         setNavigationView(drawer, navigationView, 1);
         user=getCurrentUser();
@@ -456,6 +470,55 @@ public class AccountActivity extends SaleskenActivity implements SaleskenActivit
                     .load(user.getProfileImage()).into(profile_image);
         }
         hideProgressBar();
+    }
 
+
+
+    @OnClick(R.id.show_current)
+    public void showCurrentPassword() {
+        if (show_current.getTag() != null && (Boolean) show_current.getTag()) {
+            show_current.setTag(false);
+            current_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            show_current.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.theme_color));
+            current_password.setSelection(current_password.getText().length());
+        } else {
+            show_current.setTag(true);
+            current_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            show_current.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.brownish_grey));
+            current_password.setSelection(current_password.getText().length());
+
+        }
+    }
+
+    @OnClick(R.id.show_new)
+    public void showNewPassword() {
+        if (show_new.getTag() != null && (Boolean) show_new.getTag()) {
+            show_new.setTag(false);
+            new_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            show_new.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.theme_color));
+            new_password.setSelection(new_password.getText().length());
+        } else {
+            show_new.setTag(true);
+            new_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            show_new.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.brownish_grey));
+            new_password.setSelection(new_password.getText().length());
+
+        }
+    }
+
+    @OnClick(R.id.show_confirm)
+    public void showConfirmPassword() {
+        if (show_confirm.getTag() != null && (Boolean) show_confirm.getTag()) {
+            show_confirm.setTag(false);
+            confirm_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            show_confirm.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.theme_color));
+            confirm_password.setSelection(confirm_password.getText().length());
+        } else {
+            show_confirm.setTag(true);
+            confirm_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            show_confirm.setColorFilter(ContextCompat.getColor(AccountActivity.this, R.color.brownish_grey));
+            confirm_password.setSelection(confirm_password.getText().length());
+
+        }
     }
 }
