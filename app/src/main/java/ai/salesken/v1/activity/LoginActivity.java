@@ -3,6 +3,7 @@ package ai.salesken.v1.activity;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -13,11 +14,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
@@ -57,6 +61,8 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     EditText username;
     @BindView(R.id.password)
     EditText password;
+    @BindView(R.id.showpassword)
+    ImageButton show_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +86,8 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
         if(sharedpreferences.getString(SaleskenSharedPrefKey.USER,null) !=null){
             startActivity(new Intent(LoginActivity.this,DialerActivity.class));
             finish();
+        }else{
+            show_password.setTag(true);
         }
     }
 
@@ -244,5 +252,22 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     private void hideProgressbar(){
         progress.setVisibility(View.GONE);
         login_content.setVisibility(View.VISIBLE);
+    }
+
+
+    @OnClick(R.id.showpassword)
+    public void showPassword() {
+        if (show_password.getTag() != null && (Boolean) show_password.getTag()) {
+            show_password.setTag(false);
+            password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            show_password.setColorFilter(ContextCompat.getColor(LoginActivity.this, R.color.theme_color));
+            password.setSelection(password.getText().length());
+        } else {
+            show_password.setTag(true);
+            password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            show_password.setColorFilter(ContextCompat.getColor(LoginActivity.this, R.color.brownish_grey));
+            password.setSelection(password.getText().length());
+
+        }
     }
 }
