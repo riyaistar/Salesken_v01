@@ -61,4 +61,6 @@ public interface RestUrlInterface {
     @POST("v1/task/dispostion")
     Call<SaleskenResponse> disposition(@Header("Authorization")String token, @Body TaskSubmission taskSubmission);
 
+    @GET("v1/task/stages_list/{task_id}")
+    Call<SaleskenResponse> stage_list(@Header("Authorization")String token, @Path("task_id") Integer task_id );
 }
