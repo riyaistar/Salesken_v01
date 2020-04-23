@@ -102,6 +102,7 @@
         android:background="@color/transparent"
         android:src="@mipmap/baseline_visibility_black_24"
         android:tint="@color/greyishBrown"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/input_layout_password"
         app:layout_constraintEnd_toEndOf="@+id/input_layout_password"
         app:layout_constraintTop_toTopOf="@+id/input_layout_password" />

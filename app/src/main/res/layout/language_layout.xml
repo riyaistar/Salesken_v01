@@ -29,7 +29,9 @@
         android:background="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/close" />
+        app:srcCompat="@mipmap/close"
+        android:padding="15dp"
+        />
 
     <Button
         android:id="@+id/submit_language"
