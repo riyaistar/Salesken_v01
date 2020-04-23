@@ -128,6 +128,8 @@
         android:layout_marginTop="16dp"
         android:background="@color/theme_color"
         android:text="Verify"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="@dimen/p1"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/pinEntryEditText"
         app:layout_constraintHorizontal_bias="0.0"
