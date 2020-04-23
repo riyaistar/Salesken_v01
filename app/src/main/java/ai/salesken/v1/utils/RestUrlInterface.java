@@ -4,6 +4,7 @@ package ai.salesken.v1.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ai.salesken.v1.pojo.SaleskenIssue;
 import ai.salesken.v1.pojo.SaleskenResponse;
 import ai.salesken.v1.pojo.TaskSubmission;
 import ai.salesken.v1.pojo.User;
@@ -63,4 +64,10 @@ public interface RestUrlInterface {
 
     @GET("v1/task/stages_list/{task_id}")
     Call<SaleskenResponse> stage_list(@Header("Authorization")String token, @Path("task_id") Integer task_id );
+
+
+    @POST("v1/user/issues")
+    Call<SaleskenResponse> issues(@Header("Authorization")String token, @Body SaleskenIssue saleskenIssue);
+
+
 }
