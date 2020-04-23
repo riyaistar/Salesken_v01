@@ -160,6 +160,7 @@
             android:layout_marginBottom="24dp"
             android:background="@color/theme_color"
             android:text="@string/submit"
+            android:fontFamily="sans-serif-medium"
             android:textColor="@color/white"
             android:textSize="@dimen/p3"
             app:layout_constraintBottom_toBottomOf="parent"

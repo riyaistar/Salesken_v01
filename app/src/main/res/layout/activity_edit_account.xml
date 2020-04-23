@@ -56,6 +56,8 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintBottom_toTopOf="@+id/submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -234,13 +236,23 @@
                     android:layout_marginRight="16dp"
                     android:clickable="true"
                     android:cursorVisible="false"
-
                     android:focusable="false"
                     android:textColor="@color/black2"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/language_text" />
+
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/language"
+                    app:layout_constraintTop_toBottomOf="@+id/language_text"
+                    app:srcCompat="@mipmap/outline_arrow_drop_down_black_24" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
