@@ -68,7 +68,6 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getView();
-        requestAllpermission();
         password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -87,6 +86,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
             startActivity(new Intent(LoginActivity.this,DialerActivity.class));
             finish();
         }else{
+            requestAllpermission();
             show_password.setTag(true);
         }
     }
@@ -223,6 +223,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
             for(int i=0;i<permissions.length;i++){
                 if(permissions[i].equalsIgnoreCase(Manifest.permission.READ_CONTACTS)){
                     if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                        fetchContact();
 
                     }
                 }else{
