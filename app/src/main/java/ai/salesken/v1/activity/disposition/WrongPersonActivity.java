@@ -47,7 +47,7 @@ public class WrongPersonActivity extends SaleskenActivity implements SaleskenAct
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.dnd_text_click)
+    @OnClick(R.id.dnd)
     public void dnd_text_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
         taskSubmission.setIsDnd(true);
@@ -56,7 +56,7 @@ public class WrongPersonActivity extends SaleskenActivity implements SaleskenAct
 
     }
 
-    @OnClick(R.id.lost_lead_click)
+    @OnClick(R.id.lead_lost)
     public void lost_lead_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
         taskSubmission.setIsLeadLost(true);
@@ -65,7 +65,7 @@ public class WrongPersonActivity extends SaleskenActivity implements SaleskenAct
 
     }
 
-    @OnClick(R.id.edit_lead_click)
+    @OnClick(R.id.edit_lead)
     public void edit_lead_click(){
         Intent i = new Intent(WrongPersonActivity.this, AddLeadActivity.class);
         i.putExtra(SaleskenIntent.IS_MOBILE_ENABLED, false);

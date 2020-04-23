@@ -53,7 +53,7 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.schedule_activity_click)
+    @OnClick(R.id.schedule_activity)
     public void schedule_activity_click(){
         Intent i = new Intent(CallAnsweredActivity.this, ScheduleActivity.class);
         i.putExtra(SaleskenIntent.TASK_ID, task_id);
@@ -61,7 +61,7 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
         finish();
     }
 
-    @OnClick(R.id.dnd_text_click)
+    @OnClick(R.id.dnd)
     public void dnd_text_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
         taskSubmission.setIsDnd(true);
@@ -69,7 +69,7 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
         disposeTask(taskSubmission);
     }
 
-    @OnClick(R.id.lost_lead_click)
+    @OnClick(R.id.lead_lost)
     public void lost_lead_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
         taskSubmission.setIsLeadLost(true);
@@ -77,7 +77,7 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
        disposeTask(taskSubmission);
     }
 
-    @OnClick(R.id.follow_up_click)
+    @OnClick(R.id.follow_up)
     public void follow_up_click(){
         Intent i = new Intent(CallAnsweredActivity.this, FollowUpActivity.class);
         i.putExtra(SaleskenIntent.TASK_ID, task_id);
@@ -85,7 +85,7 @@ public class CallAnsweredActivity extends SaleskenActivity implements SaleskenAc
         finish();
     }
 
-    @OnClick(R.id.lead_won_click)
+    @OnClick(R.id.lead_won)
     public void lead_won_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
         taskSubmission.setIsLeadWon(true);

@@ -45,7 +45,7 @@ public class WrongNumberActivity extends SaleskenActivity implements SaleskenAct
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.dnd_text_click)
+    @OnClick(R.id.dnd)
     public void dnd_text_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
         taskSubmission.setIsDnd(true);
@@ -53,7 +53,7 @@ public class WrongNumberActivity extends SaleskenActivity implements SaleskenAct
         dispositionCall(taskSubmission);
     }
 
-    @OnClick(R.id.lost_lead_click)
+    @OnClick(R.id.lead_lost)
     public void lost_lead_click(){
         TaskSubmission taskSubmission = new TaskSubmission();
         taskSubmission.setIsLeadLost(true);
