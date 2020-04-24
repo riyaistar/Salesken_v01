@@ -22,9 +22,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.disposition.ScheduleActivity"></activity>
+        <service
+            android:name=".services.OutBoundService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".activity.disposition.ScheduleActivity" />
         <activity android:name=".activity.disposition.FollowUpActivity" />
-        <activity android:name=".activity.HelpActivity"></activity>
+        <activity android:name=".activity.HelpActivity" />
         <activity
             android:name=".activity.ResetPasswordActivity"
             android:screenOrientation="portrait"

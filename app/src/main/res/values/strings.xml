@@ -68,4 +68,7 @@
     <string name="cues_1">We are here to help you!</string>
     <string name="cues_2">Auto generated cues will help you engage the leads better</string>
     <string name="schedule_msg"> Wow ! Seems like the customer\nis  interested. </string>
+    <string name="feroz_channel_name">feroz_channel</string>
+
+    <string name="feroz_channel_description">feroz_channel_description</string>
 </resources>
