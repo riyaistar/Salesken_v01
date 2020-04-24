@@ -15,5 +15,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/app_icon" />
+        android:src="@mipmap/group_7636" />
 </androidx.constraintlayout.widget.ConstraintLayout>
