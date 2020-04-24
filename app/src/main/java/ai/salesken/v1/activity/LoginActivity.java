@@ -59,7 +59,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
 
     @BindView(R.id.username)
     EditText username;
-    @BindView(R.id.password)
+        @BindView(R.id.password)
     EditText password;
     @BindView(R.id.showpassword)
     ImageButton show_password;
@@ -109,6 +109,7 @@ public class LoginActivity extends SaleskenActivity implements SaleskenActivityI
     @OnClick(R.id.login)
     public void login()
     {
+        hideKeyboard();
         if(username.getText() == null || username.getText().toString().trim().equalsIgnoreCase("")){
             showToast("Username cannot be empty");
             username.requestFocus();
