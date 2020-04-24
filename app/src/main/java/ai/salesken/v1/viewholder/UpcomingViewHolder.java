@@ -33,8 +33,8 @@ public class UpcomingViewHolder extends RecyclerView.ViewHolder {
     public void bind(Task task){
 
         try {
-            time.setText(((SaleskenActivity)context).ampmformat.format(((SaleskenActivity)context).dateFormat.parse(task.getUpdatedAt())));
-        } catch (ParseException e) {
+            time.setText(task.getStartDateTime());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         company_name.setText(task.getCompanyName());

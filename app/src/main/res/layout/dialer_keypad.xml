@@ -14,7 +14,7 @@
         android:textAllCaps="false"
         android:textColor="@color/theme_color"
         android:textSize="@dimen/p3"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="@color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"

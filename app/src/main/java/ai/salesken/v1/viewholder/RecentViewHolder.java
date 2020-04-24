@@ -33,7 +33,7 @@ public class RecentViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Task task){
         try {
-            time.setText(task.getUpdatedAt());
+            time.setText(task.getUpdatedAtTime());
             company_name.setText(task.getContactName());
             type.setText(task.getCallDuration());
         } catch (Exception e) {

@@ -33,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UpcomingTask extends Fragment {
+    private static final String TAG = "UpcomingTask" ;
     private ViewGroup container;
     private LayoutInflater inflater;
     @BindView(R.id.upcomig_recycler_view)
@@ -85,6 +86,7 @@ public class UpcomingTask extends Fragment {
                                 List<Task> tasks = saleskenActivity.gson.fromJson(saleskenActivity.gson.toJson(saleskenResponse.getResponse()), type);
                                 if(tasks !=null && tasks.size() >0) {
                                     upcomingAdapter = new UpcomingAdapter(saleskenActivity, tasks);
+                                    Log.d(TAG,"UPCOMING>>>> "+ saleskenActivity.gson.toJson(tasks));
                                     recyclerView.setAdapter(upcomingAdapter);
                                 }else {
                                     showNodata();

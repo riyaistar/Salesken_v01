@@ -29,7 +29,7 @@ public class CompletedViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Task task){
-        time.setText(task.getUpdatedAt());
+        time.setText(task.getUpdatedAtTime());
         company_name.setText(task.getContactName());
         duration.setText(task.getCallDuration());
     }

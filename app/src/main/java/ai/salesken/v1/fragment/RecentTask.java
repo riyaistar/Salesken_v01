@@ -1,6 +1,7 @@
 package ai.salesken.v1.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RecentTask extends Fragment {
+    private static final String TAG = "RecentTask";
     private ViewGroup container;
     private LayoutInflater inflater;
     @BindView(R.id.recent_recycler_view)
@@ -80,6 +82,7 @@ public class RecentTask extends Fragment {
                                 List<Task> tasks = saleskenActivity.gson.fromJson(saleskenActivity.gson.toJson(saleskenResponse.getResponse()), type);
                                 if(tasks !=null && tasks.size() >0) {
                                     recentAdapter = new RecentAdapter(saleskenActivity, tasks);
+                                    Log.d(TAG,saleskenActivity.gson.toJson(tasks));
                                     recyclerView.setAdapter(recentAdapter);
                                 }else{
                                     showNodata();

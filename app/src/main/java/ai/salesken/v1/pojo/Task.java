@@ -5,6 +5,10 @@ public class Task {
     private String startDate;
     private String endDate;
     private String updatedAt;
+    private String updatedAtDate;
+    private String updatedAtTime;
+    private String startDateDate;
+    private String startDateTime;
     private String status;
     private String companyName;
     private String contactName;
@@ -14,7 +18,7 @@ public class Task {
     private String taskType;
     private String disposition;
     private String callDuration;
-
+    private Boolean isOutBound;
 
 
 
@@ -221,6 +225,76 @@ public class Task {
 
     public void setCallDuration(String callDuration) {
         this.callDuration = callDuration;
+    }
+
+
+
+
+    public String getUpdatedAtDate() {
+        return updatedAtDate;
+    }
+
+
+
+
+    public void setUpdatedAtDate(String updatedAtDate) {
+        this.updatedAtDate = updatedAtDate;
+    }
+
+
+
+
+    public String getUpdatedAtTime() {
+        return updatedAtTime;
+    }
+
+
+
+
+    public void setUpdatedAtTime(String updatedAtTime) {
+        this.updatedAtTime = updatedAtTime;
+    }
+
+
+
+
+    public Boolean getIsOutBound() {
+        return isOutBound;
+    }
+
+
+
+
+    public void setIsOutBound(Boolean isOutBound) {
+        this.isOutBound = isOutBound;
+    }
+
+
+
+
+    public String getStartDateDate() {
+        return startDateDate;
+    }
+
+
+
+
+    public void setStartDateDate(String startDateDate) {
+        this.startDateDate = startDateDate;
+    }
+
+
+
+
+    public String getStartDateTime() {
+        return startDateTime;
+    }
+
+
+
+
+    public void setStartDateTime(String startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
 
